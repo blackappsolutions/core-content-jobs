@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+
+<DocumentTypeModel xmlns="http://www.coremedia.com/2008/documenttypes"
+                   Name="jh-doctypes">
+  <ImportGrammar Name="coremedia-richtext-1.0"/>
+
+  <!--- well known grammars -->
+  <ImportGrammar Name="coremedia-struct-2008"/>
+
+  <ImportDocType Name="CMObject"/>
+  <ImportDocType Name="CMSettings"/>
+  <ImportDocType Name="CMFolderProperties"/>
+
+  <DocType Name="ContentSync" Parent="CMObject">
+    <!--
+    Similar approach as
+    https://documentation.coremedia.com/cmcc-10/artifacts/2101/webhelp/coremedia-en/content/Navigation_and_Contexts.html
+
+    Serves as a marker resource.
+    Must be named _folderToSync.
+
+    Probably we can automate this in studio with
+    <qc:QuickCreateToolbarButton contentType="CMFolderProperties" propertyName="sourceFolder" bindTo="{config.bindTo}"/>
+
+    The "contexts"-Property of CMFolderProperties will not be used.
+    -->
+    <LinkListProperty Name="sourceFolder" Max="1" LinkType="CMFolderProperties"/>
+    <!--
+    Can be used to define
+      * the target system (plus folder) and
+      * technical properties like
+        * connectionTimeout
+        * socketTimeout
+        * JWT-Tokens
+     You can customize this in studio with, like this
+     <editor:StringPropertyField propertyName="localSettings.timeouts.socket"/>
+     <editor:StringPropertyField propertyName="localSettings.timeouts.connection"/>
+        -->
+    <XmlProperty Name="localSettings" Grammar="coremedia-struct-2008"/>
+    <LinkListProperty Name="linkedSettings" LinkType="CMSettings"/>
+    <!-- When given and active=1, start the content-sync at the given time -->
+    <DateProperty Name="startAt"/>
+    <!--
+    Must be set active by the user. Will be set in-active after a successful run / number of unsuccessful retries
+    reached. When not time was given at startAt, run immediately -->
+    <IntProperty Name="active"/>
+    <!-- Give up after the specified number of attempts -->
+    <IntProperty Name="retries"/>
+    <!-- Readonly, populated after a each run -->
+    <DateProperty Name="lastRun"/>
+    <IntProperty Name="lastRunSuccessful"/>
+  </DocType>
+
+</DocumentTypeModel>
