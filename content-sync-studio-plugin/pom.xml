@@ -8,7 +8,7 @@
     <relativePath>../../../../apps/studio-client/modules/extensions/pom.xml</relativePath>
   </parent>
 
-  <artifactId>form-editor-studio-plugin</artifactId>
+  <artifactId>content-sync-studio-plugin</artifactId>
   <packaging>swc</packaging>
 
   <properties>

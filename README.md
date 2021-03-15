@@ -17,15 +17,22 @@ and add this to your existing CoreMedia Blueprint-Workspace.
  
 ### HowTo
 
-From the project's root folder, clone this repository as submodule into the extensions folder. Make sure to use the branch name that matches your workspace version. 
-```
-git submodule add  https://github.com/blackappsolutions/content-sync.git modules/extensions/content-sync
-```
+- From the project's root folder, clone this repository as submodule into the extensions folder. Make sure to use the branch name that matches your workspace version. 
+    ```
+    git submodule add  https://github.com/blackappsolutions/content-sync.git modules/extensions/content-sync
+    ```
 
 - Use the extension tool in the root folder of the project to link the modules into your workspace.
- ```
-mvn -f workspace-configuration/extensions com.coremedia.maven:extensions-maven-plugin:LATEST:sync -Denable=content-sync
-```
+    ```
+    mvn -f workspace-configuration/extensions com.coremedia.maven:extensions-maven-plugin:LATEST:sync -Denable=content-sync
+    ```
+- Change the groupId and versionID of all pom.xml to your project values.
+
+- The [schema.xml](../../modules/search/solr-config/src/main/app/configsets/content/conf/schema.xml) (this link only
+works, if this code is within a blueprint workspace) of the content config-set must contain these two fields: 
+     `<field name="active" type="boolean" indexed="true" stored="true"/>`
+     `<field name="startAt" type="pdate" indexed="true" stored="true"/>`
+
 ---
 Licence was selected with the support of https://choosealicense.com/licenses/
                                        

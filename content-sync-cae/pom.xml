@@ -9,7 +9,7 @@
     <relativePath>../../../../apps/cae/modules/extensions/pom.xml</relativePath>
   </parent>
 
-  <artifactId>form-editor-cae</artifactId>
+  <artifactId>content-sync-cae</artifactId>
 
   <properties>
     <coremedia.project.extension.for>cae</coremedia.project.extension.for>
