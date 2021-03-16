@@ -2,6 +2,7 @@ package de.bas.contentsync.cae;
 
 import com.coremedia.cap.Cap;
 import com.coremedia.cap.common.CapConnection;
+import com.coremedia.cap.common.InvalidLoginException;
 import com.coremedia.cap.content.Content;
 import com.coremedia.cap.content.ContentRepository;
 import com.coremedia.cap.content.events.ContentCheckedInEvent;
@@ -74,8 +75,10 @@ public class ContentSyncListener extends ContentRepositoryListenerBase {
     @PostConstruct
     public void afterPropertiesSet() {
         initContentRepository();
-        executeInitialContentQuery();
-        addMeAsContentListener();
+        if ((contentRepository != null) && contentRepository.isContentManagementServer()) {
+            executeInitialContentQuery();
+            contentRepository.addContentRepositoryListener(this);
+        }
     }
 
     private void executeInitialContentQuery() {
@@ -89,14 +92,12 @@ public class ContentSyncListener extends ContentRepositoryListenerBase {
 
     // We have to use a separate connection with a user that allows us to write content
     private void initContentRepository() {
-        CapConnection con = Cap.connect(repoUrl, user, pass);
-        LOG.info("Opened connection for user {}", user);
-        contentRepository = con.getContentRepository();
-    }
-
-    private void addMeAsContentListener() {
-        if (contentRepository.isContentManagementServer()) {
-            contentRepository.addContentRepositoryListener(this);
+        try {
+            CapConnection con = Cap.connect(repoUrl, user, pass);
+            LOG.info("Opened connection for user {}", user);
+            contentRepository = con.getContentRepository();
+        } catch (InvalidLoginException e) {
+            LOG.info("Can not log in user {} at {}. No worries if this happens on cae-live.", user, repoUrl);
         }
     }
 
