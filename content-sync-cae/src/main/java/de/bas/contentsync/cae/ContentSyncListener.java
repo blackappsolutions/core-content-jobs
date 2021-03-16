@@ -10,15 +10,11 @@ import com.coremedia.cap.content.query.QueryService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.scheduling.TaskScheduler;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
-import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Collection;
-import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.FutureTask;
@@ -30,7 +26,6 @@ import java.util.concurrent.FutureTask;
 public class ContentSyncListener extends ContentRepositoryListenerBase {
 
     private static final Logger LOG = LoggerFactory.getLogger(ContentSyncListener.class);
-
     private static final String JOB_CONTENT_TYPE = "ContentSync";
 
     /**
@@ -47,26 +42,13 @@ public class ContentSyncListener extends ContentRepositoryListenerBase {
     @Value("${content-sync.pass}")
     private String pass;
 
-    private final List<FutureTask<ContentSync>> taskList = new ArrayList<>();
     private static final int PARALLEL_THREADS = 10;
     private final ExecutorService executor = Executors.newFixedThreadPool(PARALLEL_THREADS);
+    private final ContentSyncJobJanitor contentSyncJobJanitor;
 
-    public ContentSyncListener(TaskScheduler taskScheduler) {
-        // https://docs.spring.io/spring-framework/docs/current/javadoc-api/org/springframework/scheduling/TaskScheduler.html#scheduleAtFixedRate-java.lang.Runnable-java.util.Date-long-
-        // Calendar startTwoMinutesInTheFuture = Calendar.getInstance();
-        // startTwoMinutesInTheFuture.add(Calendar.MINUTE, 2);
-        // taskScheduler.scheduleAtFixedRate(() -> {
-        //     for (FutureTask<ContentSync> futureTask : taskList) {
-        //         try {
-        //             ContentSync contentSync = futureTask.get();
-        //             LOG.info("FutureTask {} is done? {}", contentSync.getContentId(), futureTask.isDone());
-        //         } catch (Exception e) {
-        //             LOG.error("Can not read futureTask!!!", e);
-        //         }
-        //     }
-        // }, startTwoMinutesInTheFuture.getTime(), (1000 * 60 * 2) /* every 2 Minutes */);
+    public ContentSyncListener(ContentSyncJobJanitor contentSyncJobJanitor) {
+        this.contentSyncJobJanitor = contentSyncJobJanitor;
     }
-
 
     @Override
     public void contentCheckedIn(ContentCheckedInEvent event) {
@@ -84,36 +66,35 @@ public class ContentSyncListener extends ContentRepositoryListenerBase {
     }
 
     private void startJobThread(ContentSync contentSync) {
-        FutureTask<ContentSync> futureTask = new FutureTask<>(() -> {
-            LOG.info("Syncing ...");
-            doTheSync();
-            LOG.info("... done");
-            contentSync.setlastRun(true);
-            return contentSync;
-        });
-        taskList.add(futureTask);
+        FutureTask<ContentSync> futureTask = new FutureTask<>(new ContentSyncJob(contentSync));
         executor.execute(futureTask);
-    }
-
-    private void doTheSync() {
-        try {
-            Thread.sleep(1000);
-        } catch (InterruptedException ex) {
-            Thread.currentThread().interrupt();
-        }
+        contentSyncJobJanitor.add(futureTask);
     }
 
     @PostConstruct
     public void afterPropertiesSet() {
-        CapConnection con = Cap.connect(repoUrl, user, pass);
-        LOG.info("Opened connection for user {}", user);
-        contentRepository = con.getContentRepository();
+        initContentRepository();
+        executeInitialContentQuery();
+        addMeAsContentListener();
+    }
+
+    private void executeInitialContentQuery() {
         QueryService queryService = contentRepository.getQueryService();
         Collection<Content> activeContentSyncs = queryService.poseContentQuery(initialQuery);
         LOG.info("Found {} active ContentSync resources", activeContentSyncs.size());
         for (Content content : activeContentSyncs) {
             handleContentSyncResource(content);
         }
+    }
+
+    // We have to use a separate connection with a user that allows us to write content
+    private void initContentRepository() {
+        CapConnection con = Cap.connect(repoUrl, user, pass);
+        LOG.info("Opened connection for user {}", user);
+        contentRepository = con.getContentRepository();
+    }
+
+    private void addMeAsContentListener() {
         if (contentRepository.isContentManagementServer()) {
             contentRepository.addContentRepositoryListener(this);
         }

@@ -70,12 +70,13 @@ public class ContentSync {
         return contentId;
     }
 
-    public void setlastRun(boolean successful) {
+    public void finishSync(boolean successful) {
         if (contentSync.isCheckedOut()) {
             LOG.warn("ContentSync {} was checked out while a sync is running. Reverting this changes...", contentId);
             contentSync.revert();
         }
         contentSync.checkOut();
+        contentSync.set(ACTIVE, 0);
         contentSync.set(LAST_RUN, Calendar.getInstance());
         contentSync.set(LAST_RUN_SUCCESSFUL, successful ? 1 : 0);
         contentSync.checkIn();
@@ -85,8 +86,8 @@ public class ContentSync {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        ContentSync redirect = (ContentSync) o;
-        return contentId.equals(redirect.contentId);
+        ContentSync contentSync = (ContentSync) o;
+        return contentId.equals(contentSync.contentId);
     }
 
     @Override
