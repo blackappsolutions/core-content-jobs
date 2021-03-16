@@ -61,7 +61,7 @@
         <configuration>
           <namespaces>
             <namespace>
-              <uri>exml:com.tallence.formeditor.studio.config</uri>
+              <uri>exml:de.bas.contentsync.studio.config</uri>
             </namespace>
           </namespaces>
         </configuration>

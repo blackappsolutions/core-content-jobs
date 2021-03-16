@@ -1,0 +1,8 @@
+{
+  "studioPlugins": [
+    {
+      "mainClass": "de.bas.contentsync.studio.ContentSyncStudioPlugin",
+      "name": "ContentSync Extension"
+    }
+  ]
+}
