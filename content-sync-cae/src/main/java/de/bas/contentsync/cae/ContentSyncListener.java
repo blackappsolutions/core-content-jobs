@@ -52,19 +52,19 @@ public class ContentSyncListener extends ContentRepositoryListenerBase {
     private final ExecutorService executor = Executors.newFixedThreadPool(PARALLEL_THREADS);
 
     public ContentSyncListener(TaskScheduler taskScheduler) {
-        Calendar startTwoMinutesInTheFuture = Calendar.getInstance();
-        startTwoMinutesInTheFuture.add(Calendar.MINUTE, 2);
         // https://docs.spring.io/spring-framework/docs/current/javadoc-api/org/springframework/scheduling/TaskScheduler.html#scheduleAtFixedRate-java.lang.Runnable-java.util.Date-long-
-        taskScheduler.scheduleAtFixedRate(() -> {
-            for (FutureTask<ContentSync> futureTask : taskList) {
-                try {
-                    ContentSync contentSync = futureTask.get();
-                    LOG.info("FutureTask {} is done? {}", contentSync.getContentId(), futureTask.isDone());
-                } catch (Exception e) {
-                    LOG.error("Can not read futureTask!!!", e);
-                }
-            }
-        }, startTwoMinutesInTheFuture.getTime(), (1000 * 60 * 2) /* every 2 Minutes */);
+        // Calendar startTwoMinutesInTheFuture = Calendar.getInstance();
+        // startTwoMinutesInTheFuture.add(Calendar.MINUTE, 2);
+        // taskScheduler.scheduleAtFixedRate(() -> {
+        //     for (FutureTask<ContentSync> futureTask : taskList) {
+        //         try {
+        //             ContentSync contentSync = futureTask.get();
+        //             LOG.info("FutureTask {} is done? {}", contentSync.getContentId(), futureTask.isDone());
+        //         } catch (Exception e) {
+        //             LOG.error("Can not read futureTask!!!", e);
+        //         }
+        //     }
+        // }, startTwoMinutesInTheFuture.getTime(), (1000 * 60 * 2) /* every 2 Minutes */);
     }
 
 

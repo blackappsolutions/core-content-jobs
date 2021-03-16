@@ -77,7 +77,7 @@ public class ContentSync {
         }
         contentSync.checkOut();
         contentSync.set(LAST_RUN, Calendar.getInstance());
-        contentSync.set(LAST_RUN_SUCCESSFUL, successful);
+        contentSync.set(LAST_RUN_SUCCESSFUL, successful ? 1 : 0);
         contentSync.checkIn();
     }
 
