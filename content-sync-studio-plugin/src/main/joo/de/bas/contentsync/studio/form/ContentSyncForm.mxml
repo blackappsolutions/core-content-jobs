@@ -38,6 +38,10 @@
         <editor:DocumentInfo/>
         <editor:VersionHistory/>
         <editor:ReferrerListPanel/>
+        <bpforms:LinkedSettingsForm bindTo="{config.bindTo}"
+                                    collapsed="true"/>
+        <bpforms:LocalSettingsForm bindTo="{config.bindTo}"
+                                   collapsed="true"/>
       </editor:items>
     </editor:DocumentForm>
   </editor:items>

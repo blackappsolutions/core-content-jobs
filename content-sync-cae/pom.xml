@@ -19,7 +19,27 @@
   <dependencies>
     <dependency>
       <groupId>com.coremedia.cms</groupId>
+      <artifactId>serverimportexport</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>com.coremedia.cms</groupId>
       <artifactId>cap-unified-api</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>com.coremedia.blueprint</groupId>
+      <artifactId>contentbeans</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>com.coremedia.cms</groupId>
+      <artifactId>cae-contentbeanservices</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>com.coremedia.blueprint.base</groupId>
+      <artifactId>bpbase-settings-api</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-autoconfigure</artifactId>
     </dependency>
     <dependency>
       <groupId>org.springframework</groupId>
@@ -42,5 +62,71 @@
       <artifactId>junit</artifactId>
       <scope>test</scope>
     </dependency>
+    <dependency>
+      <groupId>org.projectlombok</groupId>
+      <artifactId>lombok</artifactId>
+      <scope>provided</scope>
+    </dependency>
   </dependencies>
+
+  <dependencyManagement>
+    <dependencies>
+      <dependency>
+        <groupId>org.projectlombok</groupId>
+        <artifactId>lombok</artifactId>
+        <version>1.18.8</version>
+      </dependency>
+    </dependencies>
+  </dependencyManagement>
+
+  <profiles>
+    <!-- https://documentation.coremedia.com/cmcc-10/artifacts/2101/webhelp/cae-developer-en/content/GeneratingContentBeans.html -->
+    <profile>
+      <!-- mvn -PgenerateContentBeans exec:java -->
+      <id>generateContentBeans</id>
+      <properties>
+        <enforcer.skip>true</enforcer.skip>
+      </properties>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.codehaus.mojo</groupId>
+            <artifactId>exec-maven-plugin</artifactId>
+            <executions>
+              <execution>
+                <goals>
+                  <goal>java</goal>
+                </goals>
+              </execution>
+            </executions>
+            <configuration>
+              <includeProjectDependencies>true</includeProjectDependencies>
+              <mainClass>com.coremedia.objectserver.beans.codegen.impl.BeanGenerator</mainClass>
+              <arguments>
+                <argument>--document-types</argument>
+                <argument>
+                  ${project.basedir}/../content-sync-server/src/main/resources/framework/doctypes/content-sync-doctypes.xml
+                </argument>
+                <argument>-beanmapping</argument>
+                <argument>src/main/resources/framework/spring/content-sync-contentbeans.xml</argument>
+                <argument>-out</argument>
+                <argument>src/main/java</argument>
+                <argument>--package</argument>
+                <argument>de.bas.contentsync.beans</argument>
+                <argument>-f</argument><!--Overwrite existing files-->
+                <argument>-generics</argument>
+              </arguments>
+            </configuration>
+          </plugin>
+        </plugins>
+      </build>
+      <dependencies>
+        <dependency>
+          <groupId>com.coremedia.cms</groupId>
+          <artifactId>bean-generator</artifactId>
+          <scope>runtime</scope>
+        </dependency>
+      </dependencies>
+    </profile>
+  </profiles>
 </project>

@@ -1,7 +1,9 @@
 package de.bas.contentsync.cae;
 
+import de.bas.contentsync.beans.ContentSync;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.scheduling.TaskScheduler;
 import org.springframework.stereotype.Component;
 
@@ -15,6 +17,7 @@ import java.util.concurrent.FutureTask;
  * @author Markus Schwarz
  */
 @Component
+@ConditionalOnProperty(name = "delivery.preview-mode", havingValue = "true")
 public class ContentSyncJobJanitor {
 
     private static final Logger LOG = LoggerFactory.getLogger(ContentSyncJobJanitor.class);
@@ -33,7 +36,7 @@ public class ContentSyncJobJanitor {
         return done;
     });
 
-    public ContentSyncJobJanitor(TaskScheduler taskScheduler) {
+    public ContentSyncJobJanitor(@SuppressWarnings("SpringJavaInjectionPointsAutowiringInspection") TaskScheduler taskScheduler) {
         this.taskScheduler = taskScheduler;
     }
 

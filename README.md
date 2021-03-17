@@ -53,6 +53,23 @@ works, if this code is within a blueprint workspace) of the content config-set m
     <field name="active" type="boolean" indexed="true" stored="true"/>
     <field name="startAt" type="pdate" indexed="true" stored="true"/>
     ```
+
+## Further Development
+  
+### Adapt the `ContentSync` DocType to your needs
+
+* [Server](content-sync-server/src/main/resources/framework/doctypes/content-sync-doctypes.xml)
+* [Studio](content-sync-studio-plugin/src/main/joo/de/bas/contentsync/studio/form/ContentSyncForm.mxml)
+* [Content-Feeder](content-sync-contentfeeder/src/main/resources/META-INF/coremedia/component-content-sync-contentfeeder.xml)
+* [Solr](../../modules/search/solr-config/src/main/app/configsets/content/conf/schema.xml)
+* [CAE](content-sync-cae/src/main/resources/framework/spring/content-sync-contentbeans.xml)<br>
+  You can generate the contentbeans from scratch with this command: 
+  ```                                 
+  cd content-sync-cae
+  mvn -PgenerateContentBeans exec:java
+  ```
+  Vendor-Documentation: [Generate ContentBeans](https://documentation.coremedia.com/cmcc-10/artifacts/2101/webhelp/cae-developer-en/content/GeneratingContentBeans.html)  
+
 ---
 Licence was selected with the support of https://choosealicense.com/licenses/
                                        
