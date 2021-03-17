@@ -3,6 +3,7 @@
 <editor:DocumentTabPanel
         xmlns:fx="http://ns.adobe.com/mxml/2009"
         xmlns="exml:ext.config"
+        xmlns:bpforms="exml:com.coremedia.blueprint.studio.config"
         xmlns:editor="exml:com.coremedia.cms.editor.sdk.config">
   <fx:Metadata>
     [ResourceBundle('com.coremedia.blueprint.studio.BlueprintTabs')]
