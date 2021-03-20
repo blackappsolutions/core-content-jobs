@@ -70,7 +70,7 @@ public class ContentSyncListener extends ContentRepositoryListenerBase {
     }
 
     private void startJobThread(ContentSync contentSync) {
-        // ToDo. Improve that to a more sophisticated way (with spring)
+        // ToDo: Improve that to a more object-oriented way
         ContentSyncJob contentSyncJob = null;
         switch (contentSync.getType()){
             case ServerExport:

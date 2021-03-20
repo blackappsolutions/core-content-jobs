@@ -89,12 +89,16 @@ public interface ContentSync extends CMObject {
      */
     public Calendar getStartAt();
 
-    //////////////////////
-    // Business Methods //
+    ////////////////////////////////////////////////////
+    // Added after the initial contentBean generator run
     //
     Content getFolderToSync();
 
     SyncType getType();
 
     boolean isActive();
+
+    boolean recursive();
+
+    String getExportStorageURL();
 }

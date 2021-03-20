@@ -44,6 +44,15 @@ public class ContentSyncImpl extends ContentSyncBase implements ContentSync {
         return SyncType.values()[type];
     }
 
+    public boolean recursive() {
+        return settingsService.settingWithDefault("recursive", Boolean.class, false, this);
+    }
+
+    @Override
+    public String getExportStorageURL() {
+        return settingsService.settingWithDefault("export-storage-url", String.class, "file:///temp/", this);
+    }
+
     public boolean isActive() {
         if (getActive() == 1) {
             /* ToDo: Future runs must be scheduled
