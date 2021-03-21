@@ -33,11 +33,12 @@ public class ExportXMLJob extends ContentSyncJob {
     @Override
     protected void doTheSync() {
         ServerXmlExport serverExporter = new ServerXmlExport(contentSync.getContent().getRepository().getConnection(), null);
-        String id = contentSync.getFolderToSync().getId();
+        String id = contentSync.getContentToSync().getId();
         serverExporter.setContentIds(id);
         serverExporter.setRecursive(contentSync.recursive());
         serverExporter.setZip(contentSync.getExportStorageURL() + contentSync.getContentId() + ".zip");
         log.info("About to start {} server-export of content-id {}", contentSync.recursive() ? "recursive" : "", id);
+        serverExporter.init();
         serverExporter.doExport();
         log.info("Finished {} server-export of content-id {}", contentSync.recursive() ? "recursive" : "", id);
     }

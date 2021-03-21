@@ -19,9 +19,10 @@ import org.springframework.stereotype.Component;
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
 import java.util.Collection;
-import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.FutureTask;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 
 import static de.bas.contentsync.beans.ContentSync.CONTENTTYPE_CONTENTSYNC;
 
@@ -38,7 +39,7 @@ public class ContentSyncListener extends ContentRepositoryListenerBase {
     private String initialQuery;
 
     private static final int PARALLEL_THREADS = 10;
-    private final ExecutorService executor = Executors.newFixedThreadPool(PARALLEL_THREADS);
+    private final ScheduledExecutorService executor = Executors.newScheduledThreadPool(PARALLEL_THREADS);
     private final ContentWriter contentWriter;
     private final ContentRepository contentRepository;
     private final ContentBeanFactory contentBeanFactory;
@@ -81,7 +82,7 @@ public class ContentSyncListener extends ContentRepositoryListenerBase {
                 break;
         }
         FutureTask<ContentSync> futureTask = new FutureTask<>(contentSyncJob);
-        executor.execute(futureTask);
+        executor.schedule(futureTask, 5, TimeUnit.SECONDS); // delay execution a bit ...
         contentSyncJobJanitor.add(futureTask);
     }
 

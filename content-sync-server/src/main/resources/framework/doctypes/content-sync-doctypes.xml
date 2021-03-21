@@ -25,6 +25,7 @@
     The "contexts"-Property of CMFolderProperties will not be used.
     -->
     <LinkListProperty Name="sourceFolder" Max="1" LinkType="CMFolderProperties"/>
+    <LinkListProperty Name="sourceContent" Max="1" LinkType="CMObject"/>
     <!--
     Can be used to define
       * the target system (plus folder) and

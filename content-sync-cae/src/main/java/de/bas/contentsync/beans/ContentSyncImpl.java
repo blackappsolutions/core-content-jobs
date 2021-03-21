@@ -2,6 +2,7 @@ package de.bas.contentsync.beans;
 
 import com.coremedia.blueprint.base.settings.SettingsService;
 import com.coremedia.blueprint.common.contentbeans.CMFolderProperties;
+import com.coremedia.blueprint.common.contentbeans.CMObject;
 import com.coremedia.cap.content.Content;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -24,15 +25,21 @@ public class ContentSyncImpl extends ContentSyncBase implements ContentSync {
 
     protected static final String FOLDER_TO_SYNC = "_folderToSync";
 
-    public Content getFolderToSync() {
-        List<? extends CMFolderProperties> sourceFolder = getSourceFolder();
+    public Content getContentToSync() {
+        List<? extends CMObject> sourceFolder = getSourceContent();
         if (!sourceFolder.isEmpty()) {
-            Content content = sourceFolder.get(0).getContent();
-            String resourceName = content.getName();
-            if (resourceName.equals(FOLDER_TO_SYNC)) {
-                return content.getParent();
-            } else {
-                LOG.error("{} is ignored. Must be named {}!", resourceName, FOLDER_TO_SYNC);
+            CMObject cmObject = sourceFolder.get(0);
+            Content content = cmObject.getContent();
+            if(cmObject instanceof CMFolderProperties){
+                String resourceName = content.getName();
+                if (resourceName.equals(FOLDER_TO_SYNC)) {
+                    return content.getParent();
+                } else {
+                    LOG.error("{} is ignored. Must be named {}!", resourceName, FOLDER_TO_SYNC);
+                }
+            }
+            else {
+                return content;
             }
         }
         return null;

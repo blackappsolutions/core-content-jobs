@@ -2,6 +2,7 @@ package de.bas.contentsync.beans;
 
 import com.coremedia.blueprint.cae.contentbeans.CMObjectImpl;
 import com.coremedia.blueprint.common.contentbeans.CMFolderProperties;
+import com.coremedia.blueprint.common.contentbeans.CMObject;
 import com.coremedia.cap.content.Content;
 import com.coremedia.cap.struct.Struct;
 import com.coremedia.objectserver.beans.ContentBean;
@@ -65,6 +66,11 @@ public abstract class ContentSyncBase extends CMObjectImpl {
   public List<? extends CMFolderProperties> getSourceFolder() {
     List<Content> contents = getContent().getLinks(SOURCE_FOLDER);
     return createBeansFor(contents, CMFolderProperties.class);
+  }
+
+  public List<? extends CMObject> getSourceContent() {
+    List<Content> contents = getContent().getLinks(SOURCE_CONTENT);
+    return createBeansFor(contents, CMObject.class);
   }
 
 

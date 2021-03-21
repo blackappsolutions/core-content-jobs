@@ -22,13 +22,21 @@ public abstract class ContentSyncJob implements Callable<ContentSync> {
     }
 
     public ContentSync call() throws Exception {
-        LOG.info("Syncing {} ...", contentSync.getFolderToSync());
-        doTheSync();
-        LOG.info("... done");
-        contentWriter.finishSync(contentSync.getContent().getId(), true);
+        boolean successfulRun;
+        try {
+            doTheSync();
+            successfulRun = true;
+        } catch (Exception e) {
+            LOG.error("Error while syncing {}", contentSync.getContentToSync(), e);
+            successfulRun = false;
+        }
+        contentWriter.finishSync(contentSync.getContent().getId(), successfulRun);
         return contentSync;
     }
 
+    /**
+     * Overwrite me. Dummy implementation.
+     */
     protected void doTheSync() {
         try {
             Thread.sleep(1000);

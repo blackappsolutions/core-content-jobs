@@ -18,9 +18,14 @@
         title="{resourceManager.getString('com.coremedia.blueprint.studio.BlueprintTabs', 'Tab_content_title')}">
       <editor:items>
         <editor:BooleanPropertyField  propertyName="active"/>
-        <editor:LinkListPropertyField propertyName="sourceFolder"/>
+        <editor:LinkListPropertyField propertyName="sourceContent"/>
+        <editor:BooleanPropertyField  propertyName="localSettings.recursive"/>
+        <editor:StringPropertyField   propertyName="localSettings.export-storage-url"/>
+        <editor:IntegerPropertyField  propertyName="localSettings.sync-type"/>
+        <!-- FOR FUTURE USE - ToDo: Implement me!
         <editor:DateTimePropertyField propertyName="startAt"/>
         <editor:IntegerPropertyField  propertyName="retries"/>
+        -->
         <editor:DateTimePropertyField propertyName="lastRun" disabled="true"/>
         <editor:IntegerPropertyField  propertyName="lastRunSuccessful" disabled="true"/>
         <!--

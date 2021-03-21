@@ -9,4 +9,11 @@
   <active>1</active>
   <retries>0</retries>
   <lastRunSuccessful>0</lastRunSuccessful>
+  <localSettings>
+    <Struct>
+      <IntProperty Name="sync-type">0</IntProperty>
+      <StringProperty Name="export-storage-url">s3://blackapp-content-sync/</StringProperty>
+      <BooleanProperty Name="recursive">true</BooleanProperty>
+    </Struct>
+  </localSettings>
 </ContentSync>

@@ -22,6 +22,7 @@ public interface ContentSync extends CMObject {
     String LOCAL_SETTINGS = "localSettings";
     String LINKED_SETTINGS = "linkedSettings";
     String SOURCE_FOLDER = "sourceFolder";
+    String SOURCE_CONTENT = "sourceContent";
     String START_AT = "startAt";
     String ACTIVE = "active";
     String RETRIES = "retries";
@@ -92,7 +93,7 @@ public interface ContentSync extends CMObject {
     ////////////////////////////////////////////////////
     // Added after the initial contentBean generator run
     //
-    Content getFolderToSync();
+    Content getContentToSync();
 
     SyncType getType();
 
