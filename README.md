@@ -5,11 +5,20 @@ CoreMedia CMS Extension to sync Content from A to B.
 This is only a shell, where an actual import-export-process can be embedded. It introduces the ContentType `ContentSync`,
 which is used as a Job-Definition with the following properties:
 
-  * `sourceFolder`: Create a new resource of type `FolderProperties` and the name `_folderToSync` in the CMS folder you 
-    want export/sync, which serves as a marker resource. Add this resource into the `sourceFolder`-Property.
+  * `sourceContent`: Create a new resource of type `FolderProperties` and the name `_folderToSync` in the CMS folder you 
+    want export/sync, which serves as a marker resource. Add this resource into the `sourceFolder`-Property. Or alternative
+    
   * `active`: Used to arm this job, when enable. Also check in the resource after setting this property!   
-  * (Comming soon)`startAt`: When given and active=true, start the content-sync at the given time.   
-  * ...
+  * Select different types of syncs (only type 0 is currently implemented): Use 0 for XML-ServerExport | 1 for dummy export
+  * Select Storage-URL: file:/// | s3:// | http(s)://user:pass@host/rest_put_path<br>
+  **Note:** If you want to use s3 buckets, keep in mind, that you can define only ONE bucket per system at the moment, 
+    because it is not possible to pass s3-credentials on the url or on any other way to CoreMedia's ServerExporter, 
+    except with the variables `AWS_ACCESS_KEY_ID` and `AWS_SECRET_ACCESS_KEY` in the system environment 
+    (see global/deployment/docker/compose/default.yml).
+                                                                                                  
+  **It is also crucial, that you create a separate `content-sync`-user, with which the check-in (and journaling) of a
+  completed ContentSync could be made. Use the variables `CONTENTSYNC_USER` and `CONTENTSYNC_PASS` in the system 
+  environment, if run on Docker. Otherwise (or alternatively), specify them in application.properties: `content-sync.user=`|`content-sync.pass=`**  
 
 ## Integration into the CoreMedia Blueprints
 
