@@ -75,6 +75,10 @@ public class ContentSyncImpl extends ContentSyncBase implements ContentSync {
         return false;
     }
 
+    @Override
+    public String getZipUrl() {
+        return getExportStorageURL() + getContentId() + ".zip";
+    }
 
     public void setSettingsService(SettingsService settingsService) {
         this.settingsService = settingsService;

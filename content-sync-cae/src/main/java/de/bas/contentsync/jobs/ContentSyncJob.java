@@ -37,7 +37,7 @@ public abstract class ContentSyncJob implements Callable<ContentSync> {
     /**
      * Overwrite me. Dummy implementation.
      */
-    protected void doTheSync() {
+    protected void doTheSync() throws Exception{
         try {
             Thread.sleep(1000);
         } catch (InterruptedException ex) {

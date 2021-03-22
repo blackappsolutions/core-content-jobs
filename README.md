@@ -1,17 +1,23 @@
 # Content Sync
 
 ## Overview
-CoreMedia CMS Extension to sync Content from A to B.
-This is only a shell, where an actual import-export-process can be embedded. It introduces the ContentType `ContentSync`,
-which is used as a Job-Definition with the following properties:
+CoreMedia CMS Extension to sync Content from A to B. Developed against Version 2010.2
+It introduces the ContentType `ContentSync`, which is used as a Job-Definition with the following properties:
 
   * `sourceContent`: Create a new resource of type `FolderProperties` and the name `_folderToSync` in the CMS folder you 
     want export/sync, which serves as a marker resource. Add this resource into the `sourceFolder`-Property. Or alternative
     
   * `active`: Used to arm this job, when enable. Also check in the resource after setting this property!   
-  * Select different types of syncs (only type 0 is currently implemented): Use 0 for XML-ServerExport | 1 for dummy export
-  * Select Storage-URL: file:/// | s3:// | http(s)://user:pass@host/rest_put_path<br>
-  **Note:** If you want to use s3 buckets, keep in mind, that you can define only ONE bucket per system at the moment, 
+  * `localSettings.sync-type`: Select different types of syncs: 
+    * `0` ServerXMLExport 
+    * `1` ServerXMLImport 
+    * `2` Dummy-Export
+  * `localSettings.export-storage-url`: 
+    * file:///
+    * s3://
+    * http(s)://user:pass@host/rest_put_path
+    <br/><br/>
+    **Note:** If you want to use s3 buckets, keep in mind, that you can define only ONE bucket per system at the moment, 
     because it is not possible to pass s3-credentials on the url or on any other way to CoreMedia's ServerExporter, 
     except with the variables `AWS_ACCESS_KEY_ID` and `AWS_SECRET_ACCESS_KEY` in the system environment 
     (see global/deployment/docker/compose/default.yml).

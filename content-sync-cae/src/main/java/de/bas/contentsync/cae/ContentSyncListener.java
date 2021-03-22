@@ -9,6 +9,7 @@ import com.coremedia.objectserver.beans.ContentBeanFactory;
 import de.bas.contentsync.beans.ContentSync;
 import de.bas.contentsync.jobs.ContentSyncJob;
 import de.bas.contentsync.jobs.ExportXMLJob;
+import de.bas.contentsync.jobs.ImportXMLJob;
 import de.bas.contentsync.jobs.PushToIngestServiceJob;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -76,6 +77,9 @@ public class ContentSyncListener extends ContentRepositoryListenerBase {
         switch (contentSync.getType()){
             case ServerExport:
                 contentSyncJob = new ExportXMLJob(contentSync, contentWriter);
+                break;
+            case ServerImport:
+                contentSyncJob = new ImportXMLJob(contentSync, contentWriter);
                 break;
             case IngestService:
                 contentSyncJob = new PushToIngestServiceJob(contentSync, contentWriter);

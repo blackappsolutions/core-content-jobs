@@ -102,4 +102,6 @@ public interface ContentSync extends CMObject {
     boolean recursive();
 
     String getExportStorageURL();
+
+    String getZipUrl();
 }
