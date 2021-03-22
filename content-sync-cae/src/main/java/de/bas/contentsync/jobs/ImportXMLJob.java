@@ -32,6 +32,5 @@ public class ImportXMLJob extends ContentSyncJob {
         }
         importer.setThreads(4);
         importer.run();
-        importer.
     }
 }
