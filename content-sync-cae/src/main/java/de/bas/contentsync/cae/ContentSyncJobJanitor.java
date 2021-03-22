@@ -13,7 +13,7 @@ import java.util.Calendar;
 import java.util.List;
 import java.util.concurrent.FutureTask;
 
-@Component
+//@Component
 @ConditionalOnProperty(name = "delivery.preview-mode", havingValue = "true")
 public class ContentSyncJobJanitor {
 

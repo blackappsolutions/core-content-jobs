@@ -43,16 +43,16 @@ public class ContentSyncListener extends ContentRepositoryListenerBase {
     private final ContentWriter contentWriter;
     private final ContentRepository contentRepository;
     private final ContentBeanFactory contentBeanFactory;
-    private final ContentSyncJobJanitor contentSyncJobJanitor;
+    // private final ContentSyncJobJanitor contentSyncJobJanitor;
 
     public ContentSyncListener(@SuppressWarnings("SpringJavaInjectionPointsAutowiringInspection") ContentRepository contentRepository,
                                ContentWriter contentWriter,
-                               ContentBeanFactory contentBeanFactory,
-                               ContentSyncJobJanitor contentSyncJobJanitor) {
+                               ContentBeanFactory contentBeanFactory/*,
+                               ContentSyncJobJanitor contentSyncJobJanitor*/) {
         this.contentRepository = contentRepository;
         this.contentWriter = contentWriter;
         this.contentBeanFactory = contentBeanFactory;
-        this.contentSyncJobJanitor = contentSyncJobJanitor;
+        // this.contentSyncJobJanitor = contentSyncJobJanitor;
     }
 
     @Override
@@ -83,7 +83,7 @@ public class ContentSyncListener extends ContentRepositoryListenerBase {
         }
         FutureTask<ContentSync> futureTask = new FutureTask<>(contentSyncJob);
         executor.schedule(futureTask, 5, TimeUnit.SECONDS); // delay execution a bit ...
-        contentSyncJobJanitor.add(futureTask);
+        // contentSyncJobJanitor.add(futureTask);
     }
 
     @PostConstruct

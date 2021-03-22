@@ -19,7 +19,7 @@
       <editor:items>
         <editor:BooleanPropertyField  propertyName="active"/>
         <editor:LinkListPropertyField propertyName="sourceContent"/>
-        <editor:BooleanPropertyField  propertyName="localSettings.recursive"/>
+        <editor:BooleanPropertyField  propertyName="localSettings.recursive" dontTransformToInteger="true"/>
         <editor:StringPropertyField   propertyName="localSettings.export-storage-url"/>
         <editor:IntegerPropertyField  propertyName="localSettings.sync-type"/>
         <!-- FOR FUTURE USE - ToDo: Implement me!
