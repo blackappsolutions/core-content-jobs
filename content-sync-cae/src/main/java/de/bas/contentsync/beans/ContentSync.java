@@ -7,6 +7,7 @@ import com.coremedia.cap.struct.Struct;
 
 import java.util.Calendar;
 import java.util.List;
+import java.util.Optional;
 
 /**
  * Generated interface for beans of document type "ContentSync".
@@ -104,4 +105,6 @@ public interface ContentSync extends CMObject {
     String getExportStorageURL();
 
     String getZipUrl();
+
+    Optional<String> getZipDirectory();
 }

@@ -14,7 +14,7 @@ public abstract class ContentSyncJob implements Callable<ContentSync> {
 
     private static final Logger LOG = LoggerFactory.getLogger(ContentSyncJob.class);
     protected final ContentSync contentSync;
-    private final ContentWriter contentWriter;
+    protected final ContentWriter contentWriter;
 
     public ContentSyncJob(ContentSync contentSync, ContentWriter contentWriter) {
         this.contentSync = contentSync;

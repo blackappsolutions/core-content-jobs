@@ -8,6 +8,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.List;
+import java.util.Optional;
 
 /**
  * Generated extension class for beans of document type "ContentSync".
@@ -78,6 +79,11 @@ public class ContentSyncImpl extends ContentSyncBase implements ContentSync {
     @Override
     public String getZipUrl() {
         return getExportStorageURL() + getContentId() + ".zip";
+    }
+
+    @Override
+    public Optional<String> getZipDirectory() {
+        return settingsService.getSetting("zip-directory", String.class, this);
     }
 
     public void setSettingsService(SettingsService settingsService) {

@@ -9,16 +9,16 @@ import lombok.extern.slf4j.Slf4j;
  * @author Markus Schwarz
  */
 @Slf4j
-public class ImportXMLJob extends ContentSyncJob{
+public class ImportXMLJob extends ContentSyncJob {
     public ImportXMLJob(ContentSync contentSync, ContentWriter contentWriter) {
         super(contentSync, contentWriter);
     }
 
     @Override
-    protected void doTheSync() throws Exception{
+    protected void doTheSync() throws Exception {
         ServerXmlImport importer = new ServerXmlImport(
             log,
-            contentSync.getContent().getRepository().getConnection(),
+            contentWriter.getContentRepository().getConnection(),
             null,   // SiteService
             contentSync.recursive(),
             true,  // halt on error
@@ -27,7 +27,11 @@ public class ImportXMLJob extends ContentSyncJob{
             true   // skipUuids
         );
         importer.setZip(contentSync.getExportStorageURL());
+        if (contentSync.getZipDirectory().isPresent()) {
+            importer.setZipDirectory(contentSync.getZipDirectory().get());
+        }
         importer.setThreads(4);
         importer.run();
+        importer.
     }
 }

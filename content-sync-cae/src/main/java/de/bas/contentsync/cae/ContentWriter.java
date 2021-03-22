@@ -35,6 +35,10 @@ public class ContentWriter {
      */
     private ContentRepository contentRepository;
 
+    public ContentRepository getContentRepository() {
+        return contentRepository;
+    }
+
     /**
      * We need to query the contentServer again because otherwise we will run into a caching error
      */
