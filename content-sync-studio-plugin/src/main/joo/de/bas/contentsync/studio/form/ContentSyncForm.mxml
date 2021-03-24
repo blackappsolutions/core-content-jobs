@@ -22,6 +22,7 @@
         <editor:BooleanPropertyField  propertyName="localSettings.recursive" dontTransformToInteger="true"/>
         <editor:StringPropertyField   propertyName="localSettings.export-storage-url"/>
         <editor:IntegerPropertyField  propertyName="localSettings.sync-type"/>
+        <editor:IntegerPropertyField  propertyName="localSettings.zip-directory"/>
         <!-- FOR FUTURE USE - ToDo: Implement me!
         <editor:DateTimePropertyField propertyName="startAt"/>
         <editor:IntegerPropertyField  propertyName="retries"/>
