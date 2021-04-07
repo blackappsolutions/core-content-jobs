@@ -9,8 +9,8 @@ import com.coremedia.objectserver.beans.ContentBeanFactory;
 import de.bas.contentsync.beans.ContentSync;
 import de.bas.contentsync.jobs.ContentSyncJob;
 import de.bas.contentsync.jobs.ExportXMLJob;
+import de.bas.contentsync.jobs.ImportRSSJob;
 import de.bas.contentsync.jobs.ImportXMLJob;
-import de.bas.contentsync.jobs.PushToIngestServiceJob;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
@@ -81,8 +81,8 @@ public class ContentSyncListener extends ContentRepositoryListenerBase {
             case ServerImport:
                 contentSyncJob = new ImportXMLJob(contentSync, contentWriter);
                 break;
-            case IngestService:
-                contentSyncJob = new PushToIngestServiceJob(contentSync, contentWriter);
+            case ImportRSS:
+                contentSyncJob = new ImportRSSJob(contentSync, contentWriter);
                 break;
         }
         FutureTask<ContentSync> futureTask = new FutureTask<>(contentSyncJob);

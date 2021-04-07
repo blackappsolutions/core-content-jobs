@@ -6,5 +6,5 @@ package de.bas.contentsync.beans;
 public enum SyncType {
     ServerExport,
     ServerImport,
-    IngestService
+    ImportRSS
 }

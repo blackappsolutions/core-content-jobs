@@ -104,6 +104,8 @@ public interface ContentSync extends CMObject {
 
     String getExportStorageURL();
 
+    String getRSS_URL();
+
     String getZipUrl();
 
     Optional<String> getZipDirectory();

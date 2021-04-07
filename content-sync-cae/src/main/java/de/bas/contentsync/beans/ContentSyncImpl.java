@@ -61,6 +61,10 @@ public class ContentSyncImpl extends ContentSyncBase implements ContentSync {
         return settingsService.settingWithDefault("export-storage-url", String.class, "file:///temp/", this);
     }
 
+    public String getRSS_URL() {
+        return settingsService.settingWithDefault("rss-import-url", String.class, "https://rss.nytimes.com/services/xml/rss/nyt/Technology.xml", this);
+    }
+
     public boolean isActive() {
         if (getActive() == 1) {
             /* ToDo: Future runs must be scheduled

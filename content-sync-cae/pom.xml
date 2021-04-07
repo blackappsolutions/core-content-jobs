@@ -18,6 +18,10 @@
 
   <dependencies>
     <dependency>
+      <groupId>rome</groupId>
+      <artifactId>rome</artifactId>
+    </dependency>
+    <dependency>
       <groupId>com.coremedia.cms</groupId>
       <artifactId>serverimportexport</artifactId>
     </dependency>
@@ -71,6 +75,11 @@
 
   <dependencyManagement>
     <dependencies>
+      <dependency>
+        <groupId>rome</groupId>
+        <artifactId>rome</artifactId>
+        <version>1.0</version>
+      </dependency>
       <dependency>
         <groupId>org.projectlombok</groupId>
         <artifactId>lombok</artifactId>
