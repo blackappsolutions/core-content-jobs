@@ -41,7 +41,6 @@
                            ]}"/>
           </editor:store>
         </editor:ComboBoxStringPropertyField>
-        <editor:StringPropertyField propertyName="localSettings.sync-type"/>
         <editor:IntegerPropertyField propertyName="localSettings.zip-directory"/>
         <editor:DateTimePropertyField propertyName="startAt"/>
         <!-- FOR FUTURE USE - ToDo: Implement me!

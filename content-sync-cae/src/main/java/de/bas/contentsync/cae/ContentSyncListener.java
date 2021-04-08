@@ -38,13 +38,14 @@ public class ContentSyncListener extends ContentRepositoryListenerBase {
     @Value("${initial.query}")
     private String initialQuery;
 
-    private static final int PARALLEL_THREADS = 10;
-    private final ScheduledExecutorService executor = Executors.newScheduledThreadPool(PARALLEL_THREADS);
     private final ContentRepository contentRepository;
     private final ContentBeanFactory contentBeanFactory;
     private final ApplicationContext appContext;
     private final ContentWriter contentWriter;
     // private final ContentSyncJobJanitor contentSyncJobJanitor;
+    private static final int PARALLEL_THREADS = 10;
+    @SuppressWarnings("FieldMayBeFinal") //non-final for mockito testcase usage
+    private ScheduledExecutorService executor = Executors.newScheduledThreadPool(PARALLEL_THREADS);
 
     public ContentSyncListener(@SuppressWarnings("SpringJavaInjectionPointsAutowiringInspection") ContentRepository contentRepository,
                                ContentBeanFactory contentBeanFactory,
@@ -85,14 +86,18 @@ public class ContentSyncListener extends ContentRepositoryListenerBase {
         // contentSyncJobJanitor.add(futureTask);
     }
 
-    private void startScheduled(ContentSync contentSync, FutureTask<ContentSync> futureTask, Calendar startAt) {
-        long startInXMillis = System.currentTimeMillis() - startAt.getTimeInMillis();
-        if (startInXMillis < 0) {
-            LOG.warn("Can not start Content-Sync Job {}. Start time has elapsed!", contentSync.getContentId());
-        }
-        else {
-            LOG.info("Starting Content-Sync Job {} in {}ms", contentSync.getContentId(), startInXMillis);
-            executor.schedule(futureTask, startInXMillis, TimeUnit.MILLISECONDS);
+    void startScheduled(ContentSync contentSync, FutureTask<ContentSync> futureTask, Calendar startAt) {
+        long now = System.currentTimeMillis();
+        long then = startAt.getTimeInMillis();
+        long millisUntilLaunch = then - now;
+        if (millisUntilLaunch < 0) {
+            LOG.warn(
+                "Can not start Content-Sync Job {}. Start time has elapsed! now={} then={} (startAt={})",
+                contentSync.getContentId(), now, then, startAt
+            );
+        } else {
+            LOG.info("Starting Content-Sync Job {} in {}ms", contentSync.getContentId(), millisUntilLaunch);
+            executor.schedule(futureTask, millisUntilLaunch, TimeUnit.MILLISECONDS);
         }
     }
 

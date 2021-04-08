@@ -4,6 +4,7 @@ import com.coremedia.cap.content.ContentRepository;
 import de.bas.contentsync.beans.ContentSync;
 import de.bas.contentsync.cae.ContentWriter;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
@@ -32,7 +33,7 @@ public class ImportRSSJobTest {
     }
 
     @Test
-    // @Ignore // integration test
+    @Ignore // integration test
     public void doTheSync() {
         new ImportRSSJob(contentSync, contentWriter).importRSS("https://rss.nytimes.com/services/xml/rss/nyt/Technology.xml");
     }
