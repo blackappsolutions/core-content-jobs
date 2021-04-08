@@ -8,17 +8,16 @@ import com.coremedia.cap.content.query.QueryService;
 import com.coremedia.objectserver.beans.ContentBeanFactory;
 import de.bas.contentsync.beans.ContentSync;
 import de.bas.contentsync.jobs.ContentSyncJob;
-import de.bas.contentsync.jobs.ExportXMLJob;
-import de.bas.contentsync.jobs.ImportRSSJob;
-import de.bas.contentsync.jobs.ImportXMLJob;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
+import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
+import java.util.Calendar;
 import java.util.Collection;
 import java.util.concurrent.Executors;
 import java.util.concurrent.FutureTask;
@@ -35,24 +34,27 @@ import static de.bas.contentsync.beans.ContentSync.CONTENTTYPE_CONTENTSYNC;
 public class ContentSyncListener extends ContentRepositoryListenerBase {
 
     private static final Logger LOG = LoggerFactory.getLogger(ContentSyncListener.class);
-    
+
     @Value("${initial.query}")
     private String initialQuery;
 
     private static final int PARALLEL_THREADS = 10;
     private final ScheduledExecutorService executor = Executors.newScheduledThreadPool(PARALLEL_THREADS);
-    private final ContentWriter contentWriter;
     private final ContentRepository contentRepository;
     private final ContentBeanFactory contentBeanFactory;
+    private final ApplicationContext appContext;
+    private final ContentWriter contentWriter;
     // private final ContentSyncJobJanitor contentSyncJobJanitor;
 
     public ContentSyncListener(@SuppressWarnings("SpringJavaInjectionPointsAutowiringInspection") ContentRepository contentRepository,
-                               ContentWriter contentWriter,
-                               ContentBeanFactory contentBeanFactory/*,
+                               ContentBeanFactory contentBeanFactory,
+                               ApplicationContext appContext,
+                               ContentWriter contentWriter/*,
                                ContentSyncJobJanitor contentSyncJobJanitor*/) {
         this.contentRepository = contentRepository;
-        this.contentWriter = contentWriter;
         this.contentBeanFactory = contentBeanFactory;
+        this.appContext = appContext;
+        this.contentWriter = contentWriter;
         // this.contentSyncJobJanitor = contentSyncJobJanitor;
     }
 
@@ -72,22 +74,32 @@ public class ContentSyncListener extends ContentRepositoryListenerBase {
     }
 
     private void startJobThread(ContentSync contentSync) {
-        // ToDo: Improve that to a more object-oriented way
-        ContentSyncJob contentSyncJob = null;
-        switch (contentSync.getType()){
-            case ServerExport:
-                contentSyncJob = new ExportXMLJob(contentSync, contentWriter);
-                break;
-            case ServerImport:
-                contentSyncJob = new ImportXMLJob(contentSync, contentWriter);
-                break;
-            case ImportRSS:
-                contentSyncJob = new ImportRSSJob(contentSync, contentWriter);
-                break;
-        }
+        ContentSyncJob contentSyncJob = getContentSyncJob(contentSync);
         FutureTask<ContentSync> futureTask = new FutureTask<>(contentSyncJob);
-        executor.schedule(futureTask, 5, TimeUnit.SECONDS); // delay execution a bit ...
+        Calendar startAt = contentSync.getStartAt();
+        if (startAt == null) {
+            executor.schedule(futureTask, 5, TimeUnit.SECONDS); // delay execution a bit ...
+        } else {
+            startScheduled(contentSync, futureTask, startAt);
+        }
         // contentSyncJobJanitor.add(futureTask);
+    }
+
+    private void startScheduled(ContentSync contentSync, FutureTask<ContentSync> futureTask, Calendar startAt) {
+        long startInXMillis = System.currentTimeMillis() - startAt.getTimeInMillis();
+        if (startInXMillis < 0) {
+            LOG.warn("Can not start Content-Sync Job {}. Start time has elapsed!", contentSync.getContentId());
+        }
+        else {
+            LOG.info("Starting Content-Sync Job {} in {}ms", contentSync.getContentId(), startInXMillis);
+            executor.schedule(futureTask, startInXMillis, TimeUnit.MILLISECONDS);
+        }
+    }
+
+    private ContentSyncJob getContentSyncJob(ContentSync contentSync) {
+        String type = contentSync.getType();
+        LOG.debug("Try to create job bean: {}", type);
+        return (ContentSyncJob) appContext.getBean(type, contentSync, contentWriter);
     }
 
     @PostConstruct

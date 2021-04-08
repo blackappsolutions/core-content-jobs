@@ -47,9 +47,8 @@ public class ContentSyncImpl extends ContentSyncBase implements ContentSync {
     }
 
     @Override
-    public SyncType getType() {
-        int type = settingsService.settingWithDefault("sync-type", Integer.class, 0, this);
-        return SyncType.values()[type];
+    public String getType() {
+        return settingsService.setting("sync-type", String.class, this);
     }
 
     public boolean recursive() {
@@ -66,18 +65,7 @@ public class ContentSyncImpl extends ContentSyncBase implements ContentSync {
     }
 
     public boolean isActive() {
-        if (getActive() == 1) {
-            /* ToDo: Future runs must be scheduled
-            if (startAt == null) {
-                return true; // start immediately
-            } else {
-                Calendar now = Calendar.getInstance();
-                return startAt.after(now);
-            }
-            */
-            return true;
-        }
-        return false;
+        return (getActive() == 1);
     }
 
     @Override

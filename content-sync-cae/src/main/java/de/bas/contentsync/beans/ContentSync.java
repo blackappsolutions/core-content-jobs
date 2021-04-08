@@ -64,11 +64,11 @@ public interface ContentSync extends CMObject {
     public Calendar getLastRun();
 
     /**
-     * Returns the value of the document property "sourceFolder"
+     * Returns the value of the document property "sourceContent"
      *
      * @return the value
      */
-    public List<? extends CMFolderProperties> getSourceFolder();
+    public List<? extends CMObject> getSourceContent();
 
     /**
      * Returns the value of the document property "active"
@@ -96,7 +96,7 @@ public interface ContentSync extends CMObject {
     //
     Content getContentToSync();
 
-    SyncType getType();
+    String getType();
 
     boolean isActive();
 

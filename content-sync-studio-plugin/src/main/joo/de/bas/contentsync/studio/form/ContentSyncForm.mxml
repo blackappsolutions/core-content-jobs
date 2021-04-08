@@ -9,38 +9,52 @@
     [ResourceBundle('com.coremedia.blueprint.studio.BlueprintTabs')]
   </fx:Metadata>
   <fx:Script><![CDATA[
+    import com.coremedia.ui.skins.LabelableSkin;
+
     public static const xtype:String = "de.bas.contentsync.studio.form.contentSyncForm";
     private var config:ContentSyncForm;
+
     public native function ContentSyncForm(config:ContentSyncForm = null);
     ]]></fx:Script>
   <editor:items>
     <editor:DocumentForm
-        title="{resourceManager.getString('com.coremedia.blueprint.studio.BlueprintTabs', 'Tab_content_title')}">
+            title="{resourceManager.getString('com.coremedia.blueprint.studio.BlueprintTabs', 'Tab_content_title')}">
       <editor:items>
-        <editor:BooleanPropertyField  propertyName="active"/>
+        <editor:BooleanPropertyField propertyName="active"/>
         <editor:LinkListPropertyField propertyName="sourceContent"/>
-        <editor:BooleanPropertyField  propertyName="localSettings.recursive" dontTransformToInteger="true"/>
-        <editor:StringPropertyField   propertyName="localSettings.export-storage-url"/>
-        <editor:IntegerPropertyField  propertyName="localSettings.sync-type"/>
-        <editor:IntegerPropertyField  propertyName="localSettings.zip-directory"/>
-        <!-- FOR FUTURE USE - ToDo: Implement me!
+        <editor:BooleanPropertyField propertyName="localSettings.recursive" dontTransformToInteger="true"/>
+        <editor:StringPropertyField propertyName="localSettings.export-storage-url"/>
+        <editor:ComboBoxStringPropertyField itemId="{'syncType'}"
+                                            ui="{LabelableSkin.PLAIN_LABEL.getSkin()}"
+                                            propertyName="localSettings.sync-type"
+                                            fieldWidth="200"
+                                            valueField="value"
+                                            displayField="value"
+                                            reverseTransformer="{function(value:*):* {return value === null ? '' : value;}}">
+          <editor:store>
+            <store_Json
+                    fields="{['value']}"
+                    data="{[
+                             {value: 'rssImport'},
+                             {value: 'xmlImport'},
+                             {value: 'xmlExport'}
+                           ]}"/>
+          </editor:store>
+        </editor:ComboBoxStringPropertyField>
+        <editor:StringPropertyField propertyName="localSettings.sync-type"/>
+        <editor:IntegerPropertyField propertyName="localSettings.zip-directory"/>
         <editor:DateTimePropertyField propertyName="startAt"/>
+        <!-- FOR FUTURE USE - ToDo: Implement me!
         <editor:IntegerPropertyField  propertyName="retries"/>
         -->
         <editor:DateTimePropertyField propertyName="lastRun" disabled="true"/>
-        <editor:IntegerPropertyField  propertyName="lastRunSuccessful" disabled="true"/>
-        <!--
-        CMSiteForm.mxml
-        <editor:StringPropertyField propertyName="id"
-                                    disabled="{config.forceReadOnlyValueExpression.getValue()}"
-                                    forceReadOnlyValueExpression="{ValueExpressionFactory.createFromValue(!isAdministrator())}"/>
-        -->
+        <editor:IntegerPropertyField propertyName="lastRunSuccessful" disabled="true"/>
       </editor:items>
     </editor:DocumentForm>
     <editor:DocumentForm
-        title="{resourceManager.getString('com.coremedia.blueprint.studio.BlueprintTabs', 'Tab_system_title')}"
-        itemId="system"
-        autoHide="true">
+            title="{resourceManager.getString('com.coremedia.blueprint.studio.BlueprintTabs', 'Tab_system_title')}"
+            itemId="system"
+            autoHide="true">
       <editor:items>
         <editor:DocumentInfo/>
         <editor:VersionHistory/>

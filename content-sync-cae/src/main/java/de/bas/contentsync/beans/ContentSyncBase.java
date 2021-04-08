@@ -60,14 +60,9 @@ public abstract class ContentSyncBase extends CMObjectImpl {
 
 
   /**
-   * Returns the value of the document property "sourceFolder"
-   * @return the value of the document property "sourceFolder"
+   * Returns the value of the document property "sourceContent"
+   * @return the value of the document property "sourceContent"
    */
-  public List<? extends CMFolderProperties> getSourceFolder() {
-    List<Content> contents = getContent().getLinks(SOURCE_FOLDER);
-    return createBeansFor(contents, CMFolderProperties.class);
-  }
-
   public List<? extends CMObject> getSourceContent() {
     List<Content> contents = getContent().getLinks(SOURCE_CONTENT);
     return createBeansFor(contents, CMObject.class);

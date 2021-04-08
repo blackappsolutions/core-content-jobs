@@ -10,12 +10,16 @@ import com.rometools.rome.io.XmlReader;
 import de.bas.contentsync.beans.ContentSync;
 import de.bas.contentsync.cae.ContentWriter;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Component;
 
 import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
 
 @Slf4j
+@Scope("prototype")
+@Component("rssImport")
 public class ImportRSSJob extends ContentSyncJob {
 
     private static final String DIV_NS = "<div xmlns=\"http://www.coremedia.com/2003/richtext-1.0\" xmlns:xlink=\"http://www.w3.org/1999/xlink\">";

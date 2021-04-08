@@ -4,11 +4,16 @@ import com.coremedia.cap.undoc.server.importexport.base.importer.ServerXmlImport
 import de.bas.contentsync.beans.ContentSync;
 import de.bas.contentsync.cae.ContentWriter;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Component;
 
 /**
  * @author Markus Schwarz
  */
 @Slf4j
+@Scope("prototype")
+@Component("xmlImport")
 public class ImportXMLJob extends ContentSyncJob {
     public ImportXMLJob(ContentSync contentSync, ContentWriter contentWriter) {
         super(contentSync, contentWriter);
