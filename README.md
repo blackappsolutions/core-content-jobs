@@ -1,17 +1,17 @@
 # Content Sync
 
 ## Overview
-CoreMedia CMS Extension to sync Content from A to B. Developed against Version 2010.2
+CoreMedia CMS Extension to sync Content from A to B. Developed against Version 2010.3
 It introduces the ContentType `ContentSync`, which is used as a Job-Definition with the following properties:
 
   * `sourceContent`: Create a new resource of type `FolderProperties` and the name `_folderToSync` in the CMS folder you 
     want export/sync, which serves as a marker resource. Add this resource into the `sourceFolder`-Property. Or alternative
     
-  * `active`: Used to arm this job, when enable. Also check in the resource after setting this property!   
+  * `active`: Used to arm this job, when enable. Also check-in the resource after setting this property!   
   * `localSettings.sync-type`: Select different types of syncs: 
-    * `0` ServerXMLExport 
-    * `1` ServerXMLImport 
-    * `2` Dummy-Export
+    * `rssImport` 
+    * `xmlImport` 
+    * `xmlExport`
   * `localSettings.export-storage-url`: 
     * file:///
     * s3://
@@ -21,10 +21,18 @@ It introduces the ContentType `ContentSync`, which is used as a Job-Definition w
     because it is not possible to pass s3-credentials on the url or on any other way to CoreMedia's ServerExporter, 
     except with the variables `AWS_ACCESS_KEY_ID` and `AWS_SECRET_ACCESS_KEY` in the system environment 
     (see global/deployment/docker/compose/default.yml).
-                                                                                                  
+  ---                                                                                                
   **It is also crucial, that you create a separate `content-sync`-user, with which the check-in (and journaling) of a
   completed ContentSync could be made. Use the variables `CONTENTSYNC_USER` and `CONTENTSYNC_PASS` in the system 
-  environment, if run on Docker. Otherwise (or alternatively), specify them in application.properties: `content-sync.user=`|`content-sync.pass=`**  
+  environment, if run on Docker. Otherwise (or alternatively), specify them in application.properties: `content-sync.user=`|`content-sync.pass=`**
+  ---
+
+### Current Limitations (further development)
+* Scheduled jobs can not be terminated after you check-in the ContentSync-resource 
+* There is now overview of scheduled/running/terminated jobs 
+* No retry handling
+* No Connection-/Socket-Timeouts
+* Errors are not transparent to the end user (should be provided in a property in the ContentSync-resource)
 
 ## Integration into the CoreMedia Blueprints
 
