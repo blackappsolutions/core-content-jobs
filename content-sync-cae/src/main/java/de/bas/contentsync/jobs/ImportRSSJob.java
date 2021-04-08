@@ -2,17 +2,17 @@ package de.bas.contentsync.jobs;
 
 import com.coremedia.cap.content.Content;
 import com.coremedia.xml.MarkupFactory;
-import com.sun.syndication.feed.synd.SyndEntry;
-import com.sun.syndication.feed.synd.SyndFeed;
-import com.sun.syndication.io.SyndFeedInput;
-import com.sun.syndication.io.XmlReader;
+import com.rometools.rome.feed.synd.SyndContent;
+import com.rometools.rome.feed.synd.SyndEntry;
+import com.rometools.rome.feed.synd.SyndFeed;
+import com.rometools.rome.io.SyndFeedInput;
+import com.rometools.rome.io.XmlReader;
 import de.bas.contentsync.beans.ContentSync;
 import de.bas.contentsync.cae.ContentWriter;
 import lombok.extern.slf4j.Slf4j;
 
 import java.net.URL;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 @Slf4j
@@ -36,16 +36,31 @@ public class ImportRSSJob extends ContentSyncJob {
             SyndFeedInput input = new SyndFeedInput();
             SyndFeed feed = input.build(new XmlReader(feedUrl));
             Content targetFolder = contentSync.getContentToSync();
-            for (SyndEntry entry : (List<SyndEntry>) feed.getEntries()) {
-                Map<String, Object> map = new HashMap<>();
-                map.put("title", entry.getTitle());
-                map.put("teaserText", MarkupFactory.fromString(DIV_NS + "<p>" + entry.getDescription() + "</p></div>"));
-                contentWriter.getContentRepository().createChild(targetFolder, "RssImport_" + System.currentTimeMillis(), "CMArticle", map);
+            for (SyndEntry entry : feed.getEntries()) {
+                Map<String, Object> properties = new HashMap<>();
+                properties.put("title", entry.getTitle());
+                String description = getDescription(entry.getDescription());
+                properties.put("detailText", MarkupFactory.fromString(DIV_NS + "<p>" + description + "</p></div>"));
+                Content cmArticle = contentWriter.getContentRepository().createChild(
+                    targetFolder,
+                    "RssImport_" + System.currentTimeMillis(),
+                    "CMArticle",
+                    properties
+                );
+                cmArticle.checkIn();
             }
         } catch (Exception e) {
             log.error("Error reading rss feed", e);
         }
 
+    }
+
+    private String getDescription(SyndContent description) {
+        String type = description.getType();
+        if("text/html".equals(type)){
+            return description.getValue();
+        }
+        throw new UnsupportedOperationException("Implement me! RSS description type '" + type + "' is currently not supported.");
     }
 
 
