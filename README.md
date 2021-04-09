@@ -23,7 +23,7 @@ It introduces the ContentType `ContentSync`, which is used as a Job-Definition w
     except with the variables 
     * `AWS_ACCESS_KEY_ID` and 
     * `AWS_SECRET_ACCESS_KEY` in the system environment (see global/deployment/docker/compose/default.yml).
-
+  ---
   To make this extension work, you need to create a separate `content-sync`-user, which creates a new version of each active ContentSync-Resource (for journaling reasons) after a successfull run of a ContentSync-Job. You can provide the users name/pass with the following variables in the system environment:
   * `CONTENTSYNC_USER` and 
   * `CONTENTSYNC_PASS`
@@ -31,7 +31,6 @@ It introduces the ContentType `ContentSync`, which is used as a Job-Definition w
   Alternatively, you can specify them in application.properties as follows:
   * `content-sync.user=`
   * `content-sync.pass=`
-  **
   ---
 
 ### Current Limitations (further development)
