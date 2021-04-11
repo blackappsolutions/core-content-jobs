@@ -77,6 +77,10 @@ works, if this code is within a blueprint workspace) of the content config-set m
     <field name="startAt" type="pdate" indexed="true" stored="true"/>
     ```
 
+- if you want to use the task overview page, 
+  - create a new Placeholder-ViewType `content-sync-jobs` and
+  - a Placeholder-Resource that has this ViewType set.  
+
 ## Further Development
   
 ### Adapt the `ContentSync` DocType to your needs
@@ -92,6 +96,25 @@ works, if this code is within a blueprint workspace) of the content config-set m
   mvn -PgenerateContentBeans exec:java
   ```
   Vendor-Documentation: [Generate ContentBeans](https://documentation.coremedia.com/cmcc-10/artifacts/2101/webhelp/cae-developer-en/content/GeneratingContentBeans.html)  
+
+### Templates
+apps/cae/spring-boot/cae-preview-app/src/main/resources/application-local.properties
+```
+########################################################################################################################
+# Workspace locations for local resource loading
+#
+# these properties should reference the convenience
+# properties above for any workspace location
+########################################################################################################################
+cae-base-lib.resources=${blueprint-dir}/modules/cae/cae-base-lib/src/main/resources,${blueprint-dir}/modules/cae/cae-base-lib/src/main/resources/META-INF/resources
+[..]
+content-sync-cae.resources=${blueprint-dir}/../../modules/extensions/content-sync/content-sync-cae/src/main/resources/META-INF/resources
+
+# Load web resources from (local) workspace to support short CAE development round-trips
+spring.boot.tomcat.extraResources=\
+  [..]
+  ${content-sync-cae.resources}
+```
 
 ---
 Licence was selected with the support of https://choosealicense.com/licenses/

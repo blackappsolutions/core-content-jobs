@@ -5,6 +5,9 @@ import com.coremedia.cap.common.CapConnection;
 import com.coremedia.cap.common.InvalidLoginException;
 import com.coremedia.cap.content.Content;
 import com.coremedia.cap.content.ContentRepository;
+import com.coremedia.objectserver.beans.ContentBeanFactory;
+import com.twelvemonkeys.lang.StringUtil;
+import de.bas.contentsync.beans.ContentSync;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
@@ -13,7 +16,9 @@ import org.springframework.stereotype.Component;
 import javax.annotation.PostConstruct;
 import java.util.Calendar;
 
-import static de.bas.contentsync.beans.ContentSync.*;
+import static de.bas.contentsync.beans.ContentSync.ACTIVE;
+import static de.bas.contentsync.beans.ContentSync.LAST_RUN;
+import static de.bas.contentsync.beans.ContentSync.LAST_RUN_SUCCESSFUL;
 
 /**
  * @author Markus Schwarz
@@ -34,35 +39,44 @@ public class ContentWriter {
      * We use a separate contentServer connection here to write content.
      */
     private ContentRepository contentRepository;
+    private final ContentBeanFactory contentBeanFactory;
 
-    public ContentRepository getContentRepository() {
-        return contentRepository;
+    public ContentWriter(ContentBeanFactory contentBeanFactory) {
+        this.contentBeanFactory = contentBeanFactory;
     }
 
-    /**
-     * We need to query the contentServer again because otherwise we will run into a caching error
-     */
-    public void finishSync(String contentId, boolean successful) {
+    public ContentSync finishSync(String contentId, boolean successful) {
+        // We need to query the contentServer again because otherwise we will run into a caching error
         Content content = contentRepository.getContent(contentId);
         if (content.isCheckedOut()) {
-            log.warn("ContentSync {} was checked out while a sync is running. Reverting this changes...", contentId);
-            content.revert();
+            log.warn("ContentSync {} was checked out while a sync is running. Checking in ..", contentId);
+            content.checkIn();
         }
         content.checkOut();
         content.set(ACTIVE, 0);
         content.set(LAST_RUN, Calendar.getInstance());
         content.set(LAST_RUN_SUCCESSFUL, successful ? 1 : 0);
         content.checkIn();
+        return contentBeanFactory.createBeanFor(content, ContentSync.class);
     }
 
     @PostConstruct
     public void initContentRepository() {
+        if (StringUtil.isEmpty(user) || StringUtil.isEmpty(pass)) {
+            throw new RuntimeException(
+                "Please provide admin user account in content-sync.user / content-sync.pass properties"
+            );
+        }
         try {
             CapConnection con = Cap.connect(repoUrl, user, pass);
             log.info("Opened connection for user {}", user);
             contentRepository = con.getContentRepository();
         } catch (InvalidLoginException e) {
-            log.info("Can not log in user {} at {}. No worries if this happens on cae-live.", user, repoUrl);
+            log.info("Can not log in user {} at {}.", user, repoUrl);
         }
+    }
+
+    public ContentRepository getContentRepository() {
+        return contentRepository;
     }
 }

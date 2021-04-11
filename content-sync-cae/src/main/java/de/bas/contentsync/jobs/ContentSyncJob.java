@@ -2,6 +2,7 @@ package de.bas.contentsync.jobs;
 
 import de.bas.contentsync.beans.ContentSync;
 import de.bas.contentsync.cae.ContentWriter;
+import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -10,9 +11,9 @@ import java.util.concurrent.Callable;
 /**
  * @author Markus Schwarz
  */
+@Slf4j
 public abstract class ContentSyncJob implements Callable<ContentSync> {
 
-    private static final Logger LOG = LoggerFactory.getLogger(ContentSyncJob.class);
     protected final ContentSync contentSync;
     protected final ContentWriter contentWriter;
 
@@ -27,22 +28,16 @@ public abstract class ContentSyncJob implements Callable<ContentSync> {
             doTheSync();
             successfulRun = true;
         } catch (Exception e) {
-            LOG.error("Error while syncing {}", contentSync.getContentToSync(), e);
+            log.error("Error while syncing {}", contentSync.getContentToSync(), e);
             successfulRun = false;
         }
-        contentWriter.finishSync(contentSync.getContent().getId(), successfulRun);
-        return contentSync;
+        return contentWriter.finishSync(contentSync.getContent().getId(), successfulRun);
     }
 
-    /**
-     * Overwrite me. Dummy implementation.
-     */
-    protected void doTheSync() throws Exception{
-        try {
-            Thread.sleep(1000);
-        } catch (InterruptedException ex) {
-            Thread.currentThread().interrupt();
-        }
+    abstract void doTheSync() throws Exception;
+
+    public ContentSync getContentSync() {
+        return contentSync;
     }
 }
 

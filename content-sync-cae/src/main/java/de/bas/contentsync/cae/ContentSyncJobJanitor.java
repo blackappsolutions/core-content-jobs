@@ -1,37 +1,41 @@
 package de.bas.contentsync.cae;
 
-import de.bas.contentsync.beans.ContentSync;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import de.bas.contentsync.jobs.ContentSyncJob;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.scheduling.TaskScheduler;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
+import javax.annotation.PreDestroy;
+import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
-import java.util.concurrent.FutureTask;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.ScheduledFuture;
+import java.util.concurrent.TimeUnit;
 
-//@Component
+@Slf4j
+@Component("contentSyncJobJanitor")
 @ConditionalOnProperty(name = "delivery.preview-mode", havingValue = "true")
 public class ContentSyncJobJanitor {
 
-    private static final Logger LOG = LoggerFactory.getLogger(ContentSyncJobJanitor.class);
+    int startupDelay = 5; // 5 secs
+    Duration cleanupPeriod = Duration.ofDays(1); // cleanup once a day
 
-    private final TaskScheduler taskScheduler;
-    private final List<FutureTask<ContentSync>> taskList = new ArrayList<>();
-    private final Runnable removeAndLogFinishedJobs = () -> taskList.removeIf(task -> {
-        boolean done = task.isDone();
-        if (done) {
-            try {
-                LOG.info("FutureTask {} is done.", task.get().getContentId());
-            } catch (Exception e) {
-                LOG.error("Can not read futureTask!!!", e);
-            }
+    private static final int PARALLEL_THREADS = 10;
+    @SuppressWarnings("FieldMayBeFinal") //non-final for mockito testcase usage
+    private ScheduledExecutorService executor = Executors.newScheduledThreadPool(PARALLEL_THREADS);
+    private final List<ScheduledFuture<?>> taskList = new ArrayList<>();
+    private final Runnable removeAndLogFinishedJobs = () -> {
+        synchronized (taskList) {
+            taskList.removeIf(Future::isDone);
         }
-        return done;
-    });
+    };
+    final TaskScheduler taskScheduler;
 
     public ContentSyncJobJanitor(@SuppressWarnings("SpringJavaInjectionPointsAutowiringInspection") TaskScheduler taskScheduler) {
         this.taskScheduler = taskScheduler;
@@ -39,18 +43,56 @@ public class ContentSyncJobJanitor {
 
     @PostConstruct
     public void afterPropertiesSet() {
-        Calendar startTwoMinutesInTheFuture = Calendar.getInstance();
-        startTwoMinutesInTheFuture.add(Calendar.MINUTE, 2);
-        // https://docs.spring.io/spring-framework/docs/current/javadoc-api/org/springframework/scheduling/TaskScheduler.html#scheduleAtFixedRate-java.lang.Runnable-java.util.Date-long-
-        taskScheduler.scheduleAtFixedRate(
-            removeAndLogFinishedJobs,
-            startTwoMinutesInTheFuture.getTime(),
-            (1000 * 60 * 2) /* every 2 Minutes */
-        );
-
+        taskScheduler.scheduleAtFixedRate(removeAndLogFinishedJobs, cleanupPeriod);
     }
 
-    public void add(FutureTask<ContentSync> futureTask) {
-        taskList.add(futureTask);
+    public void add(ScheduledFuture<?> futureTask) {
+        synchronized (taskList) {
+            taskList.add(futureTask);
+        }
+    }
+
+    public List<ScheduledFuture<?>> getTaskList() {
+        synchronized (taskList) {
+            return taskList;
+        }
+    }
+
+    public void execute(ContentSyncJob contentSyncJob) {
+        ScheduledFuture<?> scheduledFuture = getScheduledFuture(contentSyncJob);
+        if (scheduledFuture != null) {
+            add(scheduledFuture);
+        }
+    }
+
+    private ScheduledFuture<?> getScheduledFuture(ContentSyncJob job) {
+        Calendar startAt = job.getContentSync().getStartAt();
+        if (startAt == null) {
+            // delay execution a bit, because if task completes too fast, we might confuse the user
+            startAt = Calendar.getInstance();
+            startAt.add(Calendar.SECOND, startupDelay);
+        }
+        return startScheduled(job, startAt);
+    }
+
+    ScheduledFuture<?> startScheduled(ContentSyncJob job, Calendar startAt) {
+        long now = System.currentTimeMillis();
+        long then = startAt.getTimeInMillis();
+        long millisUntilLaunch = then - now;
+        int contentId = job.getContentSync().getContentId();
+        if (millisUntilLaunch < 0) {
+            log.warn(
+                "Can not start Content-Sync Job {}. Start time has elapsed! now={} then={} (startAt={})",
+                contentId, now, then, startAt
+            );
+            return null;
+        }
+        log.info("Starting Content-Sync Job {} in {}ms", contentId, millisUntilLaunch);
+        return executor.schedule(job, millisUntilLaunch, TimeUnit.MILLISECONDS);
+    }
+
+    @PreDestroy
+    public void cleanup() {
+        executor.shutdown();
     }
 }
