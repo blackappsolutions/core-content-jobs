@@ -23,6 +23,7 @@ public abstract class ContentSyncJob implements Callable<ContentSync> {
     }
 
     public ContentSync call() throws Exception {
+        contentWriter.startSync(contentSync.getContent().getId());
         boolean successfulRun;
         try {
             doTheSync();

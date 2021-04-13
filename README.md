@@ -74,14 +74,7 @@ and add this to your existing CoreMedia Blueprint-Workspace.
     mvn clean install -DskipTests -DskipThemes=true -DskipContent=true -Dskip-joo-unit-tests=true \ 
                       -Dmdep.analyze.skip=true -Denforcer.skip=true
     ```
-- Change the groupId and versionID of all pom.xml to your project values, if neccessary.
-
-- The [schema.xml](../../modules/search/solr-config/src/main/app/configsets/content/conf/schema.xml) (this link only
-works, if this code is within a blueprint workspace) of the content config-set must contain these two fields:
-    ```
-    <field name="active" type="boolean" indexed="true" stored="true"/>
-    <field name="startAt" type="pdate" indexed="true" stored="true"/>
-    ```
+- Change the groupId and versionID of all pom.xml to your project values, if necessary.
 
 - if you want to use the task overview page, 
   - create a new Placeholder-ViewType `content-sync-jobs` and

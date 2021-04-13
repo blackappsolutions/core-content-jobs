@@ -6,7 +6,7 @@
 	If the extension content-sync is used and jobs are scheduled, you can see them below:
 </p>
 <ul>
-    <#list contentSyncJobs.taskList![] as scheduledFuture>
-			<#--li>Seconds until start: ${scheduledFuture.getDelay(3)}</li-->
+    <#list contentSyncJobs.taskList![] as scheduledFutureHolder>
+			<li>ContentSync ${scheduledFutureHolder.contentSync.contentId}: ${scheduledFutureHolder.contentSync.localSettings.getDate("start-at")}</li>
     </#list>
 </ul>

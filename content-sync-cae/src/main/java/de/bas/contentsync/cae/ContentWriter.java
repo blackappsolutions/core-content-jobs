@@ -45,26 +45,42 @@ public class ContentWriter {
         this.contentBeanFactory = contentBeanFactory;
     }
 
-    public ContentSync finishSync(String contentId, boolean successful) {
-        // We need to query the contentServer again because otherwise we will run into a caching error
-        Content content = contentRepository.getContent(contentId);
-        if (content.isCheckedOut()) {
-            log.warn("ContentSync {} was checked out while a sync is running. Checking in ..", contentId);
-            content.checkIn();
-        }
-        content.checkOut();
+    public void startSync(String contentId) {
+        Content content = getCheckedOutContent(contentId);
         content.set(ACTIVE, 0);
+        contentRepository.getConnection().flush(); // saves our change above
+    }
+
+    public ContentSync finishSync(String contentId, boolean successful) {
+        Content content = getCheckedOutContent(contentId);
         content.set(LAST_RUN, Calendar.getInstance());
         content.set(LAST_RUN_SUCCESSFUL, successful ? 1 : 0);
         content.checkIn();
         return contentBeanFactory.createBeanFor(content, ContentSync.class);
     }
 
+    private Content getCheckedOutContent(String contentId) {
+        // We need to query the contentServer again because otherwise we will run into a caching error
+        Content content = contentRepository.getContent(contentId);
+        if (content.isCheckedOut()) {
+            if (content.getEditor().equals(contentRepository.getConnection().getSession().getUser())) {
+                log.info("ContentSync {} is already checked out by user {}. No action required.", contentId, user);
+            } else {
+                log.warn("ContentSync {} was checked out by {}. Checking in.", contentId, content.getEditor().toString());
+                content.checkIn(); // saving this version created by some user in the meantime
+                content.checkOut();
+            }
+        } else {
+            content.checkOut();
+        }
+        return content;
+    }
+
     @PostConstruct
     public void initContentRepository() {
         if (StringUtil.isEmpty(user) || StringUtil.isEmpty(pass)) {
             throw new RuntimeException(
-                "Please provide admin user account in content-sync.user / content-sync.pass properties"
+                "Please provide admin user account in 'content-sync.user'-, 'content-sync.pass'-properties."
             );
         }
         try {
@@ -79,4 +95,5 @@ public class ContentWriter {
     public ContentRepository getContentRepository() {
         return contentRepository;
     }
+
 }
