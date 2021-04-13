@@ -1,6 +1,7 @@
 package de.bas.contentsync.cae;
 
 import com.coremedia.cap.Cap;
+import com.coremedia.cap.common.Blob;
 import com.coremedia.cap.common.CapConnection;
 import com.coremedia.cap.common.InvalidLoginException;
 import com.coremedia.cap.content.Content;
@@ -13,12 +14,15 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.stereotype.Component;
 
+import javax.activation.MimeTypeParseException;
 import javax.annotation.PostConstruct;
+import java.nio.charset.StandardCharsets;
 import java.util.Calendar;
 
 import static de.bas.contentsync.beans.ContentSync.ACTIVE;
 import static de.bas.contentsync.beans.ContentSync.LAST_RUN;
 import static de.bas.contentsync.beans.ContentSync.LAST_RUN_SUCCESSFUL;
+import static de.bas.contentsync.beans.ContentSync.LOG_OUTPUT;
 
 /**
  * @author Markus Schwarz
@@ -51,10 +55,14 @@ public class ContentWriter {
         contentRepository.getConnection().flush(); // saves our change above
     }
 
-    public ContentSync finishSync(String contentId, boolean successful) {
+    public ContentSync finishSync(String contentId, boolean successful, String executionProtocol) throws MimeTypeParseException {
         Content content = getCheckedOutContent(contentId);
         content.set(LAST_RUN, Calendar.getInstance());
         content.set(LAST_RUN_SUCCESSFUL, successful ? 1 : 0);
+        if (executionProtocol != null) {
+            Blob blob = contentRepository.getConnection().getBlobService().fromBytes(executionProtocol.getBytes(StandardCharsets.UTF_8), "text/plain");
+            content.set(LOG_OUTPUT, blob);
+        }
         content.checkIn();
         return contentBeanFactory.createBeanFor(content, ContentSync.class);
     }

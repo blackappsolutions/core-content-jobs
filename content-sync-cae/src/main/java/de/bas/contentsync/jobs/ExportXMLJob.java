@@ -1,11 +1,15 @@
 package de.bas.contentsync.jobs;
 
+import ch.qos.logback.classic.Logger;
+import ch.qos.logback.classic.spi.ILoggingEvent;
+import ch.qos.logback.core.read.ListAppender;
 import com.coremedia.blueprint.common.contentbeans.CMFolderProperties;
 import com.coremedia.blueprint.common.contentbeans.CMObject;
 import com.coremedia.cap.undoc.server.importexport.base.exporter.ServerXmlExport;
 import de.bas.contentsync.beans.ContentSync;
 import de.bas.contentsync.cae.ContentWriter;
 import lombok.extern.slf4j.Slf4j;
+import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
@@ -43,6 +47,9 @@ public class ExportXMLJob extends ContentSyncJob {
 
     @Override
     protected void doTheSync() throws Exception {
+
+        listAppender = getLoggingEventListAppender(ServerXmlExport.class);
+
         ServerXmlExport serverExporter = new ServerXmlExport(contentSync.getContent().getRepository().getConnection(), null);
         String[] ids = getContentIds();
         serverExporter.setContentIds(ids);
@@ -52,6 +59,14 @@ public class ExportXMLJob extends ContentSyncJob {
         serverExporter.init();
         serverExporter.doExport();
         log.info("Finished {} server-export of content-ids {}", contentSync.recursive() ? "recursive" : "", ids);
+    }
+
+    private ListAppender<ILoggingEvent> getLoggingEventListAppender(Class<ServerXmlExport> clazz) {
+        Logger logger = (Logger)LoggerFactory.getLogger(clazz);
+        ListAppender<ILoggingEvent> listAppender = new ListAppender<>();
+        listAppender.start();
+        logger.addAppender(listAppender);
+        return listAppender;
     }
 
     private String[] getContentIds() {

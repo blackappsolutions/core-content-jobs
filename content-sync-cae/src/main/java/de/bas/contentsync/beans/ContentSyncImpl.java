@@ -7,6 +7,7 @@ import com.coremedia.cap.content.Content;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.Calendar;
 import java.util.List;
 import java.util.Optional;
 
@@ -62,6 +63,14 @@ public class ContentSyncImpl extends ContentSyncBase implements ContentSync {
 
     public String getRSS_URL() {
         return settingsService.settingWithDefault("rss-import-url", String.class, "https://rss.nytimes.com/services/xml/rss/nyt/Technology.xml", this);
+    }
+
+    /**
+     * Returns the value of the document property "startAt"
+     * @return the value of the document property "startAt"
+     */
+    public Calendar getStartAt() {
+      return settingsService.setting(START_AT, Calendar.class, this);
     }
 
     public boolean isActive() {

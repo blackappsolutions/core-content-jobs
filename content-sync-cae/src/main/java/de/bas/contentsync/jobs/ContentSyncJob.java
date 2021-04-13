@@ -1,12 +1,13 @@
 package de.bas.contentsync.jobs;
 
+import ch.qos.logback.classic.spi.ILoggingEvent;
+import ch.qos.logback.core.read.ListAppender;
 import de.bas.contentsync.beans.ContentSync;
 import de.bas.contentsync.cae.ContentWriter;
 import lombok.extern.slf4j.Slf4j;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.util.concurrent.Callable;
+import java.util.stream.Collectors;
 
 /**
  * @author Markus Schwarz
@@ -14,6 +15,7 @@ import java.util.concurrent.Callable;
 @Slf4j
 public abstract class ContentSyncJob implements Callable<ContentSync> {
 
+    protected ListAppender<ILoggingEvent> listAppender;
     protected final ContentSync contentSync;
     protected final ContentWriter contentWriter;
 
@@ -25,6 +27,7 @@ public abstract class ContentSyncJob implements Callable<ContentSync> {
     public ContentSync call() throws Exception {
         contentWriter.startSync(contentSync.getContent().getId());
         boolean successfulRun;
+        String executionProtocol = null;
         try {
             doTheSync();
             successfulRun = true;
@@ -32,7 +35,11 @@ public abstract class ContentSyncJob implements Callable<ContentSync> {
             log.error("Error while syncing {}", contentSync.getContentToSync(), e);
             successfulRun = false;
         }
-        return contentWriter.finishSync(contentSync.getContent().getId(), successfulRun);
+        if (listAppender != null) {
+            executionProtocol = listAppender.list.stream().map(ILoggingEvent::getMessage).collect(Collectors.joining());
+        }
+
+        return contentWriter.finishSync(contentSync.getContent().getId(), successfulRun, executionProtocol);
     }
 
     abstract void doTheSync() throws Exception;

@@ -39,10 +39,11 @@
     <!--
     Must be set active by the user. Will be set in-active after a successful run / number of unsuccessful retries
     reached. When not time was given at startAt, run immediately -->
-    <IntProperty Name="active"/>
-    <!-- Readonly, populated after a each run -->
+    <IntProperty  Name="active"/>
+    <!-- Readonly, populated after each run -->
     <DateProperty Name="lastRun"/>
-    <IntProperty Name="lastRunSuccessful"/>
+    <IntProperty  Name="lastRunSuccessful"/>
+    <BlobProperty Name="logOutput" MimeType="text/*"/>
   </DocType>
 
 </DocumentTypeModel>

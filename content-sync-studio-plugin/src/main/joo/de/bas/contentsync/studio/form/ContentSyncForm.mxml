@@ -43,6 +43,7 @@
         </editor:ComboBoxStringPropertyField>
         <editor:StringPropertyField propertyName="localSettings.zip-directory"/>
         <editor:DateTimePropertyField propertyName="localSettings.start-at"/>
+        <editor:BlobPropertyField propertyName="logOutput"/>
         <editor:DateTimePropertyField propertyName="lastRun" disabled="true"/>
         <editor:IntegerPropertyField propertyName="lastRunSuccessful" disabled="true"/>
       </editor:items>

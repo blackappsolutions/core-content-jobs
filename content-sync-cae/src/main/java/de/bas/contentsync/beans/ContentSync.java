@@ -1,6 +1,5 @@
 package de.bas.contentsync.beans;
 
-import com.coremedia.blueprint.common.contentbeans.CMFolderProperties;
 import com.coremedia.blueprint.common.contentbeans.CMObject;
 import com.coremedia.cap.content.Content;
 import com.coremedia.cap.struct.Struct;
@@ -21,14 +20,12 @@ public interface ContentSync extends CMObject {
      */
 
     String LOCAL_SETTINGS = "localSettings";
-    String LINKED_SETTINGS = "linkedSettings";
-    String SOURCE_FOLDER = "sourceFolder";
     String SOURCE_CONTENT = "sourceContent";
-    String START_AT = "startAt";
+    String START_AT = "start-at";
     String ACTIVE = "active";
-    String RETRIES = "retries";
     String LAST_RUN = "lastRun";
     String LAST_RUN_SUCCESSFUL = "lastRunSuccessful";
+    String LOG_OUTPUT = "logOutput";
 
     /**
      * {@link com.coremedia.cap.content.ContentType#getName() Name of the ContentType} 'ContentSync'
@@ -41,20 +38,6 @@ public interface ContentSync extends CMObject {
      * @return the value
      */
     public Struct getLocalSettings();
-
-    /**
-     * Returns the value of the document property "linkedSettings"
-     *
-     * @return the value
-     */
-    public List/*<? extends CMSettings>*/ getLinkedSettings();
-
-    /**
-     * Returns the value of the document property "retries"
-     *
-     * @return the value
-     */
-    public int getRetries();
 
     /**
      * Returns the value of the document property "lastRun"
