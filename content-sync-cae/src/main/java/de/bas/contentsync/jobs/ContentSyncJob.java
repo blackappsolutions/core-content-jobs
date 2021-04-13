@@ -36,7 +36,7 @@ public abstract class ContentSyncJob implements Callable<ContentSync> {
             successfulRun = false;
         }
         if (listAppender != null) {
-            executionProtocol = listAppender.list.stream().map(ILoggingEvent::getMessage).collect(Collectors.joining());
+            executionProtocol = listAppender.list.stream().map(ILoggingEvent::getFormattedMessage).collect(Collectors.joining("\n"));
         }
 
         return contentWriter.finishSync(contentSync.getContent().getId(), successfulRun, executionProtocol);

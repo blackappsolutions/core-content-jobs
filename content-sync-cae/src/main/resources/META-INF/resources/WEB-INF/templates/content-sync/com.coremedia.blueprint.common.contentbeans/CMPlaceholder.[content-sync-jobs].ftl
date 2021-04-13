@@ -1,12 +1,25 @@
 <#-- @ftlvariable name="contentSyncJobs" type="de.bas.contentsync.cae.ContentSyncJobJanitor" -->
-
 <h3>Scheduled Jobs</h3>
-!!! Currently Under Development !!!
-<p>
-	If the extension content-sync is used and jobs are scheduled, you can see them below:
-</p>
-<ul>
-    <#list contentSyncJobs.taskList![] as scheduledFutureHolder>
-			<li>ContentSync ${scheduledFutureHolder.contentSync.contentId}: ${scheduledFutureHolder.contentSync.localSettings.getDate("start-at")}</li>
-    </#list>
-</ul>
+<style>
+    table, th, td {
+        border: solid;
+        border-collapse: collapse;
+        padding: .3em .5em;
+    }
+</style>
+<table>
+	<thead>
+	<tr>
+		<td>ID</td>
+		<td>Time</td>
+	</tr>
+	</thead>
+	<tbody>
+  <#list contentSyncJobs.taskList![] as scheduledFutureHolder>
+		<tr>
+			<td>${scheduledFutureHolder.contentSync.contentId}</td>
+			<td>${scheduledFutureHolder.contentSync.localSettings.getDate("start-at").getTime()?datetime}</td>
+		</tr>
+  </#list>
+	</tbody>
+</table>
