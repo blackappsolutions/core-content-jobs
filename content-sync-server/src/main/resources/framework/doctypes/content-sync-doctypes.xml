@@ -8,7 +8,6 @@
   <ImportGrammar Name="coremedia-struct-2008"/>
 
   <ImportDocType Name="CMObject"/>
-  <ImportDocType Name="CMSettings"/>
   <ImportDocType Name="CMFolderProperties"/>
 
   <DocType Name="ContentSync" Parent="CMObject">
@@ -37,15 +36,10 @@
      <editor:StringPropertyField propertyName="localSettings.timeouts.connection"/>
         -->
     <XmlProperty Name="localSettings" Grammar="coremedia-struct-2008"/>
-    <LinkListProperty Name="linkedSettings" LinkType="CMSettings"/>
-    <!-- When given and active=1, start the content-sync at the given time -->
-    <DateProperty Name="startAt"/>
     <!--
     Must be set active by the user. Will be set in-active after a successful run / number of unsuccessful retries
     reached. When not time was given at startAt, run immediately -->
     <IntProperty Name="active"/>
-    <!-- Give up after the specified number of attempts -->
-    <IntProperty Name="retries"/>
     <!-- Readonly, populated after a each run -->
     <DateProperty Name="lastRun"/>
     <IntProperty Name="lastRunSuccessful"/>
