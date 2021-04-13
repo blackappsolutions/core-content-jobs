@@ -7,7 +7,7 @@ import com.coremedia.blueprint.common.contentbeans.CMFolderProperties;
 import com.coremedia.blueprint.common.contentbeans.CMObject;
 import com.coremedia.cap.undoc.server.importexport.base.exporter.ServerXmlExport;
 import de.bas.contentsync.beans.ContentSync;
-import de.bas.contentsync.cae.ContentWriter;
+import de.bas.contentsync.engine.ContentWriter;
 import lombok.extern.slf4j.Slf4j;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Scope;

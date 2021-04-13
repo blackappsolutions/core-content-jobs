@@ -1,4 +1,4 @@
-<#-- @ftlvariable name="contentSyncJobs" type="de.bas.contentsync.cae.ContentSyncJobJanitor" -->
+<#-- @ftlvariable name="contentSyncJobs" type="de.bas.contentsync.engine.ContentSyncJobJanitor" -->
 <h3>Scheduled Jobs</h3>
 <style>
     table, th, td {

@@ -1,4 +1,4 @@
-package de.bas.contentsync.cae;
+package de.bas.contentsync.engine;
 
 import com.coremedia.cap.content.Content;
 import com.coremedia.cap.content.ContentRepository;
@@ -17,10 +17,7 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
-import javax.annotation.PreDestroy;
 import java.util.Collection;
-import java.util.concurrent.Executors;
-import java.util.concurrent.ScheduledExecutorService;
 
 import static de.bas.contentsync.beans.ContentSync.CONTENTTYPE_CONTENTSYNC;
 

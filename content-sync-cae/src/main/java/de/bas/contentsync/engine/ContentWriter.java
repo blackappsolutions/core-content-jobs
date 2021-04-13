@@ -1,7 +1,8 @@
-package de.bas.contentsync.cae;
+package de.bas.contentsync.engine;
 
 import com.coremedia.cap.Cap;
 import com.coremedia.cap.common.Blob;
+import com.coremedia.cap.common.BlobService;
 import com.coremedia.cap.common.CapConnection;
 import com.coremedia.cap.common.InvalidLoginException;
 import com.coremedia.cap.content.Content;
@@ -40,7 +41,7 @@ public class ContentWriter {
     private String pass;
 
     /**
-     * We use a separate contentServer connection here to write content.
+     * We use a separate contentServer connection here to "write" content.
      */
     private ContentRepository contentRepository;
     private final ContentBeanFactory contentBeanFactory;
@@ -60,7 +61,8 @@ public class ContentWriter {
         content.set(LAST_RUN, Calendar.getInstance());
         content.set(LAST_RUN_SUCCESSFUL, successful ? 1 : 0);
         if (executionProtocol != null) {
-            Blob blob = contentRepository.getConnection().getBlobService().fromBytes(executionProtocol.getBytes(StandardCharsets.UTF_8), "text/plain");
+            BlobService blobService = contentRepository.getConnection().getBlobService();
+            Blob blob = blobService.fromBytes(executionProtocol.getBytes(StandardCharsets.UTF_8), "text/plain");
             content.set(LOG_OUTPUT, blob);
         }
         content.checkIn();
@@ -88,7 +90,7 @@ public class ContentWriter {
     public void initContentRepository() {
         if (StringUtil.isEmpty(user) || StringUtil.isEmpty(pass)) {
             throw new RuntimeException(
-                "Please provide admin user account in 'content-sync.user'-, 'content-sync.pass'-properties."
+                "Please provide admin user account in properties 'content-sync.user' & 'content-sync.pass'."
             );
         }
         try {

@@ -1,4 +1,4 @@
-package de.bas.contentsync.cae;
+package de.bas.contentsync.engine;
 
 import de.bas.contentsync.beans.ContentSync;
 import de.bas.contentsync.jobs.ContentSyncJob;

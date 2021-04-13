@@ -2,9 +2,8 @@ package de.bas.contentsync.jobs;
 
 import com.coremedia.cap.undoc.server.importexport.base.importer.ServerXmlImport;
 import de.bas.contentsync.beans.ContentSync;
-import de.bas.contentsync.cae.ContentWriter;
+import de.bas.contentsync.engine.ContentWriter;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 

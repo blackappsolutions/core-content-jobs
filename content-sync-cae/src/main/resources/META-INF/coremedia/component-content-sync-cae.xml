@@ -14,10 +14,10 @@
 
   <context:component-scan base-package="de.bas.contentsync"/>
 
-  <customize:append id="csFreemarkerSharedVariablesCustomizer" bean="freemarkerSharedVariables">
+  <customize:append id="csFreemarkerSharedVariablesCustomizer" bean="freemarkerSharedVariables" enabled="${delivery.preview-mode}">
     <description>
       <![CDATA[
-         <#-- @ftlvariable name="contentSyncJobs" type="de.bas.contentsync.cae.ContentSyncJobJanitor" -->
+         <#-- @ftlvariable name="contentSyncJobs" type="de.bas.contentsync.engine.ContentSyncJobJanitor" -->
       ]]>
     </description>
     <map>
@@ -30,11 +30,4 @@
       <value>content-sync</value>
     </list>
   </customize:prepend>
-  <!--customize:append id="amFreemarkerConfigurerAutoImportsCustomizer" bean="freemarkerConfigurer" property="autoImports">
-    <map>
-      <entry key="am" value="/lib/coremedia.com/blueprint/am.ftl"/>
-    </map>
-  </customize:append-->
-
-
 </beans>

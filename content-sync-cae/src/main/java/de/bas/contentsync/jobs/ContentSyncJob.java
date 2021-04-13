@@ -3,7 +3,7 @@ package de.bas.contentsync.jobs;
 import ch.qos.logback.classic.spi.ILoggingEvent;
 import ch.qos.logback.core.read.ListAppender;
 import de.bas.contentsync.beans.ContentSync;
-import de.bas.contentsync.cae.ContentWriter;
+import de.bas.contentsync.engine.ContentWriter;
 import lombok.extern.slf4j.Slf4j;
 
 import java.util.concurrent.Callable;
@@ -36,10 +36,15 @@ public abstract class ContentSyncJob implements Callable<ContentSync> {
             successfulRun = false;
         }
         if (listAppender != null) {
-            executionProtocol = listAppender.list.stream().map(ILoggingEvent::getFormattedMessage).collect(Collectors.joining("\n"));
+            executionProtocol = getProtocol();
         }
-
         return contentWriter.finishSync(contentSync.getContent().getId(), successfulRun, executionProtocol);
+    }
+
+    private String getProtocol() {
+        return listAppender.list.stream().map(
+            iLoggingEvent -> iLoggingEvent.getTimeStamp() + ": " + iLoggingEvent.getFormattedMessage()
+        ).collect(Collectors.joining("\n"));
     }
 
     abstract void doTheSync() throws Exception;

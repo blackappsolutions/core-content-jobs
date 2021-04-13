@@ -8,7 +8,7 @@ import com.rometools.rome.feed.synd.SyndFeed;
 import com.rometools.rome.io.SyndFeedInput;
 import com.rometools.rome.io.XmlReader;
 import de.bas.contentsync.beans.ContentSync;
-import de.bas.contentsync.cae.ContentWriter;
+import de.bas.contentsync.engine.ContentWriter;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;

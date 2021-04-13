@@ -2,7 +2,7 @@ package de.bas.contentsync.jobs;
 
 import com.coremedia.cap.content.ContentRepository;
 import de.bas.contentsync.beans.ContentSync;
-import de.bas.contentsync.cae.ContentWriter;
+import de.bas.contentsync.engine.ContentWriter;
 import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
