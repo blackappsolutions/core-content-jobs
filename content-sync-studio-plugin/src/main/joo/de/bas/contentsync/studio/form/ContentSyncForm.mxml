@@ -41,11 +41,8 @@
                            ]}"/>
           </editor:store>
         </editor:ComboBoxStringPropertyField>
-        <editor:IntegerPropertyField propertyName="localSettings.zip-directory"/>
-        <editor:DateTimePropertyField propertyName="startAt"/>
-        <!-- FOR FUTURE USE - ToDo: Implement me!
-        <editor:IntegerPropertyField  propertyName="retries"/>
-        -->
+        <editor:StringPropertyField propertyName="localSettings.zip-directory"/>
+        <editor:DateTimePropertyField propertyName="localSettings.start-at"/>
         <editor:DateTimePropertyField propertyName="lastRun" disabled="true"/>
         <editor:IntegerPropertyField propertyName="lastRunSuccessful" disabled="true"/>
       </editor:items>
