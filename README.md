@@ -7,16 +7,25 @@ It introduces the ContentType `ContentSync`, which is used as a Job-Definition w
   * `sourceContent` (multiple items are supported): Create a new resource of type `FolderProperties` and name it `_folderToSync` in the CMS folder you 
     want export/sync (serves as a marker resource). Add this resource into the `sourceFolder`-Property.
     Or just supply any other resource.
-  * `startAt` (optional): Supply a date at which this sync job should start.  
-  * `active`: Used to arm this job, when enable. Also check-in the resource after setting this property!   
+  * `active`: Used to arm this job, when enabled and the resource was checked-in. This will also cause a check-out/-in of the resource by the provided `content-sync.user` (see below).
+  * `localSettings.start-at` (optional): Supply a date at which this sync job should start.  
+  * `localSettings.repeat-every` (optional):
+    * `HOUR`
+    * `DAY`
+    * `WEEK`
   * `localSettings.sync-type`: Select different types of syncs: 
     * `rssImport` 
     * `xmlImport` 
     * `xmlExport`
+    * `cleanXmlExportsInS3Bucket`
   * `localSettings.export-storage-url`: 
     * file:///
     * s3://
     * http(s)://user:pass@host/rest_put_path
+    You can use this property for 
+      * `xmlExport`-Jobs to provide a storage location.
+      * `xmlImport`-Jobs to provide a zip with content to import. For example: https://black-app-solutions.de/form-editor-test-data-1-SNAPSHOT-content.zip
+      * `cleanXmlExportsInS3Bucket`-Jobs to provide a s3-Bucket folder path like `s3://myBucketName/myStorageFolder/`
     <br/><br/>
     **Note:** If you want to use s3 buckets, keep in mind, that you can define only ONE bucket per system at the moment, 
     because it is not possible to pass s3-credentials on the url or on any other way to CoreMedia's ServerExporter, 
@@ -24,13 +33,14 @@ It introduces the ContentType `ContentSync`, which is used as a Job-Definition w
     * `AWS_ACCESS_KEY_ID` and 
     * `AWS_SECRET_ACCESS_KEY` in the system environment (see global/deployment/docker/compose/default.yml).
   ---
-  To make this extension work, you need to create a separate `content-sync`-user, which creates a new version of each active ContentSync-Resource (for journaling reasons) after a successfull run of a ContentSync-Job. You can provide the users name/pass with the following variables in the system environment:
-  * `CONTENTSYNC_USER` and 
-  * `CONTENTSYNC_PASS`
-  
-  Alternatively, you can specify them in application.properties as follows:
-  * `content-sync.user=`
-  * `content-sync.pass=`
+  To make this extension work, you need to create a separate `content-sync`-admin-user, which creates a new version of each active ContentSync-Resource (for journaling reasons) after a successfull run of a ContentSync-Job. You can provide the users name/pass with the following variables in the system environment or application.properties:
+  * `CONTENTSYNC_USER` | `content-sync.user=` and 
+  * `CONTENTSYNC_PASS` | `content-sync.pass=`
+  !!! IF THIS USER WAS NOT SET-UP, THE CAE WILL NOT BOOT !!!
+  Also provide your `apps/cae/spring-boot/cae-live-app/src/main/resources/application.properties` with the property
+  ```
+  delivery.preview-mode=false
+  ```
   ---
 
 ### Current Limitations (further development)
@@ -76,10 +86,12 @@ and add this to your existing CoreMedia Blueprint-Workspace.
     ```
 - Change the groupId and versionID of all pom.xml to your project values, if necessary.
 
-- if you want to use the task overview page, 
-  - create a new Placeholder-ViewType `content-sync-jobs` and
-  - a Placeholder-Resource that has this ViewType set.  
-
+- if you want to use the task overview page to cancel scheduled job, create
+  - a new Placeholder-ViewType `content-sync-jobs` and
+  - a Placeholder-Resource that has this ViewType set.
+  - Set the Placeholder-Resource in an Article or Page OR
+  - issue `/blueprint/servlet/dynamic/content-sync-jobs/terminate/1234`directly.
+  
 ## Further Development
   
 ### Adapt the `ContentSync` DocType to your needs
