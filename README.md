@@ -103,8 +103,6 @@ and add this to your existing CoreMedia Blueprint-Workspace.
 
 * [Server](content-sync-server/src/main/resources/framework/doctypes/content-sync-doctypes.xml)
 * [Studio](content-sync-studio-plugin/src/main/joo/de/bas/contentsync/studio/form/ContentSyncForm.mxml)
-* [Content-Feeder](content-sync-contentfeeder/src/main/resources/META-INF/coremedia/component-content-sync-contentfeeder.xml)
-* [Solr](../../modules/search/solr-config/src/main/app/configsets/content/conf/schema.xml)
 * [CAE](content-sync-cae/src/main/resources/framework/spring/content-sync-contentbeans.xml)<br>
   You can generate the contentbeans from scratch with this command: 
   ```                                 
