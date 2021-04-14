@@ -36,7 +36,7 @@ It introduces the ContentType `ContentSync`, which is used as a Job-Definition w
   To make this extension work, you need to create a separate `content-sync`-admin-user, which creates a new version of each active ContentSync-Resource (for journaling reasons) after a successfull run of a ContentSync-Job. You can provide the users name/pass with the following variables in the system environment or application.properties:
   * `CONTENTSYNC_USER` | `content-sync.user=` and 
   * `CONTENTSYNC_PASS` | `content-sync.pass=`
-  !!! IF THIS USER WAS NOT SET-UP, THE CAE WILL NOT BOOT !!!
+  !!! IF THIS USER WAS NOT SET-UP, THE CAE WILL NOT BOOT !!!<br/>
   Also provide your `apps/cae/spring-boot/cae-live-app/src/main/resources/application.properties` with the property
   ```
   delivery.preview-mode=false
