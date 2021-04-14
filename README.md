@@ -45,12 +45,9 @@ It introduces the ContentType `ContentSync`, which is used as a Job-Definition w
   ---
 
 ### Current Limitations (further development)
-* Scheduled jobs can not be terminated after the ContentSync-resource was checked-in
-* There is now overview of scheduled/running/terminated jobs 
 * No retry handling
 * No Connection-/Socket-Timeouts
-* Errors are not transparent to the end user (should be provided in a property in the ContentSync-resource)
-* No support for recurring tasks
+
 ## Integration into the CoreMedia Blueprints
 
 ### Background
