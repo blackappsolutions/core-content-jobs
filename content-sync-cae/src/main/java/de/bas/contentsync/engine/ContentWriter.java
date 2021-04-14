@@ -33,6 +33,7 @@ import static de.bas.contentsync.beans.ContentSync.LOG_OUTPUT;
 @ConditionalOnProperty(name = "delivery.preview-mode", havingValue = "true")
 public class ContentWriter {
 
+    protected static final String TEXT_PLAIN = "text/plain";
     @Value("${repository.url}")
     private String repoUrl;
     @Value("${content-sync.user}")
@@ -56,14 +57,18 @@ public class ContentWriter {
         contentRepository.getConnection().flush(); // saves our change above
     }
 
-    public ContentSync finishSync(String contentId, boolean successful, String executionProtocol) throws MimeTypeParseException {
+    public ContentSync finishSync(String contentId, boolean successful, String executionProtocol) {
         Content content = getCheckedOutContent(contentId);
         content.set(LAST_RUN, Calendar.getInstance());
         content.set(LAST_RUN_SUCCESSFUL, successful ? 1 : 0);
         if (executionProtocol != null) {
             BlobService blobService = contentRepository.getConnection().getBlobService();
-            Blob blob = blobService.fromBytes(executionProtocol.getBytes(StandardCharsets.UTF_8), "text/plain");
-            content.set(LOG_OUTPUT, blob);
+            try {
+                Blob blob = blobService.fromBytes(executionProtocol.getBytes(StandardCharsets.UTF_8), TEXT_PLAIN);
+                content.set(LOG_OUTPUT, blob);
+            } catch (MimeTypeParseException e) {
+                log.error("Can not deal with Mime type {}", TEXT_PLAIN, e);
+            }
         }
         content.checkIn();
         return contentBeanFactory.createBeanFor(content, ContentSync.class);

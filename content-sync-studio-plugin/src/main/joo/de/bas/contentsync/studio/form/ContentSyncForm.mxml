@@ -37,12 +37,31 @@
                     data="{[
                              {value: 'rssImport'},
                              {value: 'xmlImport'},
-                             {value: 'xmlExport'}
+                             {value: 'xmlExport'},
+                             {value: 'cleanXmlExportsInS3Bucket'}
                            ]}"/>
           </editor:store>
         </editor:ComboBoxStringPropertyField>
         <editor:StringPropertyField propertyName="localSettings.zip-directory"/>
         <editor:DateTimePropertyField propertyName="localSettings.start-at"/>
+        <editor:ComboBoxStringPropertyField itemId="{'syncType'}"
+                                                    ui="{LabelableSkin.PLAIN_LABEL.getSkin()}"
+                                                    propertyName="localSettings.run-job-every"
+                                                    fieldWidth="200"
+                                                    valueField="value"
+                                                    displayField="value"
+                                                    reverseTransformer="{function(value:*):* {return value === null ? '' : value;}}">
+                  <editor:store>
+                    <store_Json
+                            fields="{['value']}"
+                            data="{[
+                                     {value: 'HOUR'},
+                                     {value: 'DAY'},
+                                     {value: 'WEEK'}
+                                   ]}"/>
+                  </editor:store>
+                </editor:ComboBoxStringPropertyField>
+
         <editor:TextBlobPropertyField propertyName="logOutput" height="300"/>
         <editor:DateTimePropertyField propertyName="lastRun" disabled="true"/>
         <editor:IntegerPropertyField propertyName="lastRunSuccessful" disabled="true"/>

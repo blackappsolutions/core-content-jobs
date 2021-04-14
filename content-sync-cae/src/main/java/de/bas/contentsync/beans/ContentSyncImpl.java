@@ -4,6 +4,7 @@ import com.coremedia.blueprint.base.settings.SettingsService;
 import com.coremedia.blueprint.common.contentbeans.CMFolderProperties;
 import com.coremedia.blueprint.common.contentbeans.CMObject;
 import com.coremedia.cap.content.Content;
+import com.twelvemonkeys.lang.StringUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -73,6 +74,15 @@ public class ContentSyncImpl extends ContentSyncBase implements ContentSync {
       return settingsService.setting(START_AT, Calendar.class, this);
     }
 
+    @Override
+    public RepeatEvery getRepetition() {
+        String setting = settingsService.setting(REPEAT_EVERY, String.class, this);
+        if(!StringUtil.isEmpty(setting)){
+            return RepeatEvery.get(setting);
+        }
+        return null;
+    }
+
     public boolean isActive() {
         return (getActive() == 1);
     }
@@ -85,6 +95,16 @@ public class ContentSyncImpl extends ContentSyncBase implements ContentSync {
     @Override
     public Optional<String> getZipDirectory() {
         return settingsService.getSetting("zip-directory", String.class, this);
+    }
+
+    @Override
+    public String getS3BucketRegion() {
+        return settingsService.settingWithDefault("s3-bucket-region", String.class, "eu-west-1", this);
+    }
+
+    @Override
+    public Boolean getS3BucketCleanupDryRun() {
+        return settingsService.settingWithDefault("s3-bucket-cleanup-dryrun", Boolean.class, true, this);
     }
 
     public void setSettingsService(SettingsService settingsService) {

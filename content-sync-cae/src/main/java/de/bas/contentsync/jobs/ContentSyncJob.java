@@ -32,13 +32,18 @@ public abstract class ContentSyncJob implements Callable<ContentSync> {
             doTheSync();
             successfulRun = true;
         } catch (Exception e) {
-            log.error("Error while syncing {}", contentSync.getContentToSync(), e);
+            log.error("Error while syncing {}", contentSync.getContentId(), e);
             successfulRun = false;
         }
         if (listAppender != null) {
             executionProtocol = getProtocol();
         }
         return contentWriter.finishSync(contentSync.getContent().getId(), successfulRun, executionProtocol);
+    }
+
+    public void cancel() {
+        contentWriter.startSync(contentSync.getContent().getId());
+        contentWriter.finishSync(contentSync.getContent().getId(), false, "CANCELED");
     }
 
     private String getProtocol() {

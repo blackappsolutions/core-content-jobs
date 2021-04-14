@@ -17,6 +17,9 @@ import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * Just a showcase for a RSS Importer
+ */
 @Slf4j
 @Scope("prototype")
 @Component("rssImport")

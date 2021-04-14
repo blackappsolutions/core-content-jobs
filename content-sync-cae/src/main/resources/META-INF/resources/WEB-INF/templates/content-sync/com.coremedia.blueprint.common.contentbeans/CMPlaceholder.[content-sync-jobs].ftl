@@ -17,7 +17,11 @@
 	<tbody>
   <#list contentSyncJobs.taskList![] as scheduledFutureHolder>
 		<tr>
-			<td>${scheduledFutureHolder.contentSync.contentId}</td>
+			<td>
+				<a href="/blueprint/servlet/dynamic/content-sync-jobs/terminate/${scheduledFutureHolder.contentSyncJob.contentSync.contentId}?origUrl=${springMacroRequestContext.requestUri}">
+					Terminate ${scheduledFutureHolder.contentSync.contentId}
+				</a>
+			</td>
 			<td>${scheduledFutureHolder.contentSync.localSettings.getDate("start-at").getTime()?datetime}</td>
 		</tr>
   </#list>

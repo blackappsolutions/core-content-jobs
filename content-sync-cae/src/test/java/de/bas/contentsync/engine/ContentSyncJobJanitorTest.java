@@ -1,6 +1,7 @@
 package de.bas.contentsync.engine;
 
 import de.bas.contentsync.beans.ContentSync;
+import de.bas.contentsync.beans.RepeatEvery;
 import de.bas.contentsync.jobs.ContentSyncJob;
 import org.junit.Assert;
 import org.junit.Before;
@@ -97,4 +98,10 @@ public class ContentSyncJobJanitorTest {
         Assert.assertNull(contentSyncJobJanitor.startScheduled(contentSyncJob, instance));
     }
 
+    @Test
+    public void testGetRepetitionRateMillis() {
+        Assert.assertEquals(contentSyncJobJanitor.getRepetitionRateMillis(RepeatEvery.HOUR), 60 * 60 * 1000);
+        Assert.assertEquals(contentSyncJobJanitor.getRepetitionRateMillis(RepeatEvery.DAY),  24 * 60 * 60 * 1000);
+        Assert.assertEquals(contentSyncJobJanitor.getRepetitionRateMillis(RepeatEvery.WEEK), 7 * 24 *60 * 60 * 1000);
+    }
 }

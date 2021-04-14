@@ -22,6 +22,7 @@ public interface ContentSync extends CMObject {
     String LOCAL_SETTINGS = "localSettings";
     String SOURCE_CONTENT = "sourceContent";
     String START_AT = "start-at";
+    String REPEAT_EVERY = "repeat-every";
     String ACTIVE = "active";
     String LAST_RUN = "lastRun";
     String LAST_RUN_SUCCESSFUL = "lastRunSuccessful";
@@ -87,9 +88,15 @@ public interface ContentSync extends CMObject {
 
     String getExportStorageURL();
 
+    RepeatEvery getRepetition();
+
     String getRSS_URL();
 
     String getZipUrl();
 
     Optional<String> getZipDirectory();
+
+    String getS3BucketRegion();
+
+    Boolean getS3BucketCleanupDryRun();
 }

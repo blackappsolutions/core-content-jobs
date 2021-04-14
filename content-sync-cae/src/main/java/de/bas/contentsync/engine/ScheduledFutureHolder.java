@@ -1,6 +1,6 @@
 package de.bas.contentsync.engine;
 
-import de.bas.contentsync.beans.ContentSync;
+import de.bas.contentsync.jobs.ContentSyncJob;
 
 import java.util.concurrent.ScheduledFuture;
 
@@ -9,14 +9,14 @@ import java.util.concurrent.ScheduledFuture;
  */
 public class ScheduledFutureHolder {
     ScheduledFuture<?> future;
-    ContentSync contentSync;
+    ContentSyncJob contentSyncJob;
 
-    public ScheduledFutureHolder(ScheduledFuture<?> future, ContentSync contentSync) {
+    public ScheduledFutureHolder(ScheduledFuture<?> future, ContentSyncJob contentSyncJob) {
         this.future = future;
-        this.contentSync = contentSync;
+        this.contentSyncJob = contentSyncJob;
     }
 
-    public ContentSync getContentSync() {
-        return contentSync;
+    public ContentSyncJob getContentSyncJob() {
+        return contentSyncJob;
     }
 }
