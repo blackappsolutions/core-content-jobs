@@ -1,7 +1,15 @@
 # Content Sync
 
 ## Overview
-CoreMedia CMS Extension to sync Content from A to B. Developed against Version 2010.3
+CoreMedia CMS Extension originally created to sync Content from A to B (developed against Version 2010.3). 
+Could also be used as a framework to embed content related jobs. 
+Especially in the CMCC-S product - hosted by CoreMedia - which allows no Unified-API-Clients in higher environments (UAT/Prod), you can use it as a task-scheduler/runtime for
+* importing content
+* cleanup things
+* create content-related reports
+* ...
+
+Developed against Version 2010.3
 It introduces the ContentType `ContentSync`, which is used as a Job-Definition with the following properties:
 
   * `sourceContent` (multiple items are supported): Create a new resource of type `FolderProperties` and name it `_folderToSync` in the CMS folder you 
