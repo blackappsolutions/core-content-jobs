@@ -9,7 +9,6 @@ Especially in the CMCC-S product - hosted by CoreMedia - which allows no Unified
 * create content-related reports
 * ...
 
-Developed against Version 2010.3
 It introduces the ContentType `ContentSync`, which is used as a Job-Definition with the following properties:
 
   * `sourceContent` (multiple items are supported): Create a new resource of type `FolderProperties` and name it `_folderToSync` in the CMS folder you 
