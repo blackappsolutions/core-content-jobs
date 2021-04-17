@@ -52,6 +52,7 @@ It introduces the ContentType `ContentSync`, which is used as a Job-Definition w
   ---
 
 ### Current Limitations (further development)
+* No content validation
 * No retry handling
 * No Connection-/Socket-Timeouts
 

@@ -21,10 +21,7 @@
             title="{resourceManager.getString('com.coremedia.blueprint.studio.BlueprintTabs', 'Tab_content_title')}">
       <editor:items>
         <editor:BooleanPropertyField propertyName="active"/>
-        <editor:LinkListPropertyField propertyName="sourceContent"/>
-        <editor:BooleanPropertyField propertyName="localSettings.recursive" dontTransformToInteger="true"/>
-        <editor:StringPropertyField propertyName="localSettings.export-storage-url"/>
-        <editor:ComboBoxStringPropertyField itemId="{'syncType'}"
+        <editor:ComboBoxStringPropertyField itemId="{'sync-type'}"
                                             ui="{LabelableSkin.PLAIN_LABEL.getSkin()}"
                                             propertyName="localSettings.sync-type"
                                             fieldWidth="200"
@@ -42,29 +39,39 @@
                            ]}"/>
           </editor:store>
         </editor:ComboBoxStringPropertyField>
+        <editor:LinkListPropertyField propertyName="sourceContent"/>
+        <editor:BooleanPropertyField propertyName="localSettings.recursive" dontTransformToInteger="true"/>
+        <editor:StringPropertyField propertyName="localSettings.export-storage-url"/>
         <editor:StringPropertyField propertyName="localSettings.zip-directory"/>
-        <editor:DateTimePropertyField propertyName="localSettings.start-at"/>
-        <editor:ComboBoxStringPropertyField itemId="{'syncType'}"
-                                                    ui="{LabelableSkin.PLAIN_LABEL.getSkin()}"
-                                                    propertyName="localSettings.run-job-every"
-                                                    fieldWidth="200"
-                                                    valueField="value"
-                                                    displayField="value"
-                                                    reverseTransformer="{function(value:*):* {return value === null ? '' : value;}}">
-                  <editor:store>
-                    <store_Json
-                            fields="{['value']}"
-                            data="{[
-                                     {value: 'HOUR'},
-                                     {value: 'DAY'},
-                                     {value: 'WEEK'}
-                                   ]}"/>
-                  </editor:store>
-                </editor:ComboBoxStringPropertyField>
-
-        <editor:TextBlobPropertyField propertyName="logOutput" height="300"/>
-        <editor:DateTimePropertyField propertyName="lastRun" disabled="true"/>
-        <editor:IntegerPropertyField propertyName="lastRunSuccessful" disabled="true"/>
+        <editor:PropertyFieldGroup itemId="scheduling" title="Scheduling">
+          <editor:items>
+            <editor:DateTimePropertyField propertyName="localSettings.start-at"/>
+            <editor:ComboBoxStringPropertyField itemId="{'run-job-every'}"
+                                                ui="{LabelableSkin.PLAIN_LABEL.getSkin()}"
+                                                propertyName="localSettings.run-job-every"
+                                                fieldWidth="200"
+                                                valueField="value"
+                                                displayField="value"
+                                                reverseTransformer="{function(value:*):* {return value === null ? '' : value;}}">
+              <editor:store>
+                <store_Json
+                        fields="{['value']}"
+                        data="{[
+                                         {value: 'HOUR'},
+                                         {value: 'DAY'},
+                                         {value: 'WEEK'}
+                                       ]}"/>
+              </editor:store>
+            </editor:ComboBoxStringPropertyField>
+          </editor:items>
+        </editor:PropertyFieldGroup>
+      <editor:PropertyFieldGroup itemId="last-run" title="Last run">
+        <editor:items>
+          <editor:TextBlobPropertyField propertyName="logOutput" height="300"/>
+          <editor:DateTimePropertyField propertyName="lastRun" disabled="true"/>
+          <editor:IntegerPropertyField propertyName="lastRunSuccessful" disabled="true"/>
+        </editor:items>
+      </editor:PropertyFieldGroup>
       </editor:items>
     </editor:DocumentForm>
     <editor:DocumentForm
