@@ -13,10 +13,20 @@
   <artifactId>content-sync-cae</artifactId>
 
   <properties>
-    <coremedia.project.extension.for>cae</coremedia.project.extension.for>
+    <coremedia.project.extension.for>preview-cae</coremedia.project.extension.for>
   </properties>
 
   <dependencies>
+    <dependency>
+      <groupId>jakarta.xml.bind</groupId>
+      <artifactId>jakarta.xml.bind-api</artifactId>
+      <exclusions>
+        <exclusion>
+          <groupId> jakarta.activation</groupId>
+          <artifactId>jakarta.activation-api</artifactId>
+        </exclusion>
+      </exclusions>
+    </dependency>
     <dependency>
       <groupId>org.springframework</groupId>
       <artifactId>spring-webmvc</artifactId>

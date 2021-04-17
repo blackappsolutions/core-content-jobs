@@ -43,7 +43,7 @@
         <editor:BooleanPropertyField propertyName="localSettings.recursive" dontTransformToInteger="true"/>
         <editor:StringPropertyField propertyName="localSettings.export-storage-url"/>
         <editor:StringPropertyField propertyName="localSettings.zip-directory"/>
-        <editor:PropertyFieldGroup itemId="scheduling" title="Scheduling">
+        <editor:PropertyFieldGroup itemId="scheduling" title="Scheduling" collapsed="true">
           <editor:items>
             <editor:DateTimePropertyField propertyName="localSettings.start-at"/>
             <editor:ComboBoxStringPropertyField itemId="{'run-job-every'}"
@@ -65,13 +65,13 @@
             </editor:ComboBoxStringPropertyField>
           </editor:items>
         </editor:PropertyFieldGroup>
-      <editor:PropertyFieldGroup itemId="last-run" title="Last run">
-        <editor:items>
-          <editor:TextBlobPropertyField propertyName="logOutput" height="300"/>
-          <editor:DateTimePropertyField propertyName="lastRun" disabled="true"/>
-          <editor:IntegerPropertyField propertyName="lastRunSuccessful" disabled="true"/>
-        </editor:items>
-      </editor:PropertyFieldGroup>
+        <editor:PropertyFieldGroup itemId="last-run" title="Last run" collapsed="true">
+          <editor:items>
+            <editor:TextBlobPropertyField propertyName="logOutput" height="300"/>
+            <editor:DateTimePropertyField propertyName="lastRun" disabled="true"/>
+            <editor:IntegerPropertyField propertyName="lastRunSuccessful" disabled="true"/>
+          </editor:items>
+        </editor:PropertyFieldGroup>
       </editor:items>
     </editor:DocumentForm>
     <editor:DocumentForm

@@ -31,49 +31,49 @@ public interface ContentSync extends CMObject {
     /**
      * {@link com.coremedia.cap.content.ContentType#getName() Name of the ContentType} 'ContentSync'
      */
-    public static final String CONTENTTYPE_CONTENTSYNC = "ContentSync";
+    String CONTENTTYPE_CONTENTSYNC = "ContentSync";
 
     /**
      * Returns the value of the document property "localSettings"
      *
      * @return the value
      */
-    public Struct getLocalSettings();
+    Struct getLocalSettings();
 
     /**
      * Returns the value of the document property "lastRun"
      *
      * @return the value
      */
-    public Calendar getLastRun();
+    Calendar getLastRun();
 
     /**
      * Returns the value of the document property "sourceContent"
      *
      * @return the value
      */
-    public List<? extends CMObject> getSourceContent();
+    List<? extends CMObject> getSourceContent();
 
     /**
      * Returns the value of the document property "active"
      *
      * @return the value
      */
-    public int getActive();
+    int getActive();
 
     /**
      * Returns the value of the document property "lastRunSuccessful"
      *
      * @return the value
      */
-    public int getLastRunSuccessful();
+    int getLastRunSuccessful();
 
     /**
      * Returns the value of the document property "startAt"
      *
      * @return the value
      */
-    public Calendar getStartAt();
+    Calendar getStartAt();
 
     ////////////////////////////////////////////////////
     // Added after the initial contentBean generator run

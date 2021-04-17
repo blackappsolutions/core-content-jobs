@@ -32,7 +32,6 @@ import static java.util.concurrent.TimeUnit.MILLISECONDS;
 @Slf4j
 @RequestMapping
 @Component("contentSyncJobJanitor")
-@ConditionalOnProperty(name = "delivery.preview-mode", havingValue = "true")
 public class ContentSyncJobJanitor {
 
     int startupDelay = 5; // 5 secs

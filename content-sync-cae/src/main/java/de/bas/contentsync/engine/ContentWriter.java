@@ -30,7 +30,6 @@ import static de.bas.contentsync.beans.ContentSync.LOG_OUTPUT;
  */
 @Slf4j
 @Component
-@ConditionalOnProperty(name = "delivery.preview-mode", havingValue = "true")
 public class ContentWriter {
 
     protected static final String TEXT_PLAIN = "text/plain";

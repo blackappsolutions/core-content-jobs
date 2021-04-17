@@ -26,7 +26,6 @@ import static de.bas.contentsync.beans.ContentSync.CONTENTTYPE_CONTENTSYNC;
  */
 @Slf4j
 @Component
-@ConditionalOnProperty(name = "delivery.preview-mode", havingValue = "true")
 public class ContentSyncListener extends ContentRepositoryListenerBase {
 
     private static final Logger LOG = LoggerFactory.getLogger(ContentSyncListener.class);
