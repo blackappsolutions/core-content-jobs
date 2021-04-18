@@ -22,14 +22,14 @@ It introduces the ContentType `ContentSync`, which is used as a Job-Definition w
     * `DAY`
     * `WEEK`
   * `localSettings.sync-type`: Select different types of syncs: 
-    * `rssImport` 
-    * `xmlImport` 
-    * `xmlExport`
-    * `cleanXmlExportsInS3Bucket`
+    * `rssImport` (you must provide a `sourceContent`-CMFolderProperties resource named `_folderToSync`) 
+    * `xmlImport` (you must provide a `localSettings.export-storage-url` fully qualified. E.g.: `s3://blackapp-content-sync/1234.zip`)  
+    * `xmlExport` (you must provide a `localSettings.export-storage-url` base url. E.g.: `s3://blackapp-content-sync/`)
+    * `cleanXmlExportsInS3Bucket` (document me)
   * `localSettings.export-storage-url`: 
     * file:///
     * s3://
-    * http(s)://user:pass@host/rest_put_path
+    * http(s)://user:pass@host/path
     You can use this property for 
       * `xmlExport`-Jobs to provide a storage location.
       * `xmlImport`-Jobs to provide a zip with content to import.

@@ -16,7 +16,6 @@
     https://documentation.coremedia.com/cmcc-10/artifacts/2101/webhelp/coremedia-en/content/Navigation_and_Contexts.html
 
     Serves as a marker resource.
-    Must be named _folderToSync.
 
     Probably we can automate this in studio with
     <qc:QuickCreateToolbarButton contentType="CMFolderProperties" propertyName="sourceFolder" bindTo="{config.bindTo}"/>
