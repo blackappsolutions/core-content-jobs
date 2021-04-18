@@ -10,6 +10,7 @@
   <modules>
     <module>content-sync-cae</module>
     <module>content-sync-server</module>
+    <module>content-sync-studio-lib</module>
     <module>content-sync-studio-plugin</module>
     <module>content-sync-test-data</module>
   </modules>

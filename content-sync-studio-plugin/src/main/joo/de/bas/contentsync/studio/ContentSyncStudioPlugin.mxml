@@ -12,6 +12,7 @@
     [ResourceBundle('de.bas.contentsync.studio.bundles.ContentSyncContentTypes')]
     [ResourceBundle('com.coremedia.cms.editor.ContentTypes')]
     [ResourceBundle('com.coremedia.blueprint.studio.BlueprintDocumentTypes')]
+    [ResourceBundle('com.coremedia.cms.editor.sdk.validation.Validators')]
   </fx:Metadata>
   <fx:Script><![CDATA[
     import mx.resources.ResourceManager;
@@ -50,6 +51,10 @@
     <editor:CopyResourceBundleProperties
             destination="{ResourceManager.getInstance().getResourceBundle(null, 'com.coremedia.cms.editor.ContentTypes')}"
             source="{ResourceManager.getInstance().getResourceBundle(null, 'de.bas.contentsync.studio.bundles.ContentSyncContentTypes')}"/>
+
+    <editor:CopyResourceBundleProperties
+            destination="{ResourceManager.getInstance().getResourceBundle(null, 'com.coremedia.cms.editor.sdk.validation.Validators')}"
+            source="{ResourceManager.getInstance().getResourceBundle(null, 'de.bas.contentsync.studio.bundles.FormValidation')}"/>
 
   </local:configuration>
 

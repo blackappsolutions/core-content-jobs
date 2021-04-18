@@ -8,6 +8,7 @@ Especially in the CMCC-S product - hosted by CoreMedia - which allows no Unified
 * cleanup things
 * create content-related reports
 * ...
+Runtime is actually the `preview-cae`, which is defined in https://github.com/blackappsolutions/content-sync/blob/1331f39981a71cc3a9d12c5f6a9cac7f566171af/content-sync-cae/pom.xml#L16.
 
 It introduces the ContentType `ContentSync`, which is used as a Job-Definition with the following properties:
 
@@ -31,7 +32,7 @@ It introduces the ContentType `ContentSync`, which is used as a Job-Definition w
     * http(s)://user:pass@host/rest_put_path
     You can use this property for 
       * `xmlExport`-Jobs to provide a storage location.
-      * `xmlImport`-Jobs to provide a zip with content to import. For example: https://black-app-solutions.de/form-editor-test-data-1-SNAPSHOT-content.zip
+      * `xmlImport`-Jobs to provide a zip with content to import.
       * `cleanXmlExportsInS3Bucket`-Jobs to provide a s3-Bucket folder path like `s3://myBucketName/myStorageFolder/`
     <br/><br/>
     **Note:** If you want to use s3 buckets, keep in mind, that you can define only ONE bucket per system at the moment, 
@@ -40,15 +41,11 @@ It introduces the ContentType `ContentSync`, which is used as a Job-Definition w
     * `AWS_ACCESS_KEY_ID` and 
     * `AWS_SECRET_ACCESS_KEY` in the system environment (see global/deployment/docker/compose/default.yml).
   ---
-  To make this extension work, you need to create a separate `content-sync`-admin-user, which creates a new version of each active ContentSync-Resource (for journaling reasons) after a successfull run of a ContentSync-Job. You can provide the users name/pass with the following variables in the system environment or application.properties:
+  To make this extension work, you need to create a separate `content-sync`-admin-user, which creates a new version of each active ContentSync-Resource after a job run. You can provide the users name/pass with the following variables in the system environment or application.properties:
   * `CONTENTSYNC_USER` | `content-sync.user=` and 
   * `CONTENTSYNC_PASS` | `content-sync.pass=`
+
   !!! IF THIS USER WAS NOT SET-UP, THE CAE WILL NOT BOOT !!!
-  
-  Also provide your `apps/cae/spring-boot/cae-live-app/src/main/resources/application.properties` with the property
-  ```
-  delivery.preview-mode=false
-  ```
   ---
 
 ### Current Limitations (further development)
@@ -65,8 +62,6 @@ Integration of this extension is recommended as **Git SubModule**.
 Before doing so, make a fork to be able to apply your customizations.
 
 This way, you will be able to merge new commits made in this repo back to your fork.
-
-and add this to your existing CoreMedia Blueprint-Workspace.
  
 ### HowTo
 
