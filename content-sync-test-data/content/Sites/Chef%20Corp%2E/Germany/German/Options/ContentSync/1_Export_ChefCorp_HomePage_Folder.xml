@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<ContentSync folder="/Sites/Chef Corp./Germany/German/Options/ContentSync" name="1_Export_ChefCorp_HomePage_Folder" xmlns:cmexport="http://www.coremedia.com/2012/cmexport">
+<externalRefId></externalRefId>
+<sourceContent><link href="../../Editorial/Homepage/_chefCorp_Editorial_Hompage.xml" path="/Sites/Chef%20Corp%2E/Germany/German/Editorial/Homepage/_chefCorp_Editorial_Hompage"/></sourceContent>
+<localSettings><Struct xmlns="http://www.coremedia.com/2008/struct" xmlns:xlink="http://www.w3.org/1999/xlink">
+<BooleanProperty Name="recursive">true</BooleanProperty>
+<StringProperty Name="export-storage-url">s3://blackapp-content-sync/</StringProperty>
+<StringProperty Name="sync-type">xmlExport</StringProperty>
+<DateProperty Name="start-at" TimeZone="Europe/Berlin">2021-04-13T18:35:00+02:00</DateProperty>
+</Struct></localSettings>
+<active>0</active>
+<lastRun format="dd.MM.yyyy HH:mm:ss Z VV">13.04.2021 18:35:39 +0200 Europe/Berlin</lastRun>
+<lastRunSuccessful>1</lastRunSuccessful>
+<logOutput href="1_Export_ChefCorp_HomePage_Folder.logOutput.plain" mimetype="text/plain"/>
+</ContentSync>

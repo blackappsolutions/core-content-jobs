@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<ContentSync folder="/Sites/Chef Corp./Germany/German/Options/ContentSync" name="3_Import_rss.nytimes.com" xmlns:cmexport="http://www.coremedia.com/2012/cmexport">
+<externalRefId></externalRefId>
+<sourceContent><link href="../../../../../../rss-import/_folderToSync.xml" path="/rss-import/_folderToSync"/></sourceContent>
+<localSettings><Struct xmlns="http://www.coremedia.com/2008/struct" xmlns:xlink="http://www.w3.org/1999/xlink">
+<StringProperty Name="rss-import-url">"https://rss.nytimes.com/services/xml/rss/nyt/Technology.xml"</StringProperty>
+<StringProperty Name="sync-type">rssImport</StringProperty>
+</Struct></localSettings>
+<active>0</active>
+<lastRun format="dd.MM.yyyy HH:mm:ss Z VV">08.04.2021 18:35:56 +0200 CET</lastRun>
+<lastRunSuccessful>1</lastRunSuccessful>
+</ContentSync>

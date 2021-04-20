@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<ContentSync folder="/Sites/Chef Corp./Germany/German/Options/ContentSync" name="2_Import_ChefCorp_HomePage_Folder" xmlns:cmexport="http://www.coremedia.com/2012/cmexport">
+<externalRefId></externalRefId>
+<sourceContent/>
+<localSettings><Struct xmlns="http://www.coremedia.com/2008/struct" xmlns:xlink="http://www.w3.org/1999/xlink">
+<StringProperty Name="sync-type">xmlImport</StringProperty>
+<StringProperty Name="export-storage-url">s3://blackapp-content-sync/13262.zip</StringProperty>
+<BooleanProperty Name="recursive">true</BooleanProperty>
+</Struct></localSettings>
+<active>0</active>
+<lastRun format="dd.MM.yyyy HH:mm:ss Z VV">17.04.2021 22:45:29 +0200 CET</lastRun>
+<lastRunSuccessful>1</lastRunSuccessful>
+</ContentSync>

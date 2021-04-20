@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<CMChannel folder="/Sites/Chef Corp./Germany/German/Navigation" name="Chef Corp. DE Home Page" xmlns:cmexport="http://www.coremedia.com/2012/cmexport">
+<externalRefId></externalRefId>
+<locale>de-DE</locale>
+<master><link href="../../../United%20States/English/Navigation/Chef%20Corp%2E%20USA%20Home%20Page.xml" path="/Sites/Chef%20Corp%2E/United%20States/English/Navigation/Chef%20Corp%2E%20USA%20Home%20Page"/></master>
+<masterVersion>2</masterVersion>
+<viewtype/>
+<localSettings><Struct xmlns="http://www.coremedia.com/2008/struct" xmlns:xlink="http://www.w3.org/1999/xlink">
+</Struct></localSettings>
+<linkedSettings><link href="../Options/Settings/CAEConfig.xml" path="/Sites/Chef%20Corp%2E/Germany/German/Options/Settings/CAEConfig"/><link href="../Options/Settings/Asset%20Management%20Configuration.xml" path="/Sites/Chef%20Corp%2E/Germany/German/Options/Settings/Asset%20Management%20Configuration"/><link href="../Options/Settings/Robots%2Etxt.xml" path="/Sites/Chef%20Corp%2E/Germany/German/Options/Settings/Robots%2Etxt"/><link href="../Options/Settings/Google%20Analytics%20Settings.xml" path="/Sites/Chef%20Corp%2E/Germany/German/Options/Settings/Google%20Analytics%20Settings"/><link href="../Options/Settings/LiveContext.xml" path="/Sites/Chef%20Corp%2E/Germany/German/Options/Settings/LiveContext"/><link href="../Options/Settings/Search%20Configuration.xml" path="/Sites/Chef%20Corp%2E/Germany/German/Options/Settings/Search%20Configuration"/><link href="../Options/Settings/Elastic%20Social.xml" path="/Sites/Chef%20Corp%2E/Germany/German/Options/Settings/Elastic%20Social"/><link href="../../../../../Settings/Options/Settings/Elastic%20Social%20Credentials.xml" path="/Settings/Options/Settings/Elastic%20Social%20Credentials"/><link href="../Options/Settings/SFMC.xml" path="/Sites/Chef%20Corp%2E/Germany/German/Options/Settings/SFMC"/></linkedSettings>
+<resourceBundles2><link href="../../../../../Settings/Options/Bundles/Elastic%20Social_en.xml" path="/Settings/Options/Bundles/Elastic%20Social_en"/></resourceBundles2>
+<segment>corporate-de-de</segment>
+<title>Homepage</title>
+<htmlTitle></htmlTitle>
+<keywords>Coremedia, Corporate, Demo, Blaupause, Corporation, Blueprint</keywords>
+<htmlDescription>Chef Corp. ermöglicht Köche mit den besten Werkzeugen, um perfekte Mahlzeiten zubereiten können.</htmlDescription>
+<subjectTaxonomy/>
+<locationTaxonomy/>
+<contexts/>
+<teaserTitle>Homepage</teaserTitle>
+<teaserText grammarName="coremedia-richtext-1.0"><div xmlns="http://www.coremedia.com/2003/richtext-1.0" xmlns:xlink="http://www.w3.org/1999/xlink"><p/> </div></teaserText>
+<pictures/>
+<related/>
+<authors/>
+<children><link href="Professionals/Professionals%20Page.xml" path="/Sites/Chef%20Corp%2E/Germany/German/Navigation/Professionals/Professionals%20Page"/><link href="Consumers/Consumers%20Page.xml" path="/Sites/Chef%20Corp%2E/Germany/German/Navigation/Consumers/Consumers%20Page"/><link href="Company/Company%20Page.xml" path="/Sites/Chef%20Corp%2E/Germany/German/Navigation/Company/Company%20Page"/><link href="Hidden%20Navigation/Corporate%20Information%20Page.xml" path="/Sites/Chef%20Corp%2E/Germany/German/Navigation/Hidden%20Navigation/Corporate%20Information%20Page"/><link href="Hidden%20Navigation/Embedding%20Demo%20Page.xml" path="/Sites/Chef%20Corp%2E/Germany/German/Navigation/Hidden%20Navigation/Embedding%20Demo%20Page"/><link href="Hidden%20Navigation/Asset%20Detail%20View%20Hidden%20Page.xml" path="/Sites/Chef%20Corp%2E/Germany/German/Navigation/Hidden%20Navigation/Asset%20Detail%20View%20Hidden%20Page"/><link href="../Options/Settings/Templates/CMChannel/Template%20Preview%20Hidden%20Page.xml" path="/Sites/Chef%20Corp%2E/Germany/German/Options/Settings/Templates/CMChannel/Template%20Preview%20Hidden%20Page"/><link href="Hidden%20Navigation/SearchResultPage.xml" path="/Sites/Chef%20Corp%2E/Germany/German/Navigation/Hidden%20Navigation/SearchResultPage"/><link href="Topic%20Pages/Topicpage.xml" path="/Sites/Chef%20Corp%2E/Germany/German/Navigation/Topic%20Pages/Topicpage"/><link href="../Options/Settings/Actions/User%20Interaction.xml" path="/Sites/Chef%20Corp%2E/Germany/German/Options/Settings/Actions/User%20Interaction"/><link href="Hidden%20Navigation/Detail%20Page.xml" path="/Sites/Chef%20Corp%2E/Germany/German/Navigation/Hidden%20Navigation/Detail%20Page"/><link href="Blog/Blog.xml" path="/Sites/Chef%20Corp%2E/Germany/German/Navigation/Blog/Blog"/></children>
+<hidden>1</hidden>
+<hiddenInSitemap>1</hiddenInSitemap>
+<javaScript/>
+<css/>
+<theme><link href="../../../../../Themes/chefcorp/Chefcorp%20Theme.xml" path="/Themes/chefcorp/Chefcorp%20Theme"/></theme>
+<placement><Struct xmlns="http://www.coremedia.com/2008/struct" xmlns:xlink="http://www.w3.org/1999/xlink">
+<StructProperty Name="placements_2">
+<Struct>
+<LinkProperty Name="layout" LinkType="coremedia:///cap/contenttype/Document_" xlink:href="coremedia:///cap/resources/../Options/Settings/Pagegrid/Layouts/Multislot%20Layout.xml" cmexport:path="/Sites/Chef%20Corp%2E/Germany/German/Options/Settings/Pagegrid/Layouts/Multislot%20Layout"/>
+<StructProperty Name="placements">
+<Struct>
+</Struct>
+</StructProperty>
+</Struct>
+</StructProperty>
+<StructListProperty Name="placements">
+<Struct>
+<StructListProperty Name="extendedItems">
+</StructListProperty>
+<BooleanProperty Name="locked">false</BooleanProperty>
+<LinkProperty Name="section" LinkType="coremedia:///cap/contenttype/CMSymbol" xlink:href="coremedia:///cap/resources/../Options/Settings/Pagegrid/Placements/header.xml" cmexport:path="/Sites/Chef%20Corp%2E/Germany/German/Options/Settings/Pagegrid/Placements/header"/>
+</Struct>
+<Struct>
+<StructListProperty Name="extendedItems">
+<Struct>
+<LinkProperty Name="target" LinkType="coremedia:///cap/contenttype/Content_" xlink:href="coremedia:///cap/resources/../Editorial/Personalization/Personalized%20Banner.xml" cmexport:path="/Sites/Chef%20Corp%2E/Germany/German/Editorial/Personalization/Personalized%20Banner"/>
+</Struct>
+<Struct>
+<LinkProperty Name="target" LinkType="coremedia:///cap/contenttype/Content_" xlink:href="coremedia:///cap/resources/../Editorial/Homepage/Kitchen%20Dreams/Meet%20Sally.xml" cmexport:path="/Sites/Chef%20Corp%2E/Germany/German/Editorial/Homepage/Kitchen%20Dreams/Meet%20Sally"/>
+</Struct>
+</StructListProperty>
+<LinkProperty Name="viewtype" LinkType="coremedia:///cap/contenttype/CMViewtype" xlink:href="coremedia:///cap/resources/../Options/Viewtypes/CMChannel/hero.xml" cmexport:path="/Sites/Chef%20Corp%2E/Germany/German/Options/Viewtypes/CMChannel/hero"/>
+<LinkProperty Name="section" LinkType="coremedia:///cap/contenttype/CMSymbol" xlink:href="coremedia:///cap/resources/../Options/Settings/Pagegrid/Placements/hero.xml" cmexport:path="/Sites/Chef%20Corp%2E/Germany/German/Options/Settings/Pagegrid/Placements/hero"/>
+</Struct>
+<Struct>
+<StructListProperty Name="extendedItems">
+<Struct>
+<LinkProperty Name="target" LinkType="coremedia:///cap/contenttype/Content_" xlink:href="coremedia:///cap/resources/../Editorial/Personalization/Personalized%20Teaser.xml" cmexport:path="/Sites/Chef%20Corp%2E/Germany/German/Editorial/Personalization/Personalized%20Teaser"/>
+</Struct>
+<Struct>
+<LinkProperty Name="target" LinkType="coremedia:///cap/contenttype/Content_" xlink:href="coremedia:///cap/resources/Consumers/Consumers%20Page.xml" cmexport:path="/Sites/Chef%20Corp%2E/Germany/German/Navigation/Consumers/Consumers%20Page"/>
+</Struct>
+<Struct>
+<LinkProperty Name="target" LinkType="coremedia:///cap/contenttype/Content_" xlink:href="coremedia:///cap/resources/Company/Company%20Page.xml" cmexport:path="/Sites/Chef%20Corp%2E/Germany/German/Navigation/Company/Company%20Page"/>
+</Struct>
+<Struct>
+<LinkProperty Name="target" LinkType="coremedia:///cap/contenttype/Content_" xlink:href="coremedia:///cap/resources/content-sync-jobs.xml" cmexport:path="/Sites/Chef%20Corp%2E/Germany/German/Navigation/content-sync-jobs"/>
+</Struct>
+</StructListProperty>
+<LinkProperty Name="viewtype" LinkType="coremedia:///cap/contenttype/CMViewtype" xlink:href="coremedia:///cap/resources/../Options/Viewtypes/CMChannel/square.xml" cmexport:path="/Sites/Chef%20Corp%2E/Germany/German/Options/Viewtypes/CMChannel/square"/>
+<LinkProperty Name="section" LinkType="coremedia:///cap/contenttype/CMSymbol" xlink:href="coremedia:///cap/resources/../Options/Settings/Pagegrid/Placements/placement1.xml" cmexport:path="/Sites/Chef%20Corp%2E/Germany/German/Options/Settings/Pagegrid/Placements/placement1"/>
+</Struct>
+<Struct>
+<StructListProperty Name="extendedItems">
+<Struct>
+<LinkProperty Name="target" LinkType="coremedia:///cap/contenttype/Content_" xlink:href="coremedia:///cap/resources/../Editorial/Personalization/Personalized%20Search.xml" cmexport:path="/Sites/Chef%20Corp%2E/Germany/German/Editorial/Personalization/Personalized%20Search"/>
+</Struct>
+<Struct>
+<LinkProperty Name="target" LinkType="coremedia:///cap/contenttype/Content_" xlink:href="coremedia:///cap/resources/../Products/Ranges%20and%20Ovens/Chef%20Range%20CR640%20Easy%20Product.xml" cmexport:path="/Sites/Chef%20Corp%2E/Germany/German/Products/Ranges%20and%20Ovens/Chef%20Range%20CR640%20Easy%20Product"/>
+</Struct>
+<Struct>
+<LinkProperty Name="target" LinkType="coremedia:///cap/contenttype/Content_" xlink:href="coremedia:///cap/resources/../Editorial/Homepage/Product%20Highlights%20Collection.xml" cmexport:path="/Sites/Chef%20Corp%2E/Germany/German/Editorial/Homepage/Product%20Highlights%20Collection"/>
+</Struct>
+<Struct>
+<LinkProperty Name="target" LinkType="coremedia:///cap/contenttype/Content_" xlink:href="coremedia:///cap/resources/../Editorial/Homepage/Company/Press/Events/All%20Events%20Query%20List.xml" cmexport:path="/Sites/Chef%20Corp%2E/Germany/German/Editorial/Homepage/Company/Press/Events/All%20Events%20Query%20List"/>
+</Struct>
+</StructListProperty>
+<LinkProperty Name="section" LinkType="coremedia:///cap/contenttype/CMSymbol" xlink:href="coremedia:///cap/resources/../Options/Settings/Pagegrid/Placements/placement2.xml" cmexport:path="/Sites/Chef%20Corp%2E/Germany/German/Options/Settings/Pagegrid/Placements/placement2"/>
+</Struct>
+<Struct>
+<StructListProperty Name="extendedItems">
+<Struct>
+<LinkProperty Name="target" LinkType="coremedia:///cap/contenttype/Content_" xlink:href="coremedia:///cap/resources/../Products/Blenders%20and%20Food%20Processors/Browne%20BL1300%20Blender%20Product.xml" cmexport:path="/Sites/Chef%20Corp%2E/Germany/German/Products/Blenders%20and%20Food%20Processors/Browne%20BL1300%20Blender%20Product"/>
+</Struct>
+<Struct>
+<LinkProperty Name="target" LinkType="coremedia:///cap/contenttype/Content_" xlink:href="coremedia:///cap/resources/../Products/Cooling%20and%20Storage/Chef%20Cold%20Store%20CCS95%20Freezing%20Storage%20Unit%20Comfort%20Product.xml" cmexport:path="/Sites/Chef%20Corp%2E/Germany/German/Products/Cooling%20and%20Storage/Chef%20Cold%20Store%20CCS95%20Freezing%20Storage%20Unit%20Comfort%20Product"/>
+</Struct>
+<Struct>
+<LinkProperty Name="target" LinkType="coremedia:///cap/contenttype/Content_" xlink:href="coremedia:///cap/resources/../Products/Ranges%20and%20Ovens/Chef%20Range%20CR640%20Easy%20Product.xml" cmexport:path="/Sites/Chef%20Corp%2E/Germany/German/Products/Ranges%20and%20Ovens/Chef%20Range%20CR640%20Easy%20Product"/>
+</Struct>
+<Struct>
+<LinkProperty Name="target" LinkType="coremedia:///cap/contenttype/Content_" xlink:href="coremedia:///cap/resources/../Products/Ranges%20and%20Ovens/Chef%20Range%20CR780%20Standard%20Product.xml" cmexport:path="/Sites/Chef%20Corp%2E/Germany/German/Products/Ranges%20and%20Ovens/Chef%20Range%20CR780%20Standard%20Product"/>
+</Struct>
+<Struct>
+<LinkProperty Name="target" LinkType="coremedia:///cap/contenttype/Content_" xlink:href="coremedia:///cap/resources/../Products/Blenders%20and%20Food%20Processors/Browne%20BL300%20Blender%20Product.xml" cmexport:path="/Sites/Chef%20Corp%2E/Germany/German/Products/Blenders%20and%20Food%20Processors/Browne%20BL300%20Blender%20Product"/>
+</Struct>
+<Struct>
+<LinkProperty Name="target" LinkType="coremedia:///cap/contenttype/Content_" xlink:href="coremedia:///cap/resources/../Products/Blenders%20and%20Food%20Processors/Browne%20BL700%20Blender%20Product.xml" cmexport:path="/Sites/Chef%20Corp%2E/Germany/German/Products/Blenders%20and%20Food%20Processors/Browne%20BL700%20Blender%20Product"/>
+</Struct>
+</StructListProperty>
+<LinkProperty Name="viewtype" LinkType="coremedia:///cap/contenttype/CMViewtype" xlink:href="coremedia:///cap/resources/../Options/Viewtypes/CMChannel/carousel.xml" cmexport:path="/Sites/Chef%20Corp%2E/Germany/German/Options/Viewtypes/CMChannel/carousel"/>
+<LinkProperty Name="section" LinkType="coremedia:///cap/contenttype/CMSymbol" xlink:href="coremedia:///cap/resources/../Options/Settings/Pagegrid/Placements/placement3.xml" cmexport:path="/Sites/Chef%20Corp%2E/Germany/German/Options/Settings/Pagegrid/Placements/placement3"/>
+</Struct>
+<Struct>
+<StructListProperty Name="extendedItems">
+<Struct>
+<LinkProperty Name="target" LinkType="coremedia:///cap/contenttype/CMTeasable" xlink:href="coremedia:///cap/resources/../Editorial/Site-Wide/Footer/Imprint%20Article.xml" cmexport:path="/Sites/Chef%20Corp%2E/Germany/German/Editorial/Site-Wide/Footer/Imprint%20Article"/>
+</Struct>
+<Struct>
+<LinkProperty Name="target" LinkType="coremedia:///cap/contenttype/CMTeasable" xlink:href="coremedia:///cap/resources/Hidden%20Navigation/Contact%20Us%20Page.xml" cmexport:path="/Sites/Chef%20Corp%2E/Germany/German/Navigation/Hidden%20Navigation/Contact%20Us%20Page"/>
+</Struct>
+<Struct>
+<LinkProperty Name="target" LinkType="coremedia:///cap/contenttype/CMTeasable" xlink:href="coremedia:///cap/resources/../Editorial/Site-Wide/Footer/Privacy%20Policy.xml" cmexport:path="/Sites/Chef%20Corp%2E/Germany/German/Editorial/Site-Wide/Footer/Privacy%20Policy"/>
+</Struct>
+<Struct>
+<LinkProperty Name="target" LinkType="coremedia:///cap/contenttype/CMTeasable" xlink:href="coremedia:///cap/resources/../Editorial/Site-Wide/Footer/Terms%20of%20Use.xml" cmexport:path="/Sites/Chef%20Corp%2E/Germany/German/Editorial/Site-Wide/Footer/Terms%20of%20Use"/>
+</Struct>
+<Struct>
+<LinkProperty Name="target" LinkType="coremedia:///cap/contenttype/CMTeasable" xlink:href="coremedia:///cap/resources/../Editorial/Site-Wide/Footer/Cookies.xml" cmexport:path="/Sites/Chef%20Corp%2E/Germany/German/Editorial/Site-Wide/Footer/Cookies"/>
+</Struct>
+<Struct>
+<LinkProperty Name="target" LinkType="coremedia:///cap/contenttype/CMTeasable" xlink:href="coremedia:///cap/resources/Sitemap/Sitemap%20Page.xml" cmexport:path="/Sites/Chef%20Corp%2E/Germany/German/Navigation/Sitemap/Sitemap%20Page"/>
+</Struct>
+<Struct>
+<LinkProperty Name="target" LinkType="coremedia:///cap/contenttype/CMTeasable" xlink:href="coremedia:///cap/resources/../Editorial/Site-Wide/Integration/External%20Embedding/Embedding%20-%20End%20of%20Page%20HTML%20Fragment.xml" cmexport:path="/Sites/Chef%20Corp%2E/Germany/German/Editorial/Site-Wide/Integration/External%20Embedding/Embedding%20-%20End%20of%20Page%20HTML%20Fragment"/>
+</Struct>
+</StructListProperty>
+<BooleanProperty Name="locked">false</BooleanProperty>
+<LinkProperty Name="section" LinkType="coremedia:///cap/contenttype/CMSymbol" xlink:href="coremedia:///cap/resources/../Options/Settings/Pagegrid/Placements/footer.xml" cmexport:path="/Sites/Chef%20Corp%2E/Germany/German/Options/Settings/Pagegrid/Placements/footer"/>
+</Struct>
+<Struct>
+<StructListProperty Name="extendedItems">
+<Struct>
+<LinkProperty Name="target" LinkType="coremedia:///cap/contenttype/Content_" xlink:href="coremedia:///cap/resources/Professionals/Professionals%20Page.xml" cmexport:path="/Sites/Chef%20Corp%2E/Germany/German/Navigation/Professionals/Professionals%20Page"/>
+</Struct>
+<Struct>
+<LinkProperty Name="target" LinkType="coremedia:///cap/contenttype/Content_" xlink:href="coremedia:///cap/resources/Consumers/Consumers%20Page.xml" cmexport:path="/Sites/Chef%20Corp%2E/Germany/German/Navigation/Consumers/Consumers%20Page"/>
+</Struct>
+<Struct>
+<LinkProperty Name="target" LinkType="coremedia:///cap/contenttype/Content_" xlink:href="coremedia:///cap/resources/Company/Company%20Page.xml" cmexport:path="/Sites/Chef%20Corp%2E/Germany/German/Navigation/Company/Company%20Page"/>
+</Struct>
+</StructListProperty>
+<LinkProperty Name="section" LinkType="coremedia:///cap/contenttype/CMSymbol" xlink:href="coremedia:///cap/resources/../Options/Settings/Pagegrid/Placements/footer-navigation.xml" cmexport:path="/Sites/Chef%20Corp%2E/Germany/German/Options/Settings/Pagegrid/Placements/footer-navigation"/>
+</Struct>
+</StructListProperty>
+</Struct></placement>
+<header/>
+<footer/>
+</CMChannel>
