@@ -24,7 +24,7 @@ It introduces the ContentType `ContentSync`, which is used as a Job-Definition w
   * `localSettings.sync-type`: Select different types of syncs: 
     * `rssImport` (you must provide a `sourceContent`-CMFolderProperties resource named `_folderToSync`) 
     * `xmlImport` (you must provide a `localSettings.export-storage-url` fully qualified. E.g.: `s3://blackapp-content-sync/1234.zip`)  
-    * `xmlExport` (you must provide a `localSettings.export-storage-url` base url. E.g.: `s3://blackapp-content-sync/`)
+    * `xmlExport` (you must provide a `localSettings.export-storage-url` base url. E.g.: `s3://blackapp-content-sync/`). This is the only job currently which logs to the `logOutput` aka "Execution protocol" field.
     * `cleanXmlExportsInS3Bucket` (document me)
   * `localSettings.export-storage-url`: 
     * file:///
