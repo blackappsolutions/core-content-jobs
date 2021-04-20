@@ -4,7 +4,6 @@ import com.twelvemonkeys.lang.StringUtil;
 import de.bas.contentsync.beans.RepeatEvery;
 import de.bas.contentsync.jobs.ContentSyncJob;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.scheduling.TaskScheduler;
 import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.GetMapping;
