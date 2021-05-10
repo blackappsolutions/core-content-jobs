@@ -36,6 +36,7 @@
                              {value: 'xmlImport'},
                              {value: 'xmlExport'},
                              {value: 'bulkPublish'},
+                             {value: 'bulkUnpublish'},
                              {value: 'cleanXmlExportsInS3Bucket'}
                            ]}"/>
           </editor:store>

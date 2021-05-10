@@ -27,6 +27,7 @@ It introduces the ContentType `ContentSync`, which is used as a Job-Definition w
     * `xmlExport` (you must provide a `localSettings.export-storage-url` base url. E.g.: `s3://blackapp-content-sync/`). This is the only job currently which logs to the `logOutput` aka "Execution protocol" field.
     * `cleanXmlExportsInS3Bucket` (document me)
     * `bulkPublish` (document me)
+    * `bulkUnpublish` (document me)
   * `localSettings.export-storage-url`: 
     * file:///
     * s3://

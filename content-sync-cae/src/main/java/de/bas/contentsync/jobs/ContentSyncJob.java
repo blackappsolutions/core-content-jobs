@@ -37,6 +37,9 @@ public abstract class ContentSyncJob implements Callable<ContentSync> {
             successfulRun = true;
         } catch (Exception e) {
             log.error("Error while syncing {}", contentSync.getContentId(), e);
+            if (listAppender != null) {
+                listAppender.addError("Job run failed.", e);
+            }
             successfulRun = false;
         }
         if (listAppender != null) {
@@ -54,7 +57,7 @@ public abstract class ContentSyncJob implements Callable<ContentSync> {
         Logger logger = (Logger) LoggerFactory.getLogger(name);
         return getListAppender(logger);
     }
-    
+
     protected ListAppender<ILoggingEvent> getLoggingEventListAppender(Class<?> clazz) {
         Logger logger = (Logger) LoggerFactory.getLogger(clazz);
         return getListAppender(logger);

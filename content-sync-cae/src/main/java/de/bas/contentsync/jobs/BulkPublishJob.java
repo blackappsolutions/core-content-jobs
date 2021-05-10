@@ -27,6 +27,7 @@ import java.util.List;
 @Component("bulkPublish")
 public class BulkPublishJob extends ContentSyncJob {
 
+    protected String folderPath;
     protected static final String DUMMY_VALUE = "'connection' below will be used (but parameters are mandatory)";
     protected List<String> cliArguments = Arrays.asList(
         "-url", DUMMY_VALUE, "-u", DUMMY_VALUE, "-p", DUMMY_VALUE,
@@ -42,7 +43,7 @@ public class BulkPublishJob extends ContentSyncJob {
 
     @Override
     void doTheSync() throws Exception {
-        String folderPath = getFolderPath();
+        folderPath = getFolderPath();
         BulkPublish bulkPublish = new BulkPublish() {
             @Override
             public int run(String[] args) {
@@ -61,7 +62,7 @@ public class BulkPublishJob extends ContentSyncJob {
                 }
             }
 
-            private void assertThatFolderPathIsPlaceApproved() {
+            private void assertThatFolderPathIsPlaceApproved() { // https://documentation.coremedia.com/cmcc-10/artifacts/2104/webhelp/uapi-developer-en/content/PublicationService.html
                 ContentRepository contentRepository = connection.getContentRepository();
                 Content givenRootFolder = contentRepository.getRoot().getChild(folderPath);
                 PublicationService publicationService = contentRepository.getPublicationService();
