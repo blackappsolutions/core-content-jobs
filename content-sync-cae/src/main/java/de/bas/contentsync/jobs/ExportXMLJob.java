@@ -46,10 +46,8 @@ public class ExportXMLJob extends ContentSyncJob {
     }
 
     @Override
-    protected void doTheSync() throws Exception {
-
+    protected void doTheSync() {
         listAppender = getLoggingEventListAppender(ServerXmlExport.class);
-
         ServerXmlExport serverExporter = new ServerXmlExport(contentSync.getContent().getRepository().getConnection(), null);
         String[] ids = getContentIds();
         serverExporter.setContentIds(ids);
@@ -59,14 +57,6 @@ public class ExportXMLJob extends ContentSyncJob {
         serverExporter.init();
         serverExporter.doExport();
         log.info("Finished {} server-export of content-ids {}", contentSync.recursive() ? "recursive" : "", ids);
-    }
-
-    private ListAppender<ILoggingEvent> getLoggingEventListAppender(Class<ServerXmlExport> clazz) {
-        Logger logger = (Logger)LoggerFactory.getLogger(clazz);
-        ListAppender<ILoggingEvent> listAppender = new ListAppender<>();
-        listAppender.start();
-        logger.addAppender(listAppender);
-        return listAppender;
     }
 
     private String[] getContentIds() {
