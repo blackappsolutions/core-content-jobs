@@ -74,7 +74,7 @@ This way, you will be able to merge new commits made in this repo back to your f
 
 - From the project's root folder, clone this repository as submodule into the extensions folder. Make sure to use the branch name that matches your workspace version. 
     ```
-    git submodule add  https://github.com/blackappsolutions/core-content-jobs.git modules/extensions/core-content-jobs
+    git submodule add https://github.com/blackappsolutions/core-content-jobs.git modules/extensions/core-content-jobs
     ```
 
 - Use the extension tool in the root folder of the project to link the modules into your workspace.
@@ -86,7 +86,7 @@ This way, you will be able to merge new commits made in this repo back to your f
     # mvn -f workspace-configuration/extensions extensions:list-extension-points -q
     
     # Enables the extension. Check e.g. apps/cae/modules/extension-config/cae-extension-dependencies/pom.xml afterwards. 
-    mvn -f workspace-configuration/extensions extensions:sync -Denable=content-sync
+    mvn -f workspace-configuration/extensions extensions:sync -Denable=core-content-jobs
   
     # First build, the fastest way ... 
     mvn clean install -DskipTests -DskipThemes=true -DskipContent=true -Dskip-joo-unit-tests=true \ 
