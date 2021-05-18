@@ -1,8 +1,10 @@
-# Content Sync
+# Core Content Jobs - Framework to embed jobs in content, when you don't have an evironment to run jobs (e.g. when you use CMCC-S)
+
+(developed against Version 2010.3)
 
 ## Overview
-CoreMedia CMS Extension originally created to sync Content from A to B (developed against Version 2010.3). 
-Could also be used as a framework to embed content related jobs. 
+CoreMedia CMS Extension to run any kind of Jobs in your Preview-CAE: Import-/Export-Jobs, CoreMedia-Utilities, .. 
+
 Especially in the CMCC-S product - hosted by CoreMedia - which allows no Unified-API-Clients in higher environments (UAT/Prod), you can use it as a task-scheduler/runtime for
 * importing content
 * cleanup things
