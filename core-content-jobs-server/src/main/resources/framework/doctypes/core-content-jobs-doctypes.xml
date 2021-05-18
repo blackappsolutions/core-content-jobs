@@ -11,7 +11,7 @@
   <ImportDocType Name="CMFolderProperties"/>
   <!--
   https://documentation.coremedia.com/cmcc-10/artifacts/2104/webhelp/contentserver-en/content/RenamingDocumentTypes.html
-  ALTER TABLE table_name RENAME TO new_table_name;
+  ALTER TABLE ContentSync RENAME TO ContentJob;
   UPDATE Resources SET documentType_ = 'ContentJob' WHERE documentType_ = 'ContentSync'
   UPDATE CmRules SET docType = 'ContentJob' WHERE docType = 'ContentSync'
   -->
