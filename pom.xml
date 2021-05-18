@@ -3,16 +3,16 @@
   <modelVersion>4.0.0</modelVersion>
 
   <groupId>com.coremedia.blueprint</groupId>
-  <artifactId>content-sync-extension</artifactId>
+  <artifactId>core-content-jobs-extension</artifactId>
   <packaging>pom</packaging>
   <version>1-SNAPSHOT</version>
 
   <modules>
-    <module>content-sync-cae</module>
-    <module>content-sync-server</module>
-    <module>content-sync-studio-lib</module>
-    <module>content-sync-studio-plugin</module>
-    <module>content-sync-test-data</module>
+    <module>core-content-jobs-cae</module>
+    <module>core-content-jobs-server</module>
+    <module>core-content-jobs-studio-lib</module>
+    <module>core-content-jobs-studio-plugin</module>
+    <module>core-content-jobs-test-data</module>
   </modules>
 
 </project>

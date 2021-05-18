@@ -15,13 +15,13 @@ It introduces the ContentType `ContentSync`, which is used as a Job-Definition w
   * `sourceContent` (multiple items are supported): Create a new resource of type `FolderProperties` and name it `_folderToSync` in the CMS folder you 
     want export/sync (serves as a marker resource). Add this resource into the `sourceFolder`-Property.
     Or just supply any other resource.
-  * `active`: Used to arm this job, when enabled and the resource was checked-in. This will also cause a check-out/-in of the resource by the provided `content-sync.user` (see below).
+  * `active`: Used to arm this job, when enabled and the resource was checked-in. This will also cause a check-out/-in of the resource by the provided `content-jobs.user` (see below).
   * `localSettings.start-at` (optional): Supply a date at which this sync job should start.  
   * `localSettings.repeat-every` (optional):
     * `HOUR`
     * `DAY`
     * `WEEK`
-  * `localSettings.sync-type`: Select different types of syncs: 
+  * `localSettings.job-type`: Select different types of syncs: 
     * `rssImport` (you must provide a `sourceContent`-CMFolderProperties resource named `_folderToSync`) 
     * `xmlImport` (you must provide a `localSettings.export-storage-url` fully qualified. E.g.: `s3://blackapp-content-sync/1234.zip`)  
     * `xmlExport` (you must provide a `localSettings.export-storage-url` base url. E.g.: `s3://blackapp-content-sync/`). This is the only job currently which logs to the `logOutput` aka "Execution protocol" field.
@@ -44,8 +44,8 @@ It introduces the ContentType `ContentSync`, which is used as a Job-Definition w
     * `AWS_SECRET_ACCESS_KEY` in the system environment (see global/deployment/docker/compose/default.yml).
   ---
   To make this extension work, you need to create a separate `content-sync`-admin-user, which creates a new version of each active ContentSync-Resource after a job run. You can provide the users name/pass with the following variables in the system environment or application.properties:
-  * `CONTENTSYNC_USER` | `content-sync.user=` and 
-  * `CONTENTSYNC_PASS` | `content-sync.pass=`
+  * `CONTENTJOBS_USER` | `content-jobs.user=` and 
+  * `CONTENTJOBS_PASS` | `content-jobs.pass=`
 
   !!! IF THIS USER WAS NOT SET-UP, THE CAE WILL NOT BOOT !!!
   ---
@@ -69,7 +69,7 @@ This way, you will be able to merge new commits made in this repo back to your f
 
 - From the project's root folder, clone this repository as submodule into the extensions folder. Make sure to use the branch name that matches your workspace version. 
     ```
-    git submodule add  https://github.com/blackappsolutions/content-sync.git modules/extensions/content-sync
+    git submodule add  https://github.com/blackappsolutions/core-content-jobs.git modules/extensions/core-content-jobs
     ```
 
 - Use the extension tool in the root folder of the project to link the modules into your workspace.
@@ -93,7 +93,7 @@ This way, you will be able to merge new commits made in this repo back to your f
   - a new Placeholder-ViewType `content-sync-jobs` and
   - a Placeholder-Resource that has this ViewType set.
   - Set the Placeholder-Resource in an Article or Page OR
-  - issue `/blueprint/servlet/dynamic/content-sync-jobs/terminate/1234`directly.
+  - issue `/blueprint/servlet/dynamic/content-jobs/terminate/1234`directly.
   
 ## Further Development
   
