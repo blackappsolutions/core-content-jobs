@@ -11,9 +11,9 @@ CoreMedia CMS Extension to run any kind of Jobs in your Preview-CAE:
 * create content-related reports
 * ...
 
-Especially in the CMCC-S product - hosted by CoreMedia - which allows no Unified-API-Clients in higher environments (UAT/Prod), you can use it as a task-scheduler/runtime for
+Especially in the CMCC-S product - hosted by CoreMedia - which allows no Unified-API-Clients in higher environments (UAT/Prod), you can use it as a task-scheduler/runtime-environment.
 
-Runtime is actually the `preview-cae`, which is defined in https://github.com/blackappsolutions/content-sync/blob/1331f39981a71cc3a9d12c5f6a9cac7f566171af/content-sync-cae/pom.xml#L16.
+Embedded actually in the `preview-cae` (but must not necessarily live there).
 
 It introduces the ContentType `ContentSync`, which is used as a Job-Definition with the following properties:
 
@@ -102,11 +102,11 @@ This way, you will be able to merge new commits made in this repo back to your f
   
 ## Further Development
   
-### Adapt the `ContentSync` DocType to your needs
+### Adapt the `ContentJob` DocType to your needs
 
-* [Server](content-sync-server/src/main/resources/framework/doctypes/content-sync-doctypes.xml)
-* [Studio](content-sync-studio-plugin/src/main/joo/de/bas/contentsync/studio/form/ContentSyncForm.mxml)
-* [CAE](content-sync-cae/src/main/resources/framework/spring/content-sync-contentbeans.xml)<br>
+* [Server](core-content-jobs-server/src/main/resources/framework/doctypes/core-content-jobs-doctypes.xml)
+* [Studio](core-content-jobs-studio-plugin/src/main/joo/de/bas/content/studio/form/ContentJobForm.mxml)
+* [CAE](core-content-jobs-cae/src/main/resources/framework/spring/core-content-jobs-contentbeans.xml)<br>
   You can generate the contentbeans from scratch with this command: 
   ```                                 
   cd content-sync-cae
@@ -125,7 +125,7 @@ apps/cae/spring-boot/cae-preview-app/src/main/resources/application-local.proper
 ########################################################################################################################
 cae-base-lib.resources=${blueprint-dir}/modules/cae/cae-base-lib/src/main/resources,${blueprint-dir}/modules/cae/cae-base-lib/src/main/resources/META-INF/resources
 [..]
-content-sync-cae.resources=${blueprint-dir}/../../modules/extensions/content-sync/content-sync-cae/src/main/resources/META-INF/resources
+content-sync-cae.resources=${blueprint-dir}/../../modules/extensions/core-content-jobs/content-sync-cae/src/main/resources/META-INF/resources
 
 # Load web resources from (local) workspace to support short CAE development round-trips
 spring.boot.tomcat.extraResources=\
