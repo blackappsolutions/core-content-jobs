@@ -9,6 +9,7 @@ CoreMedia CMS Extension to run any kind of Jobs in your Preview-CAE:
 * Import-/Export-Jobs, 
 * CoreMedia-Utilities (Cleanup, Publish, ..)
 * create content-related reports
+* ...
 
 Especially in the CMCC-S product - hosted by CoreMedia - which allows no Unified-API-Clients in higher environments (UAT/Prod), you can use it as a task-scheduler/runtime for
 
