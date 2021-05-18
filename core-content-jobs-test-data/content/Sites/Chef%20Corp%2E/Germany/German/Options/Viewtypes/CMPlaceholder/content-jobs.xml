@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<CMViewtype folder="/Sites/Chef Corp./Germany/German/Options/Viewtypes/CMPlaceholder" name="content-jobs" xmlns:cmexport="http://www.coremedia.com/2012/cmexport">
+<externalRefId></externalRefId>
+<locale>de-DE</locale>
+<master/>
+<description>List all current active jobs</description>
+<icon href="content-sync-jobs.icon.svg%2Bxml" mimetype="image/svg+xml"/>
+<layout>content-jobs</layout>
+</CMViewtype>

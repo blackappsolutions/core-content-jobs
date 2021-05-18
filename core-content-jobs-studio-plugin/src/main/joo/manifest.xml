@@ -1,0 +1,4 @@
+<?xml version="1.0"?>
+<componentPackage>
+  <component class="de.bas.content.studio.ContentJobStudioPlugin"/>
+</componentPackage>
