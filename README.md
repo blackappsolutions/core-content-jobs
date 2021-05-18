@@ -5,13 +5,12 @@ Framework to embed jobs in content, when you don't have an evironment to run job
 (developed against Version 2010.3)
 
 ## Overview
-CoreMedia CMS Extension to run any kind of Jobs in your Preview-CAE: Import-/Export-Jobs, CoreMedia-Utilities, .. 
+CoreMedia CMS Extension to run any kind of Jobs in your Preview-CAE: 
+* Import-/Export-Jobs, 
+* CoreMedia-Utilities (Cleanup, Publish, ..)
+* create content-related reports
 
 Especially in the CMCC-S product - hosted by CoreMedia - which allows no Unified-API-Clients in higher environments (UAT/Prod), you can use it as a task-scheduler/runtime for
-* importing content
-* cleanup things
-* create content-related reports
-* ...
 
 Runtime is actually the `preview-cae`, which is defined in https://github.com/blackappsolutions/content-sync/blob/1331f39981a71cc3a9d12c5f6a9cac7f566171af/content-sync-cae/pom.xml#L16.
 
