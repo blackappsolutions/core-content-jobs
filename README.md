@@ -12,6 +12,7 @@ Especially in the CMCC-S product - hosted by CoreMedia - which allows no Unified
 * cleanup things
 * create content-related reports
 * ...
+
 Runtime is actually the `preview-cae`, which is defined in https://github.com/blackappsolutions/content-sync/blob/1331f39981a71cc3a9d12c5f6a9cac7f566171af/content-sync-cae/pom.xml#L16.
 
 It introduces the ContentType `ContentSync`, which is used as a Job-Definition with the following properties:
