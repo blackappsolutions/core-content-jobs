@@ -125,12 +125,12 @@ apps/cae/spring-boot/cae-preview-app/src/main/resources/application-local.proper
 ########################################################################################################################
 cae-base-lib.resources=${blueprint-dir}/modules/cae/cae-base-lib/src/main/resources,${blueprint-dir}/modules/cae/cae-base-lib/src/main/resources/META-INF/resources
 [..]
-content-sync-cae.resources=${blueprint-dir}/../../modules/extensions/core-content-jobs/content-sync-cae/src/main/resources/META-INF/resources
+content-jobs-cae.resources=${blueprint-dir}/../../modules/extensions/core-content-jobs/core-content-jobs-cae/src/main/resources/META-INF/resources
 
 # Load web resources from (local) workspace to support short CAE development round-trips
 spring.boot.tomcat.extraResources=\
   [..]
-  ${content-sync-cae.resources}
+  ${content-jobs-cae.resources}
 ```
 
 ---
