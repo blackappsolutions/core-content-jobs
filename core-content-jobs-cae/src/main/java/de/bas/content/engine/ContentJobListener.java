@@ -9,15 +9,18 @@ import com.coremedia.objectserver.beans.ContentBeanFactory;
 import de.bas.content.beans.ContentJob;
 import de.bas.content.jobs.AbstractContentJob;
 import lombok.extern.slf4j.Slf4j;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Component;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
 
 import javax.annotation.PostConstruct;
 import java.util.Collection;
 
+import static com.coremedia.blueprint.base.links.UriConstants.Segments.PREFIX_DYNAMIC;
+import static com.coremedia.blueprint.base.links.UriConstants.Segments.SEGMENT_ID;
 import static de.bas.content.beans.ContentJob.CONTENTTYPE_CONTENTJOB;
 
 /**
@@ -25,9 +28,9 @@ import static de.bas.content.beans.ContentJob.CONTENTTYPE_CONTENTJOB;
  */
 @Slf4j
 @Component
+@RequestMapping
 public class ContentJobListener extends ContentRepositoryListenerBase {
-
-    private static final Logger LOG = LoggerFactory.getLogger(ContentJobListener.class);
+    public static final String EXECUTE_PATTERN = '/' + PREFIX_DYNAMIC + "/content-jobs/execute" + "/{" + SEGMENT_ID + '}';
 
     @Value("${initial.query}")
     private String initialQuery;
@@ -55,12 +58,22 @@ public class ContentJobListener extends ContentRepositoryListenerBase {
     public void contentCheckedIn(ContentCheckedInEvent event) {
         Content content = event.getContent();
         if (CONTENTTYPE_CONTENTJOB.equals(content.getType().getName())) {
-            handleContentJobResource(content);
+            handleRawContentJob(content);
         }
     }
 
-    private void handleContentJobResource(Content content) {
+    private void handleRawContentJob(Content content) {
         ContentJob contentJob = contentBeanFactory.createBeanFor(content, ContentJob.class);
+        handleContentJob(contentJob);
+    }
+
+    @GetMapping(value = EXECUTE_PATTERN)
+    public Object handleExecuteRequest(@PathVariable(SEGMENT_ID) ContentJob contentJob){
+        handleContentJob(contentJob);
+        return "Job started";
+    }
+    
+    private void handleContentJob(ContentJob contentJob) {
         if ((contentJob != null) && contentJob.isActive()) {
             startJobThread(contentJob);
         }
@@ -73,7 +86,7 @@ public class ContentJobListener extends ContentRepositoryListenerBase {
 
     private AbstractContentJob getContentJob(ContentJob contentJob) {
         String type = contentJob.getType();
-        LOG.debug("Try to create job bean: {}", type);
+        log.debug("Try to create job bean: {}", type);
         return (AbstractContentJob) appContext.getBean(type, contentJob, contentWriter);
     }
 
@@ -88,9 +101,9 @@ public class ContentJobListener extends ContentRepositoryListenerBase {
     private void executeInitialContentQuery() {
         QueryService queryService = contentRepository.getQueryService();
         Collection<Content> activeContentJobs = queryService.poseContentQuery(initialQuery);
-        LOG.info("Found {} active ContentJob resources", activeContentJobs.size());
+        log.info("Found {} active ContentJob resources", activeContentJobs.size());
         for (Content content : activeContentJobs) {
-            handleContentJobResource(content);
+            handleRawContentJob(content);
         }
     }
 }
