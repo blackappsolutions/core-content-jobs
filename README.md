@@ -42,11 +42,18 @@ It introduces the ContentType `ContentSync`, which is used as a Job-Definition w
       * `xmlImport`-Jobs to provide a zip with content to import.
       * `cleanXmlExportsInS3Bucket`-Jobs to provide a s3-Bucket folder path like `s3://myBucketName/myStorageFolder/`
     <br/><br/>
+        
     **Note:** If you want to use s3 buckets, keep in mind, that you can define only ONE bucket per system at the moment, 
     because it is not possible to pass s3-credentials on the url or on any other way to CoreMedia's ServerExporter, 
-    except with the variables 
+    except with this variables
+    * `AWS_REGION`,    
     * `AWS_ACCESS_KEY_ID` and 
-    * `AWS_SECRET_ACCESS_KEY` in the system environment (see global/deployment/docker/compose/default.yml).
+    * `AWS_SECRET_ACCESS_KEY` in the system environment.
+      
+    You can set these variables in the docker ecosystem 
+      * in some docker-compose file like `global/deployment/docker/compose/default.yml` or
+      * `apps/cae/docker/cae-preview/Dockerfile` directly (no other chance on CMCC-S). 
+      
   ---
   To make this extension work, you need to create a separate `content-sync`-admin-user, which creates a new version of each active ContentSync-Resource after a job run. You can provide the users name/pass with the following variables in the system environment or application.properties:
   * `CONTENTJOBS_USER` | `content-jobs.user=` and 
@@ -99,6 +106,12 @@ This way, you will be able to merge new commits made in this repo back to your f
   - a Placeholder-Resource that has this ViewType set.
   - Set the Placeholder-Resource in an Article or Page OR
   - issue `/blueprint/servlet/dynamic/content-jobs/terminate/1234`directly.
+
+- if you want to have more log output, use
+  ```properties
+  logging.level.de.bas.content=debug
+  ```         
+  in your `apps/cae/spring-boot/cae-preview-app/src/main/resources/application.properties`.
   
 ## Further Development
   

@@ -3,7 +3,7 @@
         xmlns:fx="http://ns.adobe.com/mxml/2009"
         xmlns:editor="exml:com.coremedia.cms.editor.sdk.config"
         xmlns="exml:ext.config"
-        xmlns:contentsync="de.bas.content.studio.form.*"
+        xmlns:contentjob="de.bas.content.studio.form.*"
         xmlns:editor="exml:com.coremedia.cms.editor.sdk.config"
         xmlns:local="de.bas.content.studio.*"
         xmlns:quickcreate="com.coremedia.cms.editor.sdk.quickcreate.*"
@@ -17,7 +17,7 @@
   <fx:Script><![CDATA[
     import mx.resources.ResourceManager;
 
-    public static const xtype:String = "de.bas.contentsync.studio.contentJobStudioPlugin";
+    public static const xtype:String = "de.bas.content.studio.contentJobStudioPlugin";
 
     public native function ContentJobStudioPlugin(config:ContentJobStudioPlugin = null);
     ]]></fx:Script>
@@ -28,7 +28,7 @@
       <editor:plugins>
         <editor:AddTabbedDocumentFormsPlugin>
           <editor:documentTabPanels>
-            <contentsync:ContentJobForm itemId="ContentSync"/>
+            <contentjob:ContentJobForm itemId="ContentJob"/>
           </editor:documentTabPanels>
         </editor:AddTabbedDocumentFormsPlugin>
       </editor:plugins>
@@ -38,7 +38,7 @@
       <editor:plugins>
         <ui:AddItemsPlugin index="0">
           <ui:items>
-            <quickcreate:QuickCreateMenuItem contentType="ContentSync"/>
+            <quickcreate:QuickCreateMenuItem contentType="ContentJob"/>
           </ui:items>
         </ui:AddItemsPlugin>
       </editor:plugins>

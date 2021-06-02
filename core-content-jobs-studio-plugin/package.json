@@ -1,7 +1,7 @@
 {
   "studioPlugins": [
     {
-      "mainClass": "de.bas.contentsync.studio.ContentJobStudioPlugin",
+      "mainClass": "de.bas.content.studio.ContentJobStudioPlugin",
       "name": "ContentJob Extension"
     }
   ]
