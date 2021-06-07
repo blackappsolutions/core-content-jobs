@@ -130,13 +130,14 @@ To instrument this job, the following properties needs to be set:
     
 
 bulkPublish
+bulkUnpublish
 -----------
 
 Runs the CoreMedia tool [BulkPublish](https://documentation.coremedia.com/cmcc-10/artifacts/2104/webhelp/contentserver-en/content/bulkpublish.html) with the following default properties:
 
 "--checkin"  
 "--approve"  
-**"--publish"**
+**"--publish"**/**"--unpublish"**
 "--verbose"  
 
 To instrument this job, the following properties needs to be set:  
@@ -144,15 +145,3 @@ To instrument this job, the following properties needs to be set:
 *   [Define a folder](#id-09.CoreContentJobs-defineFolder)
 *   Define "Job type" **bulkPublish**
 *   Check **active** and push the **Finish editing and apply all changes button**
-
-bulkUnpublish
--------------
-
-Runs the CoreMedia tool [BulkPublish](https://documentation.coremedia.com/cmcc-10/artifacts/2104/webhelp/contentserver-en/content/bulkpublish.html) with the following default properties:
-
-"--checkin"  
-"--approve"  
-**"--unpublish"**  
-"--verbose"  
-
-To instrument this job, sie the instructions [above](#instrumentBulkJob)
