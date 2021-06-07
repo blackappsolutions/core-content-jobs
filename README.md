@@ -130,12 +130,7 @@ To instrument this job, the following properties needs to be set:
 <a name="bulk"></a>bulkPublish / bulkUnpublish
 ----------------------------------------------
 
-Runs the CoreMedia tool [BulkPublish](https://documentation.coremedia.com/cmcc-10/artifacts/2104/webhelp/contentserver-en/content/bulkpublish.html) with the following default properties:
-
-"--checkin"  
-"--approve"  
-**"--publish"**/**"--unpublish"**
-"--verbose"  
+Runs the CoreMedia tool [BulkPublish](https://documentation.coremedia.com/cmcc-10/artifacts/2104/webhelp/contentserver-en/content/bulkpublish.html) with the following default parameters: `--verbose --checkin --approve --publish` (or `--unpublish`)
 
 To instrument this job, the following properties needs to be set:  
 
