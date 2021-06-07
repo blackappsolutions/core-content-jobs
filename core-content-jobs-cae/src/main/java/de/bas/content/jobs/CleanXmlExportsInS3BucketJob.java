@@ -30,7 +30,6 @@ public class CleanXmlExportsInS3BucketJob extends AbstractContentJob implements 
         log.info("About to start cleanXmlExportsInS3Bucket job");
         AmazonS3 s3client = AmazonS3ClientBuilder
             .standard()
-            .withRegion(contentJob.getS3BucketRegion())
             .build();
 
         String exportStorageURL = contentJob.getExportStorageURL();
