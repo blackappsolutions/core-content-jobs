@@ -20,12 +20,12 @@ But you can also develop new jobs very easy:
 
 1.  Create a new class in modules/extensions/blackapp-core-content-jobs/core-content-jobs-cae/src/main/java/de/bas/content/jobs
 2.  The class must extend de.bas.content.jobs.AbstractContentJob and should provide the following annotations
-
-@Slf4j
-@Scope("prototype")
-@Component("rssImport")
-public class ImportRSSJob extends AbstractContentJob {
-
+    ```
+    @Slf4j
+    @Scope("prototype")
+    @Component("rssImport")
+    public class ImportRSSJob extends AbstractContentJob {
+    ```
 \=> After deplyoment, this class will be usable with the name **rssImport** in **localSettings.job-type** of ContentJob-resources in CMS.  
   
 
