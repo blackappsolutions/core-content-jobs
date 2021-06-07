@@ -1,7 +1,7 @@
 **Core Content Jobs**
 =====================
 
-[Overview](#Overview) | [RSS Import](#rssImport) |  [XML Export](#xmlExport) | [XML Import](#xmlImport) | [CleanS3Bucket](#cleanXmlExportsInS3Bucket) | [Mass Publication/Withdrawal](#bulkPublish / bulkUnpublish)
+[Overview](#Overview) | [RSS Import](#rssImport) |  [XML Export](#xmlExport) | [XML Import](#xmlImport) | [CleanS3Bucket](#cleanXmlExportsInS3Bucket) | [Mass Publication \/ Withdrawal](#bulkPublish / bulkUnpublish)
 
 Overview
 --------
