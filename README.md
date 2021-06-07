@@ -136,7 +136,7 @@ Runs the CoreMedia tool [BulkPublish](https://documentation.coremedia.com/cmcc-1
 
 "--checkin"  
 "--approve"  
-"--publish"  
+**"--publish"**
 "--verbose"  
 
 To instrument this job, the following properties needs to be set:  
@@ -152,11 +152,7 @@ Runs the CoreMedia tool [BulkPublish](https://documentation.coremedia.com/cmcc-1
 
 "--checkin"  
 "--approve"  
-"--unpublish"  
+**"--unpublish"**  
 "--verbose"  
 
-To instrument this job, the following properties needs to be set:
-
-*   [Define a folder](#id-09.CoreContentJobs-defineFolder)
-*   Define "Job type" **bulkPublish**
-*   Check **active** and push the **Finish editing and apply all changes button**
+To instrument this job, sie the instructions [above](#instrumentBulkJob)
