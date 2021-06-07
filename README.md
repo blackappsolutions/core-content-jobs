@@ -11,7 +11,7 @@
 
 Overview
 --------
-[Core Content Jobs](https://github.com/blackappsolutions/core-content-jobs) is a extensible framework provided by [Black App Solutions](https://black-app-solutions.de/). It introduces a new DocType "ContentJob" and uses the [Preview-CAE](https://digital.vfc.com/stash/projects/VEC/repos/coremedia-application/browse/apps/cae/spring-boot/cae-preview-app?at=refs%2Fheads%2Fdevelop) as a runtime environment due to the limitations of CMCC-S. It comes pre-packaged with the following Jobs:
+[Core Content Jobs](https://github.com/blackappsolutions/core-content-jobs) is a extensible framework provided by [Black App Solutions](https://black-app-solutions.de/). It introduces a new DocType "ContentJob" and uses the Preview-CAE as a runtime environment due to the limitations of CMCC-S. It comes pre-packaged with the following Jobs:
 
 ![](attachments/114566139/114568173.png?effects=border-simple,shadow-kn)
 ------------------------------------------------------------------------
@@ -113,11 +113,11 @@ So - for example - we could set "halt on error" to false, because of the followi
 
 See below how this instrumentation is made in the CMS.
 
-*   Go to "/All Content/Settings/Options/Settings/Content Jobs" at - for example - [https://studio.fourth.sandbox.vfc.coremedia.cloud/](https://studio.fourth.sandbox.vfc.coremedia.cloud/)
+*   In your Studio go to "/All Content/Settings/Options/Settings/Content Jobs"
 *   Create a new ContentJob
 *   Set **Job type** to xmlImport
 *   Check **Sync recursive**
-*   Set **Storage-URL** to s3://vf-cm-qa-nora-coremedia-cms-migration-v2/203594.zip
+*   Set **Storage-URL** to s3://YOUR_BUCKET_NAME/203594.zip
 *   Check **active** and push the **Finish editing and apply all changes button**
 
 ![](attachments/114566139/114566194.png)
@@ -130,7 +130,7 @@ This job takes care of keeping the s3 bucket clean and can be run (as all other 
 To instrument this job, the following properties needs to be set:
 
 *   localSettings.s3-bucket-region (us-east-1)
-*   **Storage-URL** (s3://vf-cm-qa-nora-coremedia-cms-migration-v2/content-exports)
+*   **Storage-URL** (s3://YOUR_BUCKET_NAME/content-exports)
 *   localSettings.s3-bucket-cleanup-dryrun (true/false)
     
 
