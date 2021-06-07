@@ -1,7 +1,7 @@
 **Core Content Jobs**
 =====================
 
-[Overview](#Overview) | [RSS Import](#rssImport) |  [XML Export](#xmlExport) | [XML Import](#xmlImport) | [CleanS3Bucket](#cleanXmlExportsInS3Bucket) | [Mass Publication](#bulkPublish) | [Mass Withdraw](#bulkUnpublish)
+[Overview](#Overview) | [RSS Import](#rssImport) |  [XML Export](#xmlExport) | [XML Import](#xmlImport) | [CleanS3Bucket](#cleanXmlExportsInS3Bucket) | [Mass Publication/Withdrawal](#bulkPublish / bulkUnpublish)
 
 Overview
 --------
@@ -66,12 +66,10 @@ This Job makes use of [CoreMedia's ServerExport Tool](https://documentation.core
 
 **![](attachments/114566139/114566172.png)**
 
-*   To add a folder, navigate into it and add a new content item of type "Folder Properties"
+*   <a name="defineFolder"></a>To add a folder, navigate into it and add a new content item of type "Folder Properties"
 *   Make the name of this content item reflect the folder name.
 
 ![](attachments/114566139/114566143.png)
-
-  
 
 ![](attachments/114566139/114566145.png)
 
@@ -129,9 +127,8 @@ To instrument this job, the following properties needs to be set:
 *   localSettings.s3-bucket-cleanup-dryrun (true/false)
     
 
-bulkPublish
-bulkUnpublish
------------
+bulkPublish / bulkUnpublish
+---------------------------
 
 Runs the CoreMedia tool [BulkPublish](https://documentation.coremedia.com/cmcc-10/artifacts/2104/webhelp/contentserver-en/content/bulkpublish.html) with the following default properties:
 
@@ -142,6 +139,6 @@ Runs the CoreMedia tool [BulkPublish](https://documentation.coremedia.com/cmcc-1
 
 To instrument this job, the following properties needs to be set:  
 
-*   [Define a folder](#id-09.CoreContentJobs-defineFolder)
+*   [Define a folder](#defineFolder)
 *   Define "Job type" **bulkPublish**
 *   Check **active** and push the **Finish editing and apply all changes button**
