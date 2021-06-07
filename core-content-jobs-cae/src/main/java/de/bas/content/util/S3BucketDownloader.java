@@ -7,6 +7,7 @@ import com.amazonaws.services.s3.AmazonS3URI;
 import com.amazonaws.services.s3.model.GetObjectRequest;
 import com.amazonaws.services.s3.model.S3Object;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -23,6 +24,7 @@ import static com.coremedia.blueprint.base.links.UriConstants.Segments.PREFIX_DY
  * @author Markus Schwarz
  */
 @Slf4j
+@Controller
 @RequestMapping
 public class S3BucketDownloader {
     public static final String DYNAMIC_URI_PATTERN = '/' + PREFIX_DYNAMIC + "/content-jobs/s3download";
