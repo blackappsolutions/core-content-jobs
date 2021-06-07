@@ -1,7 +1,7 @@
 **Core Content Jobs**
 =====================
 
-[Overview](#Overview) | [RSS Import](#rssImport) |  [XML Export](#xmlExport) | [XML Import](#xmlImport) | [CleanS3Bucket](#cleanXmlExportsInS3Bucket) | [Mass Publication \/ Withdrawal](#bulkPublish / bulkUnpublish)
+[Overview](#Overview) | [RSS Import](#rssImport) |  [XML Export](#xmlExport) | [XML Import](#xmlImport) | [CleanS3Bucket](#cleanXmlExportsInS3Bucket) | [Mass Publication](#bulk) | [Mass Withdrawal](#bulk)
 
 Overview
 --------
@@ -127,8 +127,8 @@ To instrument this job, the following properties needs to be set:
 *   localSettings.s3-bucket-cleanup-dryrun (true/false)
     
 
-bulkPublish / bulkUnpublish
----------------------------
+<a name="bulk"></a>bulkPublish / bulkUnpublish
+----------------------------------------------
 
 Runs the CoreMedia tool [BulkPublish](https://documentation.coremedia.com/cmcc-10/artifacts/2104/webhelp/contentserver-en/content/bulkpublish.html) with the following default properties:
 
