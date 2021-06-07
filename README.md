@@ -122,8 +122,7 @@ This job takes care of keeping the s3 bucket clean and can be run (as all other 
 
 To instrument this job, the following properties needs to be set:
 
-*   localSettings.s3-bucket-region (us-east-1)
-*   **Storage-URL** (s3://YOUR_BUCKET_NAME/content-exports)
+*   **Storage-URL** (s3://YOUR_BUCKET_NAME/FOLDER)
 *   localSettings.s3-bucket-cleanup-dryrun (true/false)
     
 
