@@ -27,7 +27,6 @@ But you can also develop new jobs very easy:
     public class ImportRSSJob extends AbstractContentJob {
     ```
 \=> After deplyoment, this class will be usable with the name **rssImport** in **localSettings.job-type** of ContentJob-resources in CMS.  
-  
 
 **ContentJobs can be scheduled.**
 
@@ -41,6 +40,8 @@ If you want to use the task overview page to cancel scheduled job, create
 *   a Placeholder-Resource that has this ViewType set.
 *   Set the Placeholder-Resource in an Article or Page OR
 *   issue `/blueprint/servlet/dynamic/content-jobs/terminate/1234` directly.
+
+See the [Integration Guide](README-technical.md) for more information how to bring that extension into your CoreMedia Blueprints workspace.
 
 * * *
 
