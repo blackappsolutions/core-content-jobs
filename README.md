@@ -1,151 +1,178 @@
-# Core Content Jobs 
+**Core Content Jobs**
+=====================
 
-Framework to embed jobs in content, when you don't have an evironment to run jobs (e.g. when you use CMCC-S)
+*   [Overview](#overview)
+*   [rssImport](#rssImport)
+*   [xmlExport](#id-09.CoreContentJobs-xmlExport)
+*   [xmlImport](#id-09.CoreContentJobs-xmlImport)
+*   [cleanXmlExportsInS3Bucket](#id-09.CoreContentJobs-cleanXmlExportsInS3Bucket)
+*   [bulkPublish](#id-09.CoreContentJobs-bulkPublish)
+*   [bulkUnpublish](#id-09.CoreContentJobs-bulkUnpublish)
 
-(developed against Version 2010.3)
+<a name="overview"></a>Overview
+--------
+[Core Content Jobs](https://github.com/blackappsolutions/core-content-jobs) is a extensible framework provided by [Black App Solutions](https://black-app-solutions.de/). It introduces a new DocType "ContentJob" and uses the [Preview-CAE](https://digital.vfc.com/stash/projects/VEC/repos/coremedia-application/browse/apps/cae/spring-boot/cae-preview-app?at=refs%2Fheads%2Fdevelop) as a runtime environment due to the limitations of CMCC-S. It comes pre-packaged with the following Jobs:
 
-## Overview
-CoreMedia CMS Extension to run any kind of Jobs in your Preview-CAE: 
-* Import-/Export-Jobs, 
-* CoreMedia-Utilities (Cleanup, Publish, ..)
-* create content-related reports
-* ...
+![](attachments/114566139/114568173.png?effects=border-simple,shadow-kn)
+------------------------------------------------------------------------
 
-Especially in the CMCC-S product - hosted by CoreMedia - which allows no Unified-API-Clients in higher environments (UAT/Prod), you can use it as a task-scheduler/runtime-environment.
+But you can also develop new jobs very easy:
 
-Embedded actually in the `preview-cae` (but must not necessarily live there).
+1.  Create a new class in modules/extensions/blackapp-core-content-jobs/core-content-jobs-cae/src/main/java/de/bas/content/jobs
+2.  The class must extend de.bas.content.jobs.AbstractContentJob and should provide the following annotations
 
-It introduces the ContentType `ContentSync`, which is used as a Job-Definition with the following properties:
+@Slf4j
+@Scope("prototype")
+@Component("rssImport")
+public class ImportRSSJob extends AbstractContentJob {
 
-  * `sourceContent` (multiple items are supported): Create a new resource of type `FolderProperties` and name it `_folderToSync` in the CMS folder you 
-    want export/sync (serves as a marker resource). Add this resource into the `sourceFolder`-Property.
-    Or just supply any other resource.
-  * `active`: Used to arm this job, when enabled and the resource was checked-in. This will also cause a check-out/-in of the resource by the provided `content-jobs.user` (see below).
-  * `localSettings.start-at` (optional): Supply a date at which this sync job should start.  
-  * `localSettings.repeat-every` (optional):
-    * `HOUR`
-    * `DAY`
-    * `WEEK`
-  * `localSettings.job-type`: Select different types of syncs: 
-    * `rssImport` (you must provide a `sourceContent`-CMFolderProperties resource named `_folderToSync`) 
-    * `xmlImport` (you must provide a `localSettings.export-storage-url` fully qualified. E.g.: `s3://blackapp-content-sync/1234.zip`)  
-    * `xmlExport` (you must provide a `localSettings.export-storage-url` base url. E.g.: `s3://blackapp-content-sync/`). This is the only job currently which logs to the `logOutput` aka "Execution protocol" field.
-    * `cleanXmlExportsInS3Bucket` (document me)
-    * `bulkPublish` (document me)
-    * `bulkUnpublish` (document me)
-  * `localSettings.export-storage-url`: 
-    * file:///
-    * s3://
-    * http(s)://user:pass@host/path
-    You can use this property for 
-      * `xmlExport`-Jobs to provide a storage location.
-      * `xmlImport`-Jobs to provide a zip with content to import.
-      * `cleanXmlExportsInS3Bucket`-Jobs to provide a s3-Bucket folder path like `s3://myBucketName/myStorageFolder/`
-    <br/><br/>
-        
-    **Note:** If you want to use s3 buckets, keep in mind, that you can define only ONE bucket per system at the moment, 
-    because it is not possible to pass s3-credentials on the url or on any other way to CoreMedia's ServerExporter, 
-    except with this variables
-    * `AWS_REGION`,    
-    * `AWS_ACCESS_KEY_ID` and 
-    * `AWS_SECRET_ACCESS_KEY` in the system environment.
-      
-    You can set these variables in the docker ecosystem 
-      * in some docker-compose file like `global/deployment/docker/compose/default.yml` or
-      * `apps/cae/docker/cae-preview/Dockerfile` directly (no other chance on CMCC-S). 
-      
-  ---
-  To make this extension work, you need to create a separate `content-sync`-admin-user, which creates a new version of each active ContentSync-Resource after a job run. You can provide the users name/pass with the following variables in the system environment or application.properties:
-  * `CONTENTJOBS_USER` | `content-jobs.user=` and 
-  * `CONTENTJOBS_PASS` | `content-jobs.pass=`
-
-  !!! IF THIS USER WAS NOT SET-UP, THE CAE WILL NOT BOOT !!!
-  ---
-
-### Current Limitations (further development)
-* No content validation
-* No retry handling
-* No Connection-/Socket-Timeouts
-
-## Integration into the CoreMedia Blueprints
-
-### Background
-
-Integration of this extension is recommended as **Git SubModule**.
-                                                  
-Before doing so, make a fork to be able to apply your customizations.
-
-This way, you will be able to merge new commits made in this repo back to your fork.
- 
-### HowTo
-
-- From the project's root folder, clone this repository as submodule into the extensions folder. Make sure to use the branch name that matches your workspace version. 
-    ```
-    git submodule add https://github.com/blackappsolutions/core-content-jobs.git modules/extensions/core-content-jobs
-    ```
-
-- Use the extension tool in the root folder of the project to link the modules into your workspace.
-    ```                                                          
-    # Should display => #content-sync
-    mvn -f workspace-configuration/extensions extensions:list -q
+\=> After deplyoment, this class will be usable with the name **rssImport** in **localSettings.job-type** of ContentJob-resources in CMS.  
   
-    # Shows possible plugin-points. Nice to know.
-    # mvn -f workspace-configuration/extensions extensions:list-extension-points -q
+
+**ContentJobs can be scheduled.**
+
+![](attachments/114566139/114566304.png)
+
+There is also a [Freemarker-Template](https://github.com/blackappsolutions/core-content-jobs/blob/main/core-content-jobs-cae/src/main/resources/META-INF/resources/WEB-INF/templates/content-jobs/com.coremedia.blueprint.common.contentbeans/CMPlaceholder.%5Bcontent-jobs%5D.ftl) available to maintain long-running/scheduled jobs.
+
+If you want to use the task overview page to cancel scheduled job, create
+
+*   a new Placeholder-ViewType `content-sync-jobs` and
+*   a Placeholder-Resource that has this ViewType set.
+*   Set the Placeholder-Resource in an Article or Page OR
+*   issue `/blueprint/servlet/dynamic/content-jobs/terminate/1234` directly.
+
+* * *
+
+rssImport
+---------
+
+Serves only as a blueprint/template for new jobs and wants to show, that you can use this framwork also to do content imports. See source code for details => [https://github.com/blackappsolutions/core-content-jobs/blob/main/core-content-jobs-cae/src/main/java/de/bas/content/jobs/ImportRSSJob.java](https://github.com/blackappsolutions/core-content-jobs/blob/main/core-content-jobs-cae/src/main/java/de/bas/content/jobs/ImportRSSJob.java)
+
+*   Imports RSS from locaSettings.rss-import-url if specified. Otherwise uses "https://rss.nytimes.com/services/xml/rss/nyt/Technology.xml" as default.
+*   If you supply another RSS-feed, its structure must match the one in the default-feed above.
+*   [Supply a folder](#id-09.CoreContentJobs-defineFolder) in **The folder/content which schould be synced**
+*   RSS-Item->title-Attribute is mapped to CMArticle→title
+*   RSS-Item->description-Attribute is mapped to CMArticle→detailText
+*   For every RSS-Item an Article is created in the folder provided above [after the job was started](#id-09.CoreContentJobs-startJob).
+*   Articles were name with this pattern:
     
-    # Enables the extension. Check e.g. apps/cae/modules/extension-config/cae-extension-dependencies/pom.xml afterwards. 
-    mvn -f workspace-configuration/extensions extensions:sync -Denable=core-content-jobs
+    RssImport\_" \+ System.currentTimeMillis()
+    
+
+xmlExport
+---------
+
+This Job makes use of [CoreMedia's ServerExport Tool](https://documentation.coremedia.com/cmcc-10/artifacts/2010/webhelp/contentserver-en/content/CMServerimportExport.html#d0e17572) by [taking the given content, recursive and the zip-url](https://github.com/blackappsolutions/core-content-jobs/blob/313dda3a416a548facd8605ab988edbe44bf3530/core-content-jobs-cae/src/main/java/de/bas/content/jobs/ExportXMLJob.java#L48). See below how this instrumentation is made in the CMS.
+
+*   go to "/All Content/Settings/Options/Settings/Content Jobs" at [https://studio.first.sandbox.vfc.coremedia.cloud/](https://studio.first.sandbox.vfc.coremedia.cloud/) for example
+*   Create a new content item of type "ContentJob"
+*   set the **Job type** to "xmlExport"
+*   Add content you would like to export by using drag&drop to **The folder/content which schould be synced**
+
+**![](attachments/114566139/114566172.png)**
+
+*   To add a folder, navigate into it and add a new content item of type "Folder Properties"
+*   Make the name of this content item reflect the folder name.
+
+![](attachments/114566139/114566143.png)
+
   
-    # First build, the fastest way ... 
-    mvn clean install -DskipTests -DskipThemes=true -DskipContent=true -Dskip-joo-unit-tests=true \ 
-                      -Dmdep.analyze.skip=true -Denforcer.skip=true
-    ```
-- Change the groupId and versionID of all pom.xml to your project values, if necessary.
 
-- if you want to use the task overview page to cancel scheduled job, create
-  - a new Placeholder-ViewType `content-sync-jobs` and
-  - a Placeholder-Resource that has this ViewType set.
-  - Set the Placeholder-Resource in an Article or Page OR
-  - issue `/blueprint/servlet/dynamic/content-jobs/terminate/1234`directly.
+![](attachments/114566139/114566145.png)
 
-- if you want to have more log output, use
-  ```properties
-  logging.level.de.bas.content=debug
-  ```         
-  in your `apps/cae/spring-boot/cae-preview-app/src/main/resources/application.properties`.
-  
-## Further Development
-  
-### Adapt the `ContentJob` DocType to your needs
+*   Also drag&drop the new content item of type "Folder Properties" to **The folder/content which schould be synced** (see above)
+*   Set the **Storage-URL** to "s3://vf-cm-qa-nora-coremedia-cms-migration-v2/"
+*   **Note**: You can check **Sync Recursive**, if you have provided content item(s) of type "Folder Properties" to **The folder/content which schould be synced** and sync this folder with all of its subfolders.
+*   To start the job, you just need to check **active** and push the **Finish editing and apply all changes button**
 
-* [Server](core-content-jobs-server/src/main/resources/framework/doctypes/core-content-jobs-doctypes.xml)
-* [Studio](core-content-jobs-studio-plugin/src/main/joo/de/bas/content/studio/form/ContentJobForm.mxml)
-* [CAE](core-content-jobs-cae/src/main/resources/framework/spring/core-content-jobs-contentbeans.xml)<br>
-  You can generate the contentbeans from scratch with this command: 
-  ```                                 
-  cd content-sync-cae
-  mvn -PgenerateContentBeans exec:java
-  ```
-  Vendor-Documentation: [Generate ContentBeans](https://documentation.coremedia.com/cmcc-10/artifacts/2101/webhelp/cae-developer-en/content/GeneratingContentBeans.html)  
+**![](attachments/114566139/114566158.png)**
 
-### Templates
-apps/cae/spring-boot/cae-preview-app/src/main/resources/application-local.properties
-```
-########################################################################################################################
-# Workspace locations for local resource loading
-#
-# these properties should reference the convenience
-# properties above for any workspace location
-########################################################################################################################
-cae-base-lib.resources=${blueprint-dir}/modules/cae/cae-base-lib/src/main/resources,${blueprint-dir}/modules/cae/cae-base-lib/src/main/resources/META-INF/resources
-[..]
-content-jobs-cae.resources=${blueprint-dir}/../../modules/extensions/core-content-jobs/core-content-jobs-cae/src/main/resources/META-INF/resources
+*   When the job is done,
+    *   you find a new version of this ContentJob created by user **content-jobs-user**  
+        **![](attachments/114566139/114566160.png)**
+    *   The **active** flag will be unchecked by **content-jobs-user**
+    *   If the job was successful, you find a "1" at **Last run / Last run was successful?** otherweise a "0"
+    *   When things went fine, you find a protocol at **Last run / Execution protocol** and you can find your content as a zip (s3://vf-cm-qa-nora-coremedia-cms-migration-v2/203594.zip) at [https://vf-cm-qa-nora-coremedia-cms-migration-v2.s3.amazonaws.com/index.html](https://vf-cm-qa-nora-coremedia-cms-migration-v2.s3.amazonaws.com/index.html)
 
-# Load web resources from (local) workspace to support short CAE development round-trips
-spring.boot.tomcat.extraResources=\
-  [..]
-  ${content-jobs-cae.resources}
-```
+![](attachments/114566139/114566173.png)
 
----
-Licence was selected with the support of https://choosealicense.com/licenses/
-                                       
+When things went south, check the logs of cae-preview at Kibana or on Sandboxes you can see them directly under
+
+[https://first.sandbox.vfc.coremedia.cloud/cae-preview/logfile](https://first.sandbox.vfc.coremedia.cloud/cae-preview/logfile)
+
+[https://second.sandbox.vfc.coremedia.cloud/cae-preview/logfile](https://second.sandbox.vfc.coremedia.cloud/cae-preview/logfile)
+
+[https://third.sandbox.vfc.coremedia.cloud/cae-preview/logfile](https://third.sandbox.vfc.coremedia.cloud/cae-preview/logfile)
+
+[https://fourth.sandbox.vfc.coremedia.cloud/cae-preview/logfile](https://fourth.sandbox.vfc.coremedia.cloud/cae-preview/logfile)
+
+xmlImport
+---------
+
+This Job makes use of [CoreMedia's ServerImport Tool](https://documentation.coremedia.com/cmcc-10/artifacts/2010/webhelp/contentserver-en/content/CMServerimportExport.html#cm:serverimport) by [taking the recursive flag and the zip-url](https://github.com/blackappsolutions/core-content-jobs/blob/313dda3a416a548facd8605ab988edbe44bf3530/core-content-jobs-cae/src/main/java/de/bas/content/jobs/ImportXMLJob.java#L26) and the following defaults:
+
+![](attachments/114566139/114566263.png)
+
+We can change that behaviour later, when we find out that other defaults may suit better or when we should give users the power to supply that parameters.
+
+So - for example - we could set "halt on error" to false, because of the following scenario:
+
+*   In Import-Zip is a Page with a Link to a Settings-Document located in another folder
+*   This Settings-Document was not part of the export
+*   Result: Import will do its job until it hits this error. All resources due to this point will be left in state checked-out by user content-jobs-user.
+
+See below how this instrumentation is made in the CMS.
+
+*   Go to "/All Content/Settings/Options/Settings/Content Jobs" at - for example - [https://studio.fourth.sandbox.vfc.coremedia.cloud/](https://studio.fourth.sandbox.vfc.coremedia.cloud/)
+*   Create a new ContentJob
+*   Set **Job type** to xmlImport
+*   Check **Sync recursive**
+*   Set **Storage-URL** to s3://vf-cm-qa-nora-coremedia-cms-migration-v2/203594.zip
+*   Check **active** and push the **Finish editing and apply all changes button**
+
+![](attachments/114566139/114566194.png)
+
+cleanXmlExportsInS3Bucket
+-------------------------
+
+This job takes care of keeping the s3 bucket clean and can be run (as all other jobs also) scheduled.
+
+To instrument this job, the following properties needs to be set:
+
+*   localSettings.s3-bucket-region (us-east-1)
+*   **Storage-URL** (s3://vf-cm-qa-nora-coremedia-cms-migration-v2/content-exports)
+*   localSettings.s3-bucket-cleanup-dryrun (true/false)
+    
+
+bulkPublish
+-----------
+
+Runs the CoreMedia tool [BulkPublish](https://documentation.coremedia.com/cmcc-10/artifacts/2104/webhelp/contentserver-en/content/bulkpublish.html) with the following default properties:
+
+"--checkin"  
+"--approve"  
+"--publish"  
+"--verbose"  
+
+To instrument this job, the following properties needs to be set:  
+
+*   [Define a folder](#id-09.CoreContentJobs-defineFolder)
+*   Define "Job type" **bulkPublish**
+*   Check **active** and push the **Finish editing and apply all changes button**
+
+bulkUnpublish
+-------------
+
+Runs the CoreMedia tool [BulkPublish](https://documentation.coremedia.com/cmcc-10/artifacts/2104/webhelp/contentserver-en/content/bulkpublish.html) with the following default properties:
+
+"--checkin"  
+"--approve"  
+"--unpublish"  
+"--verbose"  
+
+To instrument this job, the following properties needs to be set:
+
+*   [Define a folder](#id-09.CoreContentJobs-defineFolder)
+*   Define "Job type" **bulkPublish**
+*   Check **active** and push the **Finish editing and apply all changes button**
