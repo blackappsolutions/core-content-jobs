@@ -58,14 +58,13 @@ Serves only as a blueprint/template for new jobs and wants to show, that you can
 *   Articles were name with this pattern:
     
     RssImport\_" \+ System.currentTimeMillis()
-    
 
 xmlExport
 ---------
 
 This Job makes use of [CoreMedia's ServerExport Tool](https://documentation.coremedia.com/cmcc-10/artifacts/2010/webhelp/contentserver-en/content/CMServerimportExport.html#d0e17572) by [taking the given content, recursive and the zip-url](https://github.com/blackappsolutions/core-content-jobs/blob/313dda3a416a548facd8605ab988edbe44bf3530/core-content-jobs-cae/src/main/java/de/bas/content/jobs/ExportXMLJob.java#L48). See below how this instrumentation is made in the CMS.
 
-*   go to "/All Content/Settings/Options/Settings/Content Jobs" at [https://studio.first.sandbox.vfc.coremedia.cloud/](https://studio.first.sandbox.vfc.coremedia.cloud/) for example
+*   In Studio go to "/All Content/Settings/Options/Settings/Content Jobs"
 *   Create a new content item of type "ContentJob"
 *   set the **Job type** to "xmlExport"
 *   Add content you would like to export by using drag&drop to **The folder/content which schould be synced**
@@ -82,7 +81,7 @@ This Job makes use of [CoreMedia's ServerExport Tool](https://documentation.core
 ![](attachments/114566139/114566145.png)
 
 *   Also drag&drop the new content item of type "Folder Properties" to **The folder/content which schould be synced** (see above)
-*   Set the **Storage-URL** to "s3://vf-cm-qa-nora-coremedia-cms-migration-v2/"
+*   Set the **Storage-URL** to "s3://YOUR_BUCKET_NAME/"
 *   **Note**: You can check **Sync Recursive**, if you have provided content item(s) of type "Folder Properties" to **The folder/content which schould be synced** and sync this folder with all of its subfolders.
 *   To start the job, you just need to check **active** and push the **Finish editing and apply all changes button**
 
@@ -93,19 +92,9 @@ This Job makes use of [CoreMedia's ServerExport Tool](https://documentation.core
         **![](attachments/114566139/114566160.png)**
     *   The **active** flag will be unchecked by **content-jobs-user**
     *   If the job was successful, you find a "1" at **Last run / Last run was successful?** otherweise a "0"
-    *   When things went fine, you find a protocol at **Last run / Execution protocol** and you can find your content as a zip (s3://vf-cm-qa-nora-coremedia-cms-migration-v2/203594.zip) at [https://vf-cm-qa-nora-coremedia-cms-migration-v2.s3.amazonaws.com/index.html](https://vf-cm-qa-nora-coremedia-cms-migration-v2.s3.amazonaws.com/index.html)
+    *   When things went fine, you find a protocol at **Last run / Execution protocol** and you can find your content as a zip at s3 (s3://YOUR_BUCKET_NAME/203594.zip).
 
 ![](attachments/114566139/114566173.png)
-
-When things went south, check the logs of cae-preview at Kibana or on Sandboxes you can see them directly under
-
-[https://first.sandbox.vfc.coremedia.cloud/cae-preview/logfile](https://first.sandbox.vfc.coremedia.cloud/cae-preview/logfile)
-
-[https://second.sandbox.vfc.coremedia.cloud/cae-preview/logfile](https://second.sandbox.vfc.coremedia.cloud/cae-preview/logfile)
-
-[https://third.sandbox.vfc.coremedia.cloud/cae-preview/logfile](https://third.sandbox.vfc.coremedia.cloud/cae-preview/logfile)
-
-[https://fourth.sandbox.vfc.coremedia.cloud/cae-preview/logfile](https://fourth.sandbox.vfc.coremedia.cloud/cae-preview/logfile)
 
 xmlImport
 ---------
