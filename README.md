@@ -1,13 +1,7 @@
 **Core Content Jobs**
 =====================
 
-*   [Overview](#Overview)
-*   [rssImport](#rssImport)
-*   [xmlExport](#id-09.CoreContentJobs-xmlExport)
-*   [xmlImport](#id-09.CoreContentJobs-xmlImport)
-*   [cleanXmlExportsInS3Bucket](#id-09.CoreContentJobs-cleanXmlExportsInS3Bucket)
-*   [bulkPublish](#id-09.CoreContentJobs-bulkPublish)
-*   [bulkUnpublish](#id-09.CoreContentJobs-bulkUnpublish)
+[Overview](#Overview) | [RSS Import](#rssImport) |  [XML Export](#xmlExport) | [XML Import](#xmlImport) | [CleanS3Bucket](#cleanXmlExportsInS3Bucket) | [Mass Publication](#bulkPublish) | [Mass Withdraw](#bulkUnpublish)
 
 Overview
 --------
