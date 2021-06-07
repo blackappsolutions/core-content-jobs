@@ -1,7 +1,7 @@
 **Core Content Jobs**
 =====================
 
-*   [Overview](#overview)
+*   [Overview](#Overview)
 *   [rssImport](#rssImport)
 *   [xmlExport](#id-09.CoreContentJobs-xmlExport)
 *   [xmlImport](#id-09.CoreContentJobs-xmlImport)
@@ -9,7 +9,7 @@
 *   [bulkPublish](#id-09.CoreContentJobs-bulkPublish)
 *   [bulkUnpublish](#id-09.CoreContentJobs-bulkUnpublish)
 
-<a name="overview"></a>Overview
+Overview
 --------
 [Core Content Jobs](https://github.com/blackappsolutions/core-content-jobs) is a extensible framework provided by [Black App Solutions](https://black-app-solutions.de/). It introduces a new DocType "ContentJob" and uses the [Preview-CAE](https://digital.vfc.com/stash/projects/VEC/repos/coremedia-application/browse/apps/cae/spring-boot/cae-preview-app?at=refs%2Fheads%2Fdevelop) as a runtime environment due to the limitations of CMCC-S. It comes pre-packaged with the following Jobs:
 
