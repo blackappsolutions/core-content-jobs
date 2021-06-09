@@ -49,7 +49,7 @@ Serves only as a blueprint/template for new jobs and wants to show, that you can
 *   [Supply a folder](#id-09.CoreContentJobs-defineFolder) in **The folder/content which schould be synced**
 *   RSS-Item->title-Attribute is mapped to CMArticle→title
 *   RSS-Item->description-Attribute is mapped to CMArticle→detailText
-*   For every RSS-Item an Article is created in the folder provided above [after the job was started](#id-09.CoreContentJobs-startJob).
+*   For every RSS-Item an Article is created in the folder provided above [after the job was started](#startJob).
 *   Articles were name with this pattern:
     
     RssImport\_" \+ System.currentTimeMillis()
@@ -76,7 +76,7 @@ This Job makes use of [CoreMedia's ServerExport Tool](https://documentation.core
 *   Also drag&drop the new content item of type "Folder Properties" to **The folder/content which schould be synced** (see above)
 *   Set the **Storage-URL** to "s3://YOUR_BUCKET_NAME/"
 *   **Note**: You can check **Sync Recursive**, if you have provided content item(s) of type "Folder Properties" to **The folder/content which schould be synced** and sync this folder with all of its subfolders.
-*   To start the job, you just need to check **active** and push the **Finish editing and apply all changes button**
+*   <a name="startJob"></a>To start the job, you just need to check **active** and push the **Finish editing and apply all changes button**
 
 **![](attachments/114566139/114566158.png)**
 
@@ -85,9 +85,11 @@ This Job makes use of [CoreMedia's ServerExport Tool](https://documentation.core
         **![](attachments/114566139/114566160.png)**
     *   The **active** flag will be unchecked by **content-jobs-user**
     *   If the job was successful, you find a "1" at **Last run / Last run was successful?** otherweise a "0"
-    *   When things went fine, you find a protocol at **Last run / Execution protocol** and you can find your content as a zip at s3 (s3://YOUR_BUCKET_NAME/203594.zip).
-
-![](attachments/114566139/114566173.png)
+    *   When things went fine, you find a protocol at **Last run / Execution protocol** 
+        ![](attachments/114566139/114566173.png) 
+        and 
+    *   you can find your content zipped at s3 (s3://YOUR_BUCKET_NAME/ID_OF_CONTENTJOB.zip) for later re-use in imports.
+    *   from where you can grap it for examination via this url => http://YOUR_HOST/blueprint/servlet/dynamic/content-jobs/s3download?bucketUrl=s3://YOUR_BUCKET_NAME/ID_OF_CONTENTJOB.zip  
 
 xmlImport
 ---------
