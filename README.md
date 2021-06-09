@@ -92,17 +92,12 @@ This Job makes use of [CoreMedia's ServerExport Tool](https://documentation.core
 xmlImport
 ---------
 
-This Job makes use of [CoreMedia's ServerImport Tool](https://documentation.coremedia.com/cmcc-10/artifacts/2010/webhelp/contentserver-en/content/CMServerimportExport.html#cm:serverimport) by [taking the recursive flag and the zip-url](https://github.com/blackappsolutions/core-content-jobs/blob/313dda3a416a548facd8605ab988edbe44bf3530/core-content-jobs-cae/src/main/java/de/bas/content/jobs/ImportXMLJob.java#L26) and the following defaults:
+This Job makes use of [CoreMedia's ServerImport Tool](https://documentation.coremedia.com/cmcc-10/artifacts/2010/webhelp/contentserver-en/content/CMServerimportExport.html#cm:serverimport) by [taking the recursive flag and the zip-url](https://github.com/blackappsolutions/core-content-jobs/blob/313dda3a416a548facd8605ab988edbe44bf3530/core-content-jobs-cae/src/main/java/de/bas/content/jobs/ImportXMLJob.java#L26) and the following defaults (which could be changed as Boolean-Properties in Local Settings):
 
-![](attachments/114566139/114566263.png)
-
-We can change that behaviour later, when we find out that other defaults may suit better or when we should give users the power to supply that parameters.
-
-So - for example - we could set "halt on error" to false, because of the following scenario:
-
-*   In Import-Zip is a Page with a Link to a Settings-Document located in another folder
-*   This Settings-Document was not part of the export
-*   Result: Import will do its job until it hits this error. All resources due to this point will be left in state checked-out by user content-jobs-user.
+    * xmlImport-haltOnError: false
+    * xmlImport-validateXml: false
+    * xmlImport-skipEntities: false
+    * xmlImport-skipUuids: true
 
 See below how this instrumentation is made in the CMS.
 
