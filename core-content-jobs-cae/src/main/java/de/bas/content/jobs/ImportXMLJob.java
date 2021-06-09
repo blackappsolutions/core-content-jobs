@@ -24,10 +24,10 @@ public class ImportXMLJob extends AbstractContentJob {
             contentWriter.getContentRepository().getConnection(),
             null,   // SiteService
             contentJob.recursive(),
-            true,  // halt on error
-            true,  // validateXml
-            false, // skipEntities
-            true   // skipUuids
+            contentJob.getXmlImportHaltOnError(),
+            contentJob.getValidateXml(),
+            contentJob.getSkipEntities(),
+            contentJob.getSkipUuids()
         );
         importer.setZip(contentJob.getExportStorageURL());
         if (contentJob.getZipDirectory().isPresent()) {

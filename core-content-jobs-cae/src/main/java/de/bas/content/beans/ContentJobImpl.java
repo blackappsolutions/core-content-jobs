@@ -98,16 +98,31 @@ public class ContentJobImpl extends ContentJobBase implements ContentJob {
     }
 
     @Override
-    public String getS3BucketRegion() {
-        return settingsService.settingWithDefault("s3-bucket-region", String.class, "eu-west-1", this);
-    }
-
-    @Override
     public Boolean getS3BucketCleanupDryRun() {
         return settingsService.settingWithDefault("s3-bucket-cleanup-dryrun", Boolean.class, true, this);
     }
 
     public void setSettingsService(SettingsService settingsService) {
         this.settingsService = settingsService;
+    }
+
+    @Override
+    public boolean getXmlImportHaltOnError() {
+        return settingsService.settingWithDefault("xmlImport-haltOnError", Boolean.class, false, this);
+    }
+
+    @Override
+    public boolean getValidateXml() {
+        return settingsService.settingWithDefault("xmlImport-validateXml", Boolean.class, false, this);
+    }
+
+    @Override
+    public boolean getSkipEntities() {
+        return settingsService.settingWithDefault("xmlImport-skipEntities", Boolean.class, false, this);
+    }
+
+    @Override
+    public boolean getSkipUuids() {
+        return settingsService.settingWithDefault("xmlImport-skipUuids", Boolean.class, true, this);
     }
 }

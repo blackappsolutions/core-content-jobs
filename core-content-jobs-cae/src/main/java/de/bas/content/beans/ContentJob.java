@@ -96,7 +96,13 @@ public interface ContentJob extends CMObject {
 
     Optional<String> getZipDirectory();
 
-    String getS3BucketRegion();
-
     Boolean getS3BucketCleanupDryRun();
+
+    boolean getXmlImportHaltOnError();
+
+    boolean getValidateXml();
+
+    boolean getSkipEntities();
+    
+    boolean getSkipUuids();
 }

@@ -15,8 +15,9 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.io.PrintWriter;
+import java.io.OutputStream;
 
 import static com.coremedia.blueprint.base.links.UriConstants.Segments.PREFIX_DYNAMIC;
 
@@ -35,7 +36,7 @@ public class S3BucketDownloader {
         AmazonS3URI amazonS3URI = new AmazonS3URI(bucketUrl);
         String bucketName = amazonS3URI.getBucket();
         String key = amazonS3URI.getKey();
-        
+
         S3Object fullObject = null;
         try {
             AmazonS3 s3Client = AmazonS3ClientBuilder.standard().build();
@@ -45,16 +46,30 @@ public class S3BucketDownloader {
             response.addHeader("Content-Disposition", "attachment; filename=\"" + key + "\"");
             response.setContentType(fullObject.getObjectMetadata().getContentType());
             response.setCharacterEncoding("UTF-8");
-            PrintWriter writer = response.getWriter();
 
-            InputStreamReader inputStreamReader = new InputStreamReader(fullObject.getObjectContent());
-            inputStreamReader.transferTo(writer);
+            InputStream reader = fullObject.getObjectContent();
+            long startTime = System.currentTimeMillis();
+
+            OutputStream writer = response.getOutputStream();
+            byte[] buffer = new byte[102400];
+            int totalBytesRead = 0;
+            int bytesRead;
+
+            while ((bytesRead = reader.read(buffer)) > 0) {
+                writer.write(buffer, 0, bytesRead);
+                buffer = new byte[102400];
+                totalBytesRead += bytesRead;
+            }
+
+            long endTime = System.currentTimeMillis();
+
+            log.info("Total bytes read {} in {}ms", totalBytesRead, (endTime - startTime));
+
             writer.flush();
             writer.close();
         } catch (SdkClientException e) {
             log.error("Error providing {}", bucketUrl, e);
-        }
-        finally {
+        } finally {
             // To ensure that the network connection doesn't remain open, close any open input streams.
             if (fullObject != null) {
                 fullObject.close();
