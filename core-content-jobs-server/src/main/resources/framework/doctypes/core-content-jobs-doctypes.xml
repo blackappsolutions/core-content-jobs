@@ -10,6 +10,7 @@
   <ImportDocType Name="CMObject"/>
   <ImportDocType Name="CMFolderProperties"/>
   <DocType Name="ContentJob" Parent="CMObject">
+    <LinkListProperty Name="sourceContent" LinkType="CMObject"/><!--ToDo: Remove after migration -->
     <XmlProperty Name="localSettings" Grammar="coremedia-struct-2008"/>
     <!--
     Must be set active by the user. Will be set in-active after a successful run / number of unsuccessful retries
