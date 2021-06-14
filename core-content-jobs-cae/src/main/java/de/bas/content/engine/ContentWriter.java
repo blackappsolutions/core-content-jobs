@@ -72,7 +72,7 @@ public class ContentWriter {
         return contentBeanFactory.createBeanFor(content, ContentJob.class);
     }
 
-    private Content getCheckedOutContent(String contentId) {
+    public Content getCheckedOutContent(String contentId) {
         // We need to query the contentServer again because otherwise we will run into a caching error
         Content content = contentRepository.getContent(contentId);
         if (content.isCheckedOut()) {
