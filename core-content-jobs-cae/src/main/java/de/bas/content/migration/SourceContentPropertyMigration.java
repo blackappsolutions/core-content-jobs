@@ -6,6 +6,7 @@ import com.coremedia.cap.content.ContentRepository;
 import com.coremedia.cap.struct.Struct;
 import com.coremedia.cap.struct.StructBuilder;
 import com.coremedia.cap.struct.StructService;
+import de.bas.content.engine.ContentWriter;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
@@ -22,6 +23,12 @@ import static de.bas.content.beans.ContentJob.LOCAL_SETTINGS;
 @Component
 public class SourceContentPropertyMigration {
 
+    private final ContentWriter contentWriter;
+
+    public SourceContentPropertyMigration(ContentWriter contentWriter) {
+        this.contentWriter = contentWriter;
+    }
+
     protected static final String SOURCE_CONTENT = "sourceContent";
 
     public void fromPropertyToLocalSettings(Collection<Content> allContentJobs) {
@@ -35,36 +42,36 @@ public class SourceContentPropertyMigration {
                 log.info("Nothing to migrate. No {} property found.", SOURCE_CONTENT);
                 break;
             }
-            List<Content> sourceContent = contentJob.getLinks(SOURCE_CONTENT);
-            log.info("{}: {} property is filled with {} items", contentJob.getId(), SOURCE_CONTENT, sourceContent.size());
-            List<Content> newSourceContent = new ArrayList<>(sourceContent.size());
-            for (Content sc : sourceContent) {
-                if (sc.getType().getName().equals("CMFolderProperties")) {
-                    Content parent = contentJob.getParent();
-                    newSourceContent.add(parent);
-                    log.info("{}: Transforming CMFolderProperties to folder link to {}", contentJob.getId(), parent.getId());
+            List<Content> sourceContents = contentJob.getLinks(SOURCE_CONTENT);
+            String cjId = contentJob.getId();
+            log.info("{}: {} property is filled with {} items", cjId, SOURCE_CONTENT, sourceContents.size());
+            List<Content> newSourceContent = new ArrayList<>(sourceContents.size());
+            for (Content sourceContent : sourceContents) {
+                if (sourceContent.getType().getName().equals("CMFolderProperties")) {
+                    Content sourceContentFolder = sourceContent.getParent();
+                    newSourceContent.add(sourceContentFolder);
+                    log.info("{}: Transforming CMFolderProperties to folder link to {}", cjId, sourceContentFolder);
                 } else {
-                    newSourceContent.add(contentJob);
+                    newSourceContent.add(sourceContent);
                 }
             }
 
-            if (contentJob.isCheckedOut()) {
-                contentJob.checkIn();
-            }
-            contentJob.checkOut();
+            Content checkedOutContent = contentWriter.getCheckedOutContent(cjId);
 
-            log.info("{}: {} property is about to be nulled", contentJob.getId(), SOURCE_CONTENT);
-            contentJob.set(SOURCE_CONTENT, null);
-
-            ContentRepository repository = contentJob.getRepository();
-            StructService structService = repository.getConnection().getStructService();
-            Struct localSettings = getLocalSettings(contentJob, structService);
-            StructBuilder structBuilder = getStructBuilder(localSettings, structService);
-
-            setLocalSettingsSourceContent(newSourceContent, localSettings, structBuilder, repository);
-            contentJob.set(LOCAL_SETTINGS, structBuilder.build().toMarkup().toString());
-            contentJob.checkIn();
+            log.info("{}: {} property is about to be nulled and moved into {}", cjId, SOURCE_CONTENT, LOCAL_SETTINGS);
+            checkedOutContent.set(SOURCE_CONTENT, null);
+            checkedOutContent.set(LOCAL_SETTINGS, getNewLocalSettingsStruct(contentJob, newSourceContent));
+            checkedOutContent.checkIn();
         }
+    }
+
+    private Struct getNewLocalSettingsStruct(Content contentJob, List<Content> newSourceContent) {
+        ContentRepository repository = contentJob.getRepository();
+        StructService structService = repository.getConnection().getStructService();
+        Struct localSettings = getLocalSettings(contentJob, structService);
+        StructBuilder structBuilder = getStructBuilder(localSettings, structService);
+        setLocalSettingsSourceContent(newSourceContent, localSettings, structBuilder, repository);
+        return structBuilder.build();
     }
 
     private void setLocalSettingsSourceContent(List<Content> newSourceContent, Struct localSettings, StructBuilder structBuilder, ContentRepository repository) {
