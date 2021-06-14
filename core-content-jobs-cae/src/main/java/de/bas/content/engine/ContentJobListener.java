@@ -8,6 +8,7 @@ import com.coremedia.cap.content.query.QueryService;
 import com.coremedia.objectserver.beans.ContentBeanFactory;
 import de.bas.content.beans.ContentJob;
 import de.bas.content.jobs.AbstractContentJob;
+import de.bas.content.migration.SourceContentPropertyMigration;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.ApplicationContext;
@@ -34,24 +35,32 @@ public class ContentJobListener extends ContentRepositoryListenerBase {
 
     @Value("${initial.query}")
     private String initialQuery;
+    @Value("${all.content.query}")
+    private String allContentQuery;
+
+    @Value("${content-jobs.migrate-content}")
+    private boolean performContentMigration;
 
     private final ContentRepository contentRepository;
     private final ContentBeanFactory contentBeanFactory;
     private final ApplicationContext appContext;
     private final ContentWriter contentWriter;
     private final ContentJobJanitor contentJobJanitor;
+    private final SourceContentPropertyMigration migration;
 
     public ContentJobListener(@SuppressWarnings("SpringJavaInjectionPointsAutowiringInspection") ContentRepository contentRepository,
                               ContentBeanFactory contentBeanFactory,
                               ApplicationContext appContext,
                               ContentWriter contentWriter,
-                              ContentJobJanitor contentJobJanitor
+                              ContentJobJanitor contentJobJanitor,
+                              SourceContentPropertyMigration migration
     ) {
         this.contentRepository = contentRepository;
         this.contentBeanFactory = contentBeanFactory;
         this.appContext = appContext;
         this.contentWriter = contentWriter;
         this.contentJobJanitor = contentJobJanitor;
+        this.migration = migration;
     }
 
     @Override
@@ -68,11 +77,11 @@ public class ContentJobListener extends ContentRepositoryListenerBase {
     }
 
     @GetMapping(value = EXECUTE_PATTERN)
-    public Object handleExecuteRequest(@PathVariable(SEGMENT_ID) ContentJob contentJob){
+    public Object handleExecuteRequest(@PathVariable(SEGMENT_ID) ContentJob contentJob) {
         handleContentJob(contentJob);
         return "Job started";
     }
-    
+
     private void handleContentJob(ContentJob contentJob) {
         if ((contentJob != null) && contentJob.isActive()) {
             startJobThread(contentJob);
@@ -93,8 +102,17 @@ public class ContentJobListener extends ContentRepositoryListenerBase {
     @PostConstruct
     public void afterPropertiesSet() {
         if (contentRepository.isContentManagementServer()) {
+            this.checkMigration();
             this.executeInitialContentQuery();
             contentRepository.addContentRepositoryListener(this);
+        }
+    }
+
+    private void checkMigration() {
+        if (performContentMigration) {
+            QueryService queryService = contentRepository.getQueryService();
+            Collection<Content> allContentJobs = queryService.poseContentQuery(allContentQuery);
+            migration.fromPropertyToLocalSettings(allContentJobs);
         }
     }
 

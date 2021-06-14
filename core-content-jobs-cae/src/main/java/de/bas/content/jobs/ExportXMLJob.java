@@ -1,8 +1,8 @@
 package de.bas.content.jobs;
 
-import com.coremedia.blueprint.common.contentbeans.CMFolderProperties;
-import com.coremedia.blueprint.common.contentbeans.CMObject;
+import com.coremedia.cap.content.Content;
 import com.coremedia.cap.undoc.server.importexport.base.exporter.ServerXmlExport;
+import com.coremedia.cap.util.CapStructUtil;
 import de.bas.content.engine.ContentWriter;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Scope;
@@ -10,6 +10,8 @@ import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import static de.bas.content.beans.ContentJob.SOURCE_CONTENT;
 
 
 /**
@@ -56,12 +58,9 @@ public class ExportXMLJob extends AbstractContentJob {
 
     private String[] getContentIds() {
         List<String> contentIds = new ArrayList<>();
-        for (CMObject sourceContent : contentJob.getSourceContent()) {
-            if (sourceContent instanceof CMFolderProperties) {
-                contentIds.add(sourceContent.getContent().getParent().getId());
-            } else {
-                contentIds.add(sourceContent.getContent().getId());
-            }
+        List<Content> sourceContents = CapStructUtil.getLinks(contentJob.getLocalSettings(), SOURCE_CONTENT);
+        for (Content sourceContent : sourceContents) {
+            contentIds.add(sourceContent.getId());
         }
         return contentIds.toArray(String[]::new);
     }

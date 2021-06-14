@@ -48,13 +48,6 @@ public interface ContentJob extends CMObject {
     Calendar getLastRun();
 
     /**
-     * Returns the value of the document property "sourceContent"
-     *
-     * @return the value
-     */
-    List<? extends CMObject> getSourceContent();
-
-    /**
      * Returns the value of the document property "active"
      *
      * @return the value
@@ -78,8 +71,6 @@ public interface ContentJob extends CMObject {
     ////////////////////////////////////////////////////
     // Added after the initial contentBean generator run
     //
-    Content getContentToSync();
-
     String getType();
 
     boolean isActive();
@@ -105,4 +96,6 @@ public interface ContentJob extends CMObject {
     boolean getSkipEntities();
     
     boolean getSkipUuids();
+
+    Content getTargetFolder();
 }

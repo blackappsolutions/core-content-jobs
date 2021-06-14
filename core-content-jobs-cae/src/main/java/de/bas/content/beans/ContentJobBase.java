@@ -4,6 +4,7 @@ import com.coremedia.blueprint.cae.contentbeans.CMObjectImpl;
 import com.coremedia.blueprint.common.contentbeans.CMObject;
 import com.coremedia.cap.content.Content;
 import com.coremedia.cap.struct.Struct;
+import com.coremedia.cap.util.CapStructUtil;
 
 import java.util.Calendar;
 import java.util.List;
@@ -39,17 +40,6 @@ public abstract class ContentJobBase extends CMObjectImpl {
   public Calendar getLastRun() {
     return getContent().getDate(LAST_RUN);
   }
-
-
-  /**
-   * Returns the value of the document property "sourceContent"
-   * @return the value of the document property "sourceContent"
-   */
-  public List<? extends CMObject> getSourceContent() {
-    List<Content> contents = getContent().getLinks(SOURCE_CONTENT);
-    return createBeansFor(contents, CMObject.class);
-  }
-
 
   /**
    * Returns the value of the document property "active"

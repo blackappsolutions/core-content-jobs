@@ -1,7 +1,5 @@
 package de.bas.content.jobs;
 
-import com.coremedia.blueprint.common.contentbeans.CMFolderProperties;
-import com.coremedia.blueprint.common.contentbeans.CMObject;
 import com.coremedia.cap.content.Content;
 import com.coremedia.cap.content.ContentRepository;
 import com.coremedia.cap.content.publication.PublicationService;
@@ -42,7 +40,7 @@ public class BulkPublishJob extends AbstractContentJob {
 
     @Override
     void doTheJob() throws Exception {
-        folderPath = getFolderPath();
+        folderPath = contentJob.getTargetFolder().getPath();
         BulkPublish bulkPublish = new BulkPublish() {
             @Override
             public int run(String[] args) {
@@ -81,14 +79,4 @@ public class BulkPublishJob extends AbstractContentJob {
         return arguments;
     }
 
-    private String getFolderPath() {
-        List<? extends CMObject> sourceContent1 = contentJob.getSourceContent();
-        if (sourceContent1.size() == 1) {
-            CMObject cmObject = sourceContent1.get(0);
-            if (cmObject instanceof CMFolderProperties) {
-                return cmObject.getContent().getParent().getPath();
-            }
-        }
-        throw new RuntimeException("Please supply a FolderProperties marker for the folder you want to publish");
-    }
 }

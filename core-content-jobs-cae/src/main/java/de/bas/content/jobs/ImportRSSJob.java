@@ -41,7 +41,8 @@ public class ImportRSSJob extends AbstractContentJob {
             URL feedUrl = new URL(rss_url);
             SyndFeedInput input = new SyndFeedInput();
             SyndFeed feed = input.build(new XmlReader(feedUrl));
-            Content targetFolder = contentJob.getContentToSync();
+
+            Content targetFolder = contentJob.getTargetFolder();
             for (SyndEntry entry : feed.getEntries()) {
                 Map<String, Object> properties = new HashMap<>();
                 properties.put("title", entry.getTitle());

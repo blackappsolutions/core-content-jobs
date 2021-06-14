@@ -41,9 +41,20 @@
                            ]}"/>
           </editor:store>
         </editor:ComboBoxStringPropertyField>
-        <editor:LinkListPropertyField propertyName="sourceContent"/>
+        <editor:StringPropertyField propertyName="localSettings.sourceContent"/>
         <editor:BooleanPropertyField propertyName="localSettings.recursive" dontTransformToInteger="true"/>
-        <editor:StringPropertyField propertyName="localSettings.export-storage-url"/>
+        <editor:StringPropertyField propertyName="localSettings.export-storage-url">
+          <!--editor:plugins exml:mode="append">
+            <ui:AddItemsPlugin>
+              <ui:items>
+                <Label html="{resourceManager.getString('com.vfcorp.studio.VfCorpContenttypes', 'CMTeasable_localSettings.openGraph.ogImage_help')}" />
+              </ui:items>
+              <ui:before>
+                <Component itemId="linkGrid" />
+              </ui:before>
+            </ui:AddItemsPlugin>
+          </editor:plugins-->
+        </editor:StringPropertyField>
         <editor:StringPropertyField propertyName="localSettings.zip-directory"/>
         <editor:PropertyFieldGroup itemId="scheduling" title="Scheduling" collapsed="true">
           <editor:items>
