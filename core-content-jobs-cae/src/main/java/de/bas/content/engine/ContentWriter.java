@@ -38,6 +38,8 @@ public class ContentWriter {
     private String user;
     @Value("${content-jobs.pass}")
     private String pass;
+    @Value("${content-jobs.domain}")
+    private String domain;
 
     /**
      * We use a separate contentServer connection here to "write" content.
@@ -90,19 +92,16 @@ public class ContentWriter {
     }
 
     @PostConstruct
-    public void initContentRepository() {
+    public void initContentRepository() throws InvalidLoginException {
         if (StringUtil.isEmpty(user) || StringUtil.isEmpty(pass)) {
             throw new RuntimeException(
                 "Please provide admin user account in properties 'content-jobs.user' & 'content-jobs.pass'."
             );
         }
-        try {
-            CapConnection con = Cap.connect(repoUrl, user, pass);
-            log.info("Opened connection for user {}", user);
-            contentRepository = con.getContentRepository();
-        } catch (InvalidLoginException e) {
-            log.info("Can not log in user {} at {}.", user, repoUrl);
-        }
+        CapConnection con = Cap.connect(repoUrl, user, "".equals(domain) ? null : domain, pass);
+        log.info("Opened connection for user {}", user);
+        contentRepository = con.getContentRepository();
+        log.info("Connection for user {} established successfully", user);
     }
 
     public ContentRepository getContentRepository() {
