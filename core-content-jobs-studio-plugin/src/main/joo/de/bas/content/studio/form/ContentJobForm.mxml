@@ -99,6 +99,7 @@
                                     collapsed="true"/>
         <bpforms:LocalSettingsForm bindTo="{config.bindTo}"
                                    collapsed="true"/>
+        <editor:LinkListPropertyField propertyName="sourceContent"/>
       </editor:items>
     </editor:DocumentForm>
   </editor:items>
