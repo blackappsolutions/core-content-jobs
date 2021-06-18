@@ -4,12 +4,11 @@ import com.coremedia.cap.Cap;
 import com.coremedia.cap.common.Blob;
 import com.coremedia.cap.common.BlobService;
 import com.coremedia.cap.common.CapConnection;
-import com.coremedia.cap.common.InvalidLoginException;
 import com.coremedia.cap.content.Content;
 import com.coremedia.cap.content.ContentRepository;
 import com.coremedia.objectserver.beans.ContentBeanFactory;
-import com.twelvemonkeys.lang.StringUtil;
 import de.bas.content.beans.ContentJob;
+import hox.corem.login.Service;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
@@ -18,6 +17,8 @@ import javax.activation.MimeTypeParseException;
 import javax.annotation.PostConstruct;
 import java.nio.charset.StandardCharsets;
 import java.util.Calendar;
+import java.util.HashMap;
+import java.util.Map;
 
 import static de.bas.content.beans.ContentJob.ACTIVE;
 import static de.bas.content.beans.ContentJob.LAST_RUN;
@@ -34,12 +35,6 @@ public class ContentWriter {
     protected static final String TEXT_PLAIN = "text/plain";
     @Value("${repository.url}")
     private String repoUrl;
-    @Value("${content-jobs.user}")
-    private String user;
-    @Value("${content-jobs.pass}")
-    private String pass;
-    @Value("${content-jobs.domain}")
-    private String domain;
 
     /**
      * We use a separate contentServer connection here to "write" content.
@@ -79,7 +74,7 @@ public class ContentWriter {
         Content content = contentRepository.getContent(contentId);
         if (content.isCheckedOut()) {
             if (content.getEditor().equals(contentRepository.getConnection().getSession().getUser())) {
-                log.info("ContentSync {} is already checked out by user {}. No action required.", contentId, user);
+                log.info("ContentSync {} is already checked out by user {}. No action required.", contentId, content.getEditor());
             } else {
                 log.warn("ContentSync {} was checked out by {}. Checking in.", contentId, content.getEditor().toString());
                 content.checkIn(); // saving this version created by some user in the meantime
@@ -92,16 +87,18 @@ public class ContentWriter {
     }
 
     @PostConstruct
-    public void initContentRepository() throws InvalidLoginException {
-        if (StringUtil.isEmpty(user) || StringUtil.isEmpty(pass)) {
-            throw new RuntimeException(
-                "Please provide admin user account in properties 'content-jobs.user' & 'content-jobs.pass'."
-            );
-        }
-        CapConnection con = Cap.connect(repoUrl, user, "".equals(domain) ? null : domain, pass);
-        log.info("Opened connection for user {}", user);
+    public void initContentRepository() {
+        Map<String, String> params = new HashMap<>();
+        params.put(Cap.USER, Service.SERVICENAME_IMPORTER);
+        params.put(Cap.PASSWORD, Service.SERVICENAME_IMPORTER);
+        params.put(Cap.DOMAIN, "");
+        params.put(Cap.CONTENT_SERVER_URL, repoUrl);
+        params.put(Cap.USE_WORKFLOW, "false");
+        params.put("servicename", Service.SERVICENAME_IMPORTER);
+        params.put("servicekey", Service.SERVICEKEY_IMPORTER);
+        CapConnection con = Cap.connect(params);
+        log.info("Opened connection for user {}", Service.SERVICENAME_IMPORTER);
         contentRepository = con.getContentRepository();
-        log.info("Connection for user {} established successfully", user);
     }
 
     public ContentRepository getContentRepository() {

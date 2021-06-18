@@ -12,13 +12,6 @@ except with this variables
 You can set these variables in the docker ecosystem 
   * in some docker-compose file like `global/deployment/docker/compose/default.yml` or
   * `apps/cae/docker/cae-preview/Dockerfile` directly (no other chance on CMCC-S).       
----
-  To make this extension work, you need to create a separate `content-sync`-admin-user, which creates a new version of each active ContentSync-Resource after a job run. You can provide the users name/pass with the following variables in the system environment or application.properties:
-  * `CONTENTJOBS_USER` | `content-jobs.user=` and 
-  * `CONTENTJOBS_PASS` | `content-jobs.pass=`
-
-  !!! IF THIS USER WAS NOT SET-UP, THE CAE WILL NOT BOOT !!!
-  ---
 
 ## Integration into the CoreMedia Blueprints
 
