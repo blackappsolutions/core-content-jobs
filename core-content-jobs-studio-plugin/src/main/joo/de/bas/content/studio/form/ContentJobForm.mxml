@@ -41,7 +41,7 @@
                            ]}"/>
           </editor:store>
         </editor:ComboBoxStringPropertyField>
-        <editor:StringPropertyField propertyName="localSettings.sourceContent"/>
+        <editor:LinkListPropertyField propertyName="localSettings.sourceContent"/>
         <editor:BooleanPropertyField propertyName="localSettings.recursive" dontTransformToInteger="true"/>
         <editor:StringPropertyField propertyName="localSettings.export-storage-url">
           <!--editor:plugins exml:mode="append">
