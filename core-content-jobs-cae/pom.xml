@@ -16,7 +16,49 @@
     <coremedia.project.extension.for>preview-cae</coremedia.project.extension.for>
   </properties>
 
+  <build>
+    <plugins>
+      <!--
+            Gives us insights in cryptic compile failures like this:
+
+            constituent[41]: file:/Users/mschwarz/apache-maven-3.6.2/lib/jsr250-api-1.0.jar
+            ===================================================
+            Exception in thread "main" java.lang.AssertionError
+                    at jdk.compiler/com.sun.tools.javac.util.Assert.error(Assert.java:155)
+            -->
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-compiler-plugin</artifactId>
+        <configuration>
+          <forceJavacCompilerUse>true</forceJavacCompilerUse>
+          <compilerArgs>
+            <arg>-parameters</arg>
+          </compilerArgs>
+        </configuration>
+      </plugin>
+    </plugins>
+  </build>
   <dependencies>
+    <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot</artifactId>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>com.coremedia.cms</groupId>
+      <artifactId>cap-delivery-configuration</artifactId>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>com.coremedia.blueprint</groupId>
+      <artifactId>test-util</artifactId>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>com.coremedia.cms</groupId>
+      <artifactId>cap-client-xml</artifactId>
+      <scope>test</scope>
+    </dependency>
     <dependency>
       <groupId>com.coremedia.cms</groupId>
       <artifactId>cap-base</artifactId>

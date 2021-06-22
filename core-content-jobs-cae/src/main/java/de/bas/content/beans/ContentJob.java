@@ -21,6 +21,7 @@ public interface ContentJob extends CMObject {
 
     String LOCAL_SETTINGS = "localSettings";
     String SOURCE_CONTENT = "sourceContent";
+    String SOURCE_CONTENT_PATHS = "sourceContentPaths";
     String START_AT = "start-at";
     String REPEAT_EVERY = "repeat-every";
     String ACTIVE = "active";

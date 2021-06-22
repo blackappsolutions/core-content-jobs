@@ -46,6 +46,16 @@ public class ContentWriter {
         this.contentBeanFactory = contentBeanFactory;
     }
 
+    // Start VisibleForTesting
+    public ContentWriter() {
+        contentBeanFactory = null;
+    }
+
+    public void setContentRepository(ContentRepository contentRepository) {
+        this.contentRepository = contentRepository;
+    }
+    // End VisibleForTesting
+
     public void startJob(String contentId) {
         Content content = getCheckedOutContent(contentId);
         content.set(ACTIVE, 0);

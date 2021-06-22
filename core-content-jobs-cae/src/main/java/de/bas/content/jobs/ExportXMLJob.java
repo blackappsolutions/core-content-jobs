@@ -3,6 +3,8 @@ package de.bas.content.jobs;
 import com.coremedia.cap.content.Content;
 import com.coremedia.cap.undoc.server.importexport.base.exporter.ServerXmlExport;
 import com.coremedia.cap.util.CapStructUtil;
+import com.coremedia.xml.Markup;
+import com.coremedia.xml.MarkupUtil;
 import de.bas.content.engine.ContentWriter;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Scope;
@@ -12,6 +14,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static de.bas.content.beans.ContentJob.SOURCE_CONTENT;
+import static de.bas.content.beans.ContentJob.SOURCE_CONTENT_PATHS;
 
 
 /**
@@ -62,6 +65,29 @@ public class ExportXMLJob extends AbstractContentJob {
         for (Content sourceContent : sourceContents) {
             contentIds.add(sourceContent.getId());
         }
+        if (contentIds.isEmpty()) {
+            Markup markup = contentJob.getLocalSettings().getMarkup(SOURCE_CONTENT_PATHS);
+            if (markup != null) {
+                String string = MarkupUtil.asPlainText(markup);
+                addSourceContentPaths(contentIds, string);
+            }
+        }
         return contentIds.toArray(String[]::new);
+    }
+
+    void addSourceContentPaths(List<String> contentIds, String string2Parse) {
+        if (string2Parse != null && !string2Parse.isEmpty()) {
+            for (String line : string2Parse.split("\n")) {
+                if (line.isEmpty()) {
+                    continue;
+                }
+                Content child = contentWriter.getContentRepository().getChild(line);
+                if (child == null) {
+                    log.warn("{} is skipped. Does not exist in the repository.", line);
+                    continue;
+                }
+                contentIds.add(child.getId());
+            }
+        }
     }
 }
