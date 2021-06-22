@@ -42,6 +42,7 @@
           </editor:store>
         </editor:ComboBoxStringPropertyField>
         <editor:LinkListPropertyField propertyName="localSettings.sourceContent"/>
+        <editor:RichTextPropertyField propertyName="localSettings.sourceContentPaths"/>
         <editor:BooleanPropertyField propertyName="localSettings.recursive" dontTransformToInteger="true"/>
         <editor:StringPropertyField propertyName="localSettings.export-storage-url">
           <!--editor:plugins exml:mode="append">
