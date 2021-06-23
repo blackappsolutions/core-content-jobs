@@ -10,6 +10,7 @@
   </fx:Metadata>
   <fx:Script><![CDATA[
     import com.coremedia.ui.skins.LabelableSkin;
+    import com.coremedia.cap.common.SESSION;
 
     public static const xtype:String = "de.bas.content.studio.form.contentJobForm";
     private var config:ContentJobForm;
@@ -20,7 +21,7 @@
     <editor:DocumentForm
             title="{resourceManager.getString('com.coremedia.blueprint.studio.BlueprintTabs', 'Tab_content_title')}">
       <editor:items>
-        <editor:BooleanPropertyField propertyName="active"/>
+        <editor:BooleanPropertyField propertyName="active" readOnly="{ function():Boolean {return ! SESSION.getUser().isAdministrative();}}"/>
         <editor:ComboBoxStringPropertyField itemId="{'job-type'}"
                                             ui="{LabelableSkin.PLAIN_LABEL.getSkin()}"
                                             propertyName="localSettings.job-type"
@@ -37,7 +38,8 @@
                              {value: 'xmlExport'},
                              {value: 'bulkPublish'},
                              {value: 'bulkUnpublish'},
-                             {value: 'cleanXmlExportsInS3Bucket'}
+                             {value: 'cleanXmlExportsInS3Bucket'},
+                             {value: 'migrateSourceContentLinklistIntoLocalSettings'}
                            ]}"/>
           </editor:store>
         </editor:ComboBoxStringPropertyField>

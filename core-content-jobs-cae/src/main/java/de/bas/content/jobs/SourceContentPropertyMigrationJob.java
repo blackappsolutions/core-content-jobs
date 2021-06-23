@@ -1,13 +1,16 @@
-package de.bas.content.migration;
+package de.bas.content.jobs;
 
 import com.coremedia.cap.common.CapPropertyDescriptor;
 import com.coremedia.cap.content.Content;
 import com.coremedia.cap.content.ContentRepository;
+import com.coremedia.cap.content.query.QueryService;
 import com.coremedia.cap.struct.Struct;
 import com.coremedia.cap.struct.StructBuilder;
 import com.coremedia.cap.struct.StructService;
+import de.bas.content.beans.ContentJob;
 import de.bas.content.engine.ContentWriter;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
@@ -17,16 +20,26 @@ import java.util.List;
 import static de.bas.content.beans.ContentJob.LOCAL_SETTINGS;
 
 /**
+ * You can remove <LinkListProperty Name="sourceContent" LinkType="CMObject"/> in content-jobs-doctypes.xml
+ * after this job was executed
+ * You can keep this job as an example of an Unified API code transformation script.
+ *
  * @author Markus Schwarz
  */
 @Slf4j
-@Component
-public class SourceContentPropertyMigration {
+@Scope("prototype")
+@Component("migrateSourceContentLinklistIntoLocalSettings")
+public class SourceContentPropertyMigrationJob extends AbstractContentJob {
 
-    private final ContentWriter contentWriter;
+    public SourceContentPropertyMigrationJob(ContentJob contentJob, ContentWriter contentWriter) {
+        super(contentJob, contentWriter);
+    }
 
-    public SourceContentPropertyMigration(ContentWriter contentWriter) {
-        this.contentWriter = contentWriter;
+    @Override
+    void doTheJob() throws Exception {
+        QueryService queryService = contentWriter.getContentRepository().getQueryService();
+        Collection<Content> allContentJobs = queryService.poseContentQuery("TYPE ContentJob: NOT isDeleted");
+        fromPropertyToLocalSettings(allContentJobs);
     }
 
     protected static final String SOURCE_CONTENT = "sourceContent";
