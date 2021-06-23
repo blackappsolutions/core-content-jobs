@@ -33,6 +33,7 @@ import static de.bas.content.beans.ContentJob.LOG_OUTPUT;
 public class ContentWriter {
 
     protected static final String TEXT_PLAIN = "text/plain";
+
     @Value("${repository.url}")
     private String repoUrl;
 
@@ -40,6 +41,7 @@ public class ContentWriter {
      * We use a separate contentServer connection here to "write" content.
      */
     private ContentRepository contentRepository;
+
     private final ContentBeanFactory contentBeanFactory;
 
     public ContentWriter(ContentBeanFactory contentBeanFactory) {
@@ -99,16 +101,16 @@ public class ContentWriter {
     @PostConstruct
     public void initContentRepository() {
         Map<String, String> params = new HashMap<>();
-        params.put(Cap.USER, Service.SERVICENAME_IMPORTER);
-        params.put(Cap.PASSWORD, Service.SERVICENAME_IMPORTER);
+        params.put(Cap.USER, Service.SERVICENAME_STUDIO);
+        params.put(Cap.PASSWORD, Service.SERVICENAME_STUDIO);
         params.put(Cap.DOMAIN, "");
         params.put(Cap.CONTENT_SERVER_URL, repoUrl);
         params.put(Cap.USE_WORKFLOW, "false");
-        params.put("servicename", Service.SERVICENAME_IMPORTER);
-        params.put("servicekey", Service.SERVICEKEY_IMPORTER);
-        CapConnection con = Cap.connect(params);
-        log.info("Opened connection for user {}", Service.SERVICENAME_IMPORTER);
-        contentRepository = con.getContentRepository();
+        params.put("servicename", Service.SERVICENAME_STUDIO);
+        params.put("servicekey", Service.SERVICEKEY_STUDIO);
+        CapConnection capConnection = Cap.connect(params);
+        log.info("Opened connection for user {}", Service.SERVICENAME_STUDIO);
+        contentRepository = capConnection.getContentRepository();
     }
 
     public ContentRepository getContentRepository() {

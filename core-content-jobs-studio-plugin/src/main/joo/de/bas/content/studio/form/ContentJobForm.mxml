@@ -11,9 +11,12 @@
   <fx:Script><![CDATA[
     import com.coremedia.ui.skins.LabelableSkin;
     import com.coremedia.cap.common.SESSION;
-
     public static const xtype:String = "de.bas.content.studio.form.contentJobForm";
     private var config:ContentJobForm;
+
+    public function isAdmin():Boolean {
+      return SESSION.getUser().isAdministrative();
+    }
 
     public native function ContentJobForm(config:ContentJobForm = null);
     ]]></fx:Script>
@@ -21,7 +24,8 @@
     <editor:DocumentForm
             title="{resourceManager.getString('com.coremedia.blueprint.studio.BlueprintTabs', 'Tab_content_title')}">
       <editor:items>
-        <editor:BooleanPropertyField propertyName="active" readOnly="{ function():Boolean {return ! SESSION.getUser().isAdministrative();}}"/>
+        <editor:BooleanPropertyField propertyName="active"
+                                     readOnly="{ ! isAdmin()}"/>
         <editor:ComboBoxStringPropertyField itemId="{'job-type'}"
                                             ui="{LabelableSkin.PLAIN_LABEL.getSkin()}"
                                             propertyName="localSettings.job-type"
