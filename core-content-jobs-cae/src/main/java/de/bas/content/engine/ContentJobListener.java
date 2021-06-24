@@ -1,10 +1,15 @@
 package de.bas.content.engine;
 
+import com.coremedia.cap.common.CapConnection;
+import com.coremedia.cap.common.CapSession;
 import com.coremedia.cap.content.Content;
 import com.coremedia.cap.content.ContentRepository;
 import com.coremedia.cap.content.events.ContentCheckedInEvent;
+import com.coremedia.cap.content.events.ContentCreatedEvent;
+import com.coremedia.cap.content.events.ContentEvent;
 import com.coremedia.cap.content.events.ContentRepositoryListenerBase;
 import com.coremedia.cap.content.query.QueryService;
+import com.coremedia.cap.user.User;
 import com.coremedia.objectserver.beans.ContentBeanFactory;
 import de.bas.content.beans.ContentJob;
 import de.bas.content.jobs.AbstractContentJob;
@@ -54,12 +59,43 @@ public class ContentJobListener extends ContentRepositoryListenerBase {
         this.contentJobJanitor = contentJobJanitor;
     }
 
+    /**
+     * Makes sure 'active' is 0 on content copy! Not possible in ContentJobWriteInterceptor.
+     */
+    @Override
+    public void contentCreated(ContentCreatedEvent event) {
+        if (isContentJob(event)) {
+            CapConnection connection = contentWriter.getContentRepository().getConnection();
+            Content content = event.getContent();
+            User editor = content.getEditor(); // When a checked-out content was copied, this will work.
+            if (editor == null) { // Content with a proper checked-in version was copied.
+                editor = content.getVersions().get(0).getEditor(); // The new content will have this ONE last version.
+            }
+            // Make the change on behalf of the user initiated the copy/creation.
+            CapSession capSession = connection.setSession(connection.login(editor.getName(), contentWriter.getDomain()));
+            Content checkedOutContent = contentWriter.getCheckedOutContent(content.getId());
+            checkedOutContent.set(ContentJob.ACTIVE, 0);
+            connection.flush(); // save the change
+            connection.setSession(capSession); // Set the session back to the initial one (Studio system-user)
+        }
+    }
+
+    /**
+     * This handler executes a ContentJob
+     */
     @Override
     public void contentCheckedIn(ContentCheckedInEvent event) {
-        Content content = event.getContent();
-        if (CONTENTTYPE_CONTENTJOB.equals(content.getType().getName())) {
-            handleRawContentJob(content);
+        if (isContentJob(event)) {
+            handleRawContentJob(event.getContent());
         }
+    }
+
+    /**
+     * As we get noticed on every content type, we need to check if this event was triggered by a ContentJob resource.
+     */
+    private boolean isContentJob(ContentEvent event) {
+        Content content = event.getContent();
+        return CONTENTTYPE_CONTENTJOB.equals(content.getType().getName());
     }
 
     private void handleRawContentJob(Content content) {

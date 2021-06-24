@@ -37,6 +37,11 @@ public class ContentWriter {
     @Value("${repository.url}")
     private String repoUrl;
 
+    @Value("${content-jobs.user}")
+    private String contentJobsUser;
+    @Value("${content-jobs.domain}")
+    private String domain;
+
     /**
      * We use a separate contentServer connection here to "write" content.
      */
@@ -59,12 +64,19 @@ public class ContentWriter {
     // End VisibleForTesting
 
     public void startJob(String contentId) {
+        switchToUser(contentJobsUser, domain);
         Content content = getCheckedOutContent(contentId);
         content.set(ACTIVE, 0);
         contentRepository.getConnection().flush(); // saves our change above
     }
 
+    public void switchToUser(String contentJobsUser, String domain) {
+        CapConnection connection = getContentRepository().getConnection();
+        connection.setSession(connection.login(contentJobsUser, domain));
+    }
+
     public ContentJob finishJob(String contentId, boolean successful, String executionProtocol) {
+        switchToUser(contentJobsUser, domain);
         Content content = getCheckedOutContent(contentId);
         content.set(LAST_RUN, Calendar.getInstance());
         content.set(LAST_RUN_SUCCESSFUL, successful ? 1 : 0);
@@ -85,10 +97,11 @@ public class ContentWriter {
         // We need to query the contentServer again because otherwise we will run into a caching error
         Content content = contentRepository.getContent(contentId);
         if (content.isCheckedOut()) {
+            String editorUserName = content.getEditor().getName();
             if (content.getEditor().equals(contentRepository.getConnection().getSession().getUser())) {
-                log.info("ContentSync {} is already checked out by user {}. No action required.", contentId, content.getEditor());
+                log.info("ContentSync {} is already checked out by {}. No action required.", contentId, editorUserName);
             } else {
-                log.warn("ContentSync {} was checked out by {}. Checking in.", contentId, content.getEditor().toString());
+                log.warn("ContentSync {} was checked out by {} in the meantime. Checking in.", contentId, editorUserName);
                 content.checkIn(); // saving this version created by some user in the meantime
                 content.checkOut();
             }
@@ -117,4 +130,7 @@ public class ContentWriter {
         return contentRepository;
     }
 
+    public String getDomain() {
+        return domain;
+    }
 }

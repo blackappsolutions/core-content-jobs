@@ -24,9 +24,6 @@ public abstract class AbstractContentJob implements Callable<ContentJob> {
     protected final ContentJob contentJob;
     protected final ContentWriter contentWriter;
 
-    @Value("${content-jobs.domain}")
-    private String domain;
-
     public AbstractContentJob(ContentJob contentJob, ContentWriter contentWriter) {
         this.contentJob = contentJob;
         this.contentWriter = contentWriter;
@@ -36,33 +33,30 @@ public abstract class AbstractContentJob implements Callable<ContentJob> {
 
     public ContentJob call() throws Exception {
         String thisContentJobsID = contentJob.getContent().getId();
+        // As we have 'NOT isDeleted AND NOT isCheckedOut' in our initial ContentJob-query and
+        // we react on contentCheckedIn() in the ContentJobListener a NullPointerException can not occur here!
         String lastVersionEditor = contentJob.getContent().getCheckedInVersion().getEditor().getName();
-        CapConnection connection = contentWriter.getContentRepository().getConnection();
         boolean successfulRun;
-        CapSession previousSession = null;
         String executionProtocol = null;
         try {
-            log.info("About to start content job on behalf of user {}", lastVersionEditor);
-            previousSession = connection.setSession(connection.login(lastVersionEditor, domain));
+            log.info("Checking out content job {} as content-jobs-system-user.", thisContentJobsID);
             contentWriter.startJob(thisContentJobsID);
+            log.info("About to start content job {} on behalf of user {}", thisContentJobsID, lastVersionEditor);
+            contentWriter.switchToUser(lastVersionEditor, contentWriter.getDomain());
             doTheJob();
             successfulRun = true;
+            log.info("Finished content job {} on behalf of user {}", thisContentJobsID, lastVersionEditor);
         } catch (Exception e) {
             log.error("Error while syncing {}", thisContentJobsID, e);
             if (listAppender != null) {
                 listAppender.addError("Job run failed.", e);
             }
             successfulRun = false;
-        } finally {
-            if (previousSession != null) {
-                // maybe superfluous because the thread ends anyway,
-                // but tells that we are having good habits ;-)
-                connection.setSession(previousSession);
-            }
         }
         if (listAppender != null) {
             executionProtocol = getProtocol();
         }
+        log.info("Checking in job resource {} as content-jobs-system-user.", thisContentJobsID);
         return contentWriter.finishJob(thisContentJobsID, successfulRun, executionProtocol);
     }
 
