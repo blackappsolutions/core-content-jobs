@@ -1,12 +1,13 @@
 package de.bas.content.jobs;
 
-import com.coremedia.cap.common.CapPropertyDescriptor;
+import com.coremedia.blueprint.common.contentbeans.CMFolderProperties;
 import com.coremedia.cap.content.Content;
 import com.coremedia.cap.content.ContentRepository;
 import com.coremedia.cap.content.query.QueryService;
 import com.coremedia.cap.struct.Struct;
 import com.coremedia.cap.struct.StructBuilder;
 import com.coremedia.cap.struct.StructService;
+import com.coremedia.cap.util.StructUtil;
 import de.bas.content.beans.ContentJob;
 import de.bas.content.engine.ContentWriter;
 import lombok.extern.slf4j.Slf4j;
@@ -60,7 +61,7 @@ public class SourceContentPropertyMigrationJob extends AbstractContentJob {
             log.info("{}: {} property is filled with {} items", cjId, SOURCE_CONTENT, sourceContents.size());
             List<Content> newSourceContent = new ArrayList<>(sourceContents.size());
             for (Content sourceContent : sourceContents) {
-                if (sourceContent.getType().getName().equals("CMFolderProperties")) {
+                if (sourceContent.getType().getName().equals(CMFolderProperties.NAME)) {
                     Content sourceContentFolder = sourceContent.getParent();
                     newSourceContent.add(sourceContentFolder);
                     log.info("{}: Transforming CMFolderProperties to folder link to {}", cjId, sourceContentFolder);
@@ -68,48 +69,21 @@ public class SourceContentPropertyMigrationJob extends AbstractContentJob {
                     newSourceContent.add(sourceContent);
                 }
             }
-
-            Content checkedOutContent = contentWriter.getCheckedOutContent(cjId);
-
-            log.info("{}: {} property is about to be nulled and moved into {}", cjId, SOURCE_CONTENT, LOCAL_SETTINGS);
-            checkedOutContent.set(SOURCE_CONTENT, null);
-            checkedOutContent.set(LOCAL_SETTINGS, getNewLocalSettingsStruct(contentJob, newSourceContent));
-            checkedOutContent.checkIn();
+            if (sourceContents.size() > 0) {
+                Content checkedOutContent = contentWriter.getCheckedOutContent(cjId);
+                log.info("{}: {} property is about to be nulled and moved into {}", cjId, SOURCE_CONTENT, LOCAL_SETTINGS);
+                checkedOutContent.set(SOURCE_CONTENT, null);
+                checkedOutContent.set(LOCAL_SETTINGS, getNewLocalSettingsStruct(contentJob, newSourceContent));
+                checkedOutContent.checkIn();
+            }
         }
     }
 
     private Struct getNewLocalSettingsStruct(Content contentJob, List<Content> newSourceContent) {
         ContentRepository repository = contentJob.getRepository();
         StructService structService = repository.getConnection().getStructService();
-        Struct localSettings = getLocalSettings(contentJob, structService);
-        StructBuilder structBuilder = getStructBuilder(localSettings, structService);
-        setLocalSettingsSourceContent(newSourceContent, localSettings, structBuilder, repository);
-        return structBuilder.build();
-    }
-
-    private void setLocalSettingsSourceContent(List<Content> newSourceContent, Struct localSettings, StructBuilder structBuilder, ContentRepository repository) {
-        if ((localSettings.get(SOURCE_CONTENT) == null) && (structBuilder.getDescriptor(SOURCE_CONTENT) == null)) {
-            structBuilder.declareLinks(SOURCE_CONTENT, repository.getContentContentType(), newSourceContent);
-        } else {
-            structBuilder.set(SOURCE_CONTENT, newSourceContent);
-        }
-    }
-
-    private StructBuilder getStructBuilder(Struct localSettings, StructService structService) {
         StructBuilder structBuilder = structService.createStructBuilder();
-        // https://documentation.coremedia.com/cmcc-10/artifacts/2104.1/javadoc/common/com/coremedia/cap/struct/StructBuilder.html
-        for (CapPropertyDescriptor descriptor : localSettings.getType().getDescriptors()) {
-            structBuilder.declare(descriptor, localSettings.get(descriptor.getName()));
-        }
-        return structBuilder;
+        structBuilder.declareLinks(SOURCE_CONTENT, repository.getContentContentType(), newSourceContent);
+        return StructUtil.mergeStructs(contentJob.getStruct(LOCAL_SETTINGS), structBuilder.build());
     }
-
-    private Struct getLocalSettings(Content content, StructService structService) {
-        Struct localSettings = content.getStruct(LOCAL_SETTINGS);
-        if (localSettings == null) {
-            localSettings = structService.emptyStruct();
-        }
-        return localSettings;
-    }
-
 }
