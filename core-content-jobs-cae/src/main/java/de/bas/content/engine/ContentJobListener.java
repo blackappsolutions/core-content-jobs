@@ -81,11 +81,12 @@ public class ContentJobListener extends ContentRepositoryListenerBase {
     }
 
     /**
-     * This handler executes a ContentJob
+     * This handler executes a ContentJob. It will be called also for deletions.
+     * That's why we do the isInProduction check!
      */
     @Override
     public void contentCheckedIn(ContentCheckedInEvent event) {
-        if (isContentJob(event)) {
+        if (isContentJob(event) && event.getContent().isInProduction()) {
             handleRawContentJob(event.getContent());
         }
     }
