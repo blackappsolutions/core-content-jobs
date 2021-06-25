@@ -9,7 +9,10 @@ import com.coremedia.cap.content.events.ContentCreatedEvent;
 import com.coremedia.cap.content.events.ContentEvent;
 import com.coremedia.cap.content.events.ContentRepositoryListenerBase;
 import com.coremedia.cap.content.query.QueryService;
+import com.coremedia.cap.struct.StructBuilder;
+import com.coremedia.cap.struct.StructService;
 import com.coremedia.cap.user.User;
+import com.coremedia.cap.util.StructUtil;
 import com.coremedia.objectserver.beans.ContentBeanFactory;
 import de.bas.content.beans.ContentJob;
 import de.bas.content.jobs.AbstractContentJob;
@@ -23,10 +26,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import javax.annotation.PostConstruct;
 import java.util.Collection;
+import java.util.Collections;
 
 import static com.coremedia.blueprint.base.links.UriConstants.Segments.PREFIX_DYNAMIC;
 import static com.coremedia.blueprint.base.links.UriConstants.Segments.SEGMENT_ID;
 import static de.bas.content.beans.ContentJob.CONTENTTYPE_CONTENTJOB;
+import static de.bas.content.beans.ContentJob.SOURCE_CONTENT;
 
 /**
  * @author Markus Schwarz
@@ -65,7 +70,8 @@ public class ContentJobListener extends ContentRepositoryListenerBase {
     @Override
     public void contentCreated(ContentCreatedEvent event) {
         if (isContentJob(event)) {
-            CapConnection connection = contentWriter.getContentRepository().getConnection();
+            ContentRepository repository = contentWriter.getContentRepository();
+            CapConnection connection = repository.getConnection();
             Content content = event.getContent();
             User editor = content.getEditor(); // When a checked-out content was copied, this will work.
             if (editor == null) { // Content with a proper checked-in version was copied.
@@ -74,10 +80,28 @@ public class ContentJobListener extends ContentRepositoryListenerBase {
             // Make the change on behalf of the user initiated the copy/creation.
             CapSession capSession = connection.setSession(connection.login(editor.getName(), contentWriter.getDomain()));
             Content checkedOutContent = contentWriter.getCheckedOutContent(content.getId());
-            checkedOutContent.set(ContentJob.ACTIVE, 0);
+
+            setInitialValues(repository, connection, checkedOutContent);
+
             connection.flush(); // save the change
             connection.setSession(capSession); // Set the session back to the initial one (Studio system-user)
         }
+    }
+
+    private void setInitialValues(ContentRepository repository, CapConnection connection, Content checkedOutContent) {
+        checkedOutContent.set(ContentJob.ACTIVE, 0);
+        initSourceContentPropertyInLocalSettings(repository, connection, checkedOutContent);
+    }
+
+    private void initSourceContentPropertyInLocalSettings(ContentRepository repository, CapConnection connection, Content checkedOutContent) {
+        StructService structService = connection.getStructService();
+        StructBuilder structBuilder = structService.createStructBuilder();
+        structBuilder.declareLinks(SOURCE_CONTENT, repository.getContentContentType(), Collections.emptyList());
+
+        checkedOutContent.set(
+            ContentJob.LOCAL_SETTINGS,
+            StructUtil.mergeStructs(checkedOutContent.getStruct(ContentJob.LOCAL_SETTINGS), structBuilder.build())
+        );
     }
 
     /**
