@@ -21,11 +21,20 @@ But you can also develop new jobs very easy:
     public class ImportRSSJob extends AbstractContentJob {
     ```
 \=> After deplyoment, this class will be usable with the name **rssImport** in **localSettings.job-type** of ContentJob-resources in CMS.  
-
-**ContentJobs can be scheduled.**
+------------------------------------------------------------------------
+**ContentJobs can be scheduled**
 
 ![](attachments/114566139/114566304.png)
 
+------------------------------------------------------------------------
+**ContentJobs can be triggered from external systems**
+1. Prepare a ContentJob,
+2. set the `web-trigger-allowed` property in `localSettings` to `true`
+3. call https://preview.YOUR_HOST/blueprint/servlet/dynamic/content-jobs/execute/123456/
+(for such a ContentJob, you don't need to set the `active` flag to `true`)
+
+------------------------------------------------------------------------
+**ContentJobs can be monitored**
 There is also a [Freemarker-Template](https://github.com/blackappsolutions/core-content-jobs/blob/main/core-content-jobs-cae/src/main/resources/META-INF/resources/WEB-INF/templates/content-jobs/com.coremedia.blueprint.common.contentbeans/CMPlaceholder.%5Bcontent-jobs%5D.ftl) available to maintain long-running/scheduled jobs.
 
 If you want to use the task overview page to cancel scheduled job, create
@@ -46,7 +55,7 @@ Serves only as a blueprint/template for new jobs and wants to show, that you can
 
 *   Imports RSS from locaSettings.rss-import-url if specified. Otherwise uses "https://rss.nytimes.com/services/xml/rss/nyt/Technology.xml" as default.
 *   If you supply another RSS-feed, its structure must match the one in the default-feed above.
-*   [Supply a folder](#id-09.CoreContentJobs-defineFolder) in **The folder/content which schould be synced**
+*   Drag&Drop a folder into the field "The folder/content which should be synced"
 *   RSS-Item->title-Attribute is mapped to CMArticle→title
 *   RSS-Item->description-Attribute is mapped to CMArticle→detailText
 *   For every RSS-Item an Article is created in the folder provided above [after the job was started](#startJob).
@@ -62,19 +71,11 @@ This Job makes use of [CoreMedia's ServerExport Tool](https://documentation.core
 *   In Studio go to "/All Content/Settings/Options/Settings/Content Jobs"
 *   Create a new content item of type "ContentJob"
 *   set the **Job type** to "xmlExport"
-*   Add content you would like to export by using drag&drop to **The folder/content which schould be synced**
+*   Add content/folders you would like to export to the field **The folder/content which schould be synced** by using drag&drop
 
 **![](attachments/114566139/114566172.png)**
 
-*   <a name="defineFolder"></a>To add a folder, navigate into it and add a new content item of type "Folder Properties"
-*   Make the name of this content item reflect the folder name.
-
-![](attachments/114566139/114566143.png)
-
-![](attachments/114566139/114566145.png)
-
-*   Also drag&drop the new content item of type "Folder Properties" to **The folder/content which schould be synced** (see above)
-*   Set the **Storage-URL** to "s3://YOUR_BUCKET_NAME/"
+*   or fill in content paths of resources (or folders) in the field **If not given above, you can specify content paths line by line here**
 *   **Note**: You can check **Sync Recursive**, if you have provided content item(s) of type "Folder Properties" to **The folder/content which schould be synced** and sync this folder with all of its subfolders.
 *   <a name="startJob"></a>To start the job, you just need to check **active** and push the **Finish editing and apply all changes button**
 
@@ -89,7 +90,7 @@ This Job makes use of [CoreMedia's ServerExport Tool](https://documentation.core
         ![](attachments/114566139/114566173.png) 
         and 
     *   you can find your content zipped at s3 (s3://YOUR_BUCKET_NAME/ID_OF_CONTENTJOB.zip) for later re-use in imports.
-    *   from where you can grap it for examination via this url => http://YOUR_HOST/blueprint/servlet/dynamic/content-jobs/s3download?bucketUrl=s3://YOUR_BUCKET_NAME/ID_OF_CONTENTJOB.zip  
+    *   from where you can grap it for examination via this url => https://preview.YOUR_HOST/blueprint/servlet/dynamic/content-jobs/s3download?bucketUrl=s3://YOUR_BUCKET_NAME/ID_OF_CONTENTJOB.zip  
 
 xmlImport
 ---------
