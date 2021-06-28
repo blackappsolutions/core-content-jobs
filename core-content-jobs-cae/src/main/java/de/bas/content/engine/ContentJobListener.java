@@ -29,12 +29,14 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.annotation.PostConstruct;
 import java.util.Collection;
+import java.util.Collections;
 
 import static com.coremedia.blueprint.base.links.UriConstants.Segments.PREFIX_DYNAMIC;
 import static com.coremedia.blueprint.base.links.UriConstants.Segments.SEGMENT_ID;
 import static de.bas.content.beans.ContentJob.CONTENTTYPE_CONTENTJOB;
 import static de.bas.content.beans.ContentJob.RSS_DEFAULT_FEED;
 import static de.bas.content.beans.ContentJob.S3_BUCKET_CLEANUP_DRYRUN;
+import static de.bas.content.beans.ContentJob.SOURCE_CONTENT;
 import static de.bas.content.beans.ContentJob.WEB_TRIGGER_ALLOWED;
 import static de.bas.content.beans.ContentJob.XML_IMPORT_HALT_ON_ERROR;
 import static de.bas.content.beans.ContentJob.XML_IMPORT_SKIP_ENTITIES;
@@ -115,6 +117,7 @@ public class ContentJobListener extends ContentRepositoryListenerBase {
         structBuilder.declareBoolean(XML_IMPORT_VALIDATE_XML, false);
         structBuilder.declareBoolean(XML_IMPORT_SKIP_ENTITIES, false);
         structBuilder.declareBoolean(XML_IMPORT_SKIP_UUIDS, true);
+        structBuilder.declareLinks(SOURCE_CONTENT, connection.getContentRepository().getContentContentType(), Collections.emptyList());
 
         checkedOutContent.set(
             ContentJob.LOCAL_SETTINGS,
