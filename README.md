@@ -20,7 +20,8 @@ But you can also develop new jobs very easy:
     @Component("rssImport")
     public class ImportRSSJob extends AbstractContentJob {
     ```
-\=> After deplyoment, this class will be usable with the name **rssImport** in **localSettings.job-type** of ContentJob-resources in CMS.  
+    \=> After deplyoment, this class will be usable with the name **rssImport** in **localSettings.job-type** of ContentJob-resources in CMS.  
+    
 ------------------------------------------------------------------------
 **ContentJobs can be scheduled**
 
@@ -35,6 +36,7 @@ But you can also develop new jobs very easy:
 
 ------------------------------------------------------------------------
 **ContentJobs can be monitored**
+
 There is also a [Freemarker-Template](https://github.com/blackappsolutions/core-content-jobs/blob/main/core-content-jobs-cae/src/main/resources/META-INF/resources/WEB-INF/templates/content-jobs/com.coremedia.blueprint.common.contentbeans/CMPlaceholder.%5Bcontent-jobs%5D.ftl) available to maintain long-running/scheduled jobs.
 
 If you want to use the task overview page to cancel scheduled job, create
