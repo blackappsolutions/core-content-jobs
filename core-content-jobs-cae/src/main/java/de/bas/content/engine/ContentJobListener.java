@@ -115,7 +115,6 @@ public class ContentJobListener extends ContentRepositoryListenerBase {
         structBuilder.declareBoolean(XML_IMPORT_VALIDATE_XML, false);
         structBuilder.declareBoolean(XML_IMPORT_SKIP_ENTITIES, false);
         structBuilder.declareBoolean(XML_IMPORT_SKIP_UUIDS, true);
-        structBuilder.declareBoolean(WEB_TRIGGER_ALLOWED, false);
 
         checkedOutContent.set(
             ContentJob.LOCAL_SETTINGS,
