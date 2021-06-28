@@ -25,6 +25,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.annotation.PostConstruct;
 import java.util.Collection;
@@ -129,7 +130,19 @@ public class ContentJobListener extends ContentRepositoryListenerBase {
     @Override
     public void contentCheckedIn(ContentCheckedInEvent event) {
         if (isContentJob(event) && event.getContent().isInProduction()) {
-            handleRawContentJob(event.getContent());
+            ContentJob contentJobBean = contentBeanFactory.createBeanFor(event.getContent(), ContentJob.class);
+            if (contentJobBean != null) {
+                if (contentJobBean.isWebTriggerAllowed()) {
+                    // We must skip here, because otherwise our own check-in at the end will lead to an endless loop.
+                    // Normally, this is prevented by the isActive()-flag, which is not viable here.
+                    log.info(
+                        "ContentJob {} was set up to be triggered externally. Skipping this contentCheckedIn()-event.",
+                        contentJobBean.getContentId()
+                    );
+                } else {
+                    handleContentJob(contentJobBean);
+                }
+            }
         }
     }
 
@@ -141,11 +154,7 @@ public class ContentJobListener extends ContentRepositoryListenerBase {
         return CONTENTTYPE_CONTENTJOB.equals(content.getType().getName());
     }
 
-    private void handleRawContentJob(Content content) {
-        ContentJob contentJob = contentBeanFactory.createBeanFor(content, ContentJob.class);
-        handleContentJob(contentJob);
-    }
-
+    @ResponseBody
     @GetMapping(value = EXECUTE_PATTERN)
     public Object handleExecuteRequest(@PathVariable(SEGMENT_ID) ContentJob contentJob) {
         if (contentJob != null) {
@@ -155,6 +164,7 @@ public class ContentJobListener extends ContentRepositoryListenerBase {
         return "Job was null";
     }
 
+    @ResponseBody
     @GetMapping(value = CONTENT_JOBS_PATTERN)
     public Object handleEnableRequest(@RequestParam("enable") boolean enable) {
         this.enabled = enable;
@@ -197,7 +207,7 @@ public class ContentJobListener extends ContentRepositoryListenerBase {
         Collection<Content> activeContentJobs = queryService.poseContentQuery(initialQuery);
         log.info("Found {} active ContentJob resources", activeContentJobs.size());
         for (Content content : activeContentJobs) {
-            handleRawContentJob(content);
+            handleContentJob(contentBeanFactory.createBeanFor(content, ContentJob.class));
         }
     }
 }
