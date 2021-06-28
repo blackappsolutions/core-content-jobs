@@ -30,7 +30,7 @@ public class GroovyJob extends AbstractContentJob {
             "  }\n" +
             "}\n" +
             "\n" +
-            "con = com.coremedia.cap.Cap.connect(\"http://content-management-server:8080/ior\", \"admin\", \"BadWeather\")\n" +
+            "con = com.coremedia.cap.Cap.connect(\"http://content-management-server:8080/ior\", \"admin\", \"admin\")\n" +
             "ur = con.getUserRepository() \n" +
             "\n" +
             "createUserAndAddToGroup(ur, \"test1\", \"test1\", \"staff\")\n" +
