@@ -15,6 +15,7 @@ import com.coremedia.cap.user.User;
 import com.coremedia.cap.util.StructUtil;
 import com.coremedia.objectserver.beans.ContentBeanFactory;
 import de.bas.content.beans.ContentJob;
+import de.bas.content.beans.ContentJobImpl;
 import de.bas.content.jobs.AbstractContentJob;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
@@ -23,15 +24,20 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.annotation.PostConstruct;
 import java.util.Collection;
-import java.util.Collections;
 
 import static com.coremedia.blueprint.base.links.UriConstants.Segments.PREFIX_DYNAMIC;
 import static com.coremedia.blueprint.base.links.UriConstants.Segments.SEGMENT_ID;
 import static de.bas.content.beans.ContentJob.CONTENTTYPE_CONTENTJOB;
-import static de.bas.content.beans.ContentJob.SOURCE_CONTENT;
+import static de.bas.content.beans.ContentJob.RSS_DEFAULT_FEED;
+import static de.bas.content.beans.ContentJob.S3_BUCKET_CLEANUP_DRYRUN;
+import static de.bas.content.beans.ContentJob.XML_IMPORT_HALT_ON_ERROR;
+import static de.bas.content.beans.ContentJob.XML_IMPORT_SKIP_ENTITIES;
+import static de.bas.content.beans.ContentJob.XML_IMPORT_SKIP_UUIDS;
+import static de.bas.content.beans.ContentJob.XML_IMPORT_VALIDATE_XML;
 
 /**
  * @author Markus Schwarz
@@ -40,7 +46,10 @@ import static de.bas.content.beans.ContentJob.SOURCE_CONTENT;
 @Component
 @RequestMapping
 public class ContentJobListener extends ContentRepositoryListenerBase {
-    public static final String EXECUTE_PATTERN = '/' + PREFIX_DYNAMIC + "/content-jobs/execute" + "/{" + SEGMENT_ID + '}';
+    protected static final String CONTENT_JOBS_URL_SLUG = "content-jobs";
+    protected static final String CONTENT_JOBS_PATTERN = '/' + PREFIX_DYNAMIC + "/" + CONTENT_JOBS_URL_SLUG;
+    public static final String EXECUTE_PATTERN = CONTENT_JOBS_PATTERN + "/execute" + "/{" + SEGMENT_ID + '}';
+    protected static final String CONTENT_JOBS_FRAMEWORK = "Content-Jobs framework";
 
     @Value("${initial.query}")
     private String initialQuery;
@@ -50,6 +59,7 @@ public class ContentJobListener extends ContentRepositoryListenerBase {
     private final ApplicationContext appContext;
     private final ContentWriter contentWriter;
     private final ContentJobJanitor contentJobJanitor;
+    private boolean enabled = true;
 
     public ContentJobListener(@SuppressWarnings("SpringJavaInjectionPointsAutowiringInspection") ContentRepository contentRepository,
                               ContentBeanFactory contentBeanFactory,
@@ -81,22 +91,27 @@ public class ContentJobListener extends ContentRepositoryListenerBase {
             CapSession capSession = connection.setSession(connection.login(editor.getName(), contentWriter.getDomain()));
             Content checkedOutContent = contentWriter.getCheckedOutContent(content.getId());
 
-            setInitialValues(repository, connection, checkedOutContent);
+            setInitialValues(connection, checkedOutContent);
 
             connection.flush(); // save the change
             connection.setSession(capSession); // Set the session back to the initial one (Studio system-user)
         }
     }
 
-    private void setInitialValues(ContentRepository repository, CapConnection connection, Content checkedOutContent) {
+    private void setInitialValues(CapConnection connection, Content checkedOutContent) {
         checkedOutContent.set(ContentJob.ACTIVE, 0);
-        initSourceContentPropertyInLocalSettings(repository, connection, checkedOutContent);
+        initLocalSettings(connection, checkedOutContent);
     }
 
-    private void initSourceContentPropertyInLocalSettings(ContentRepository repository, CapConnection connection, Content checkedOutContent) {
+    private void initLocalSettings(CapConnection connection, Content checkedOutContent) {
         StructService structService = connection.getStructService();
         StructBuilder structBuilder = structService.createStructBuilder();
-        structBuilder.declareLinks(SOURCE_CONTENT, repository.getContentContentType(), Collections.emptyList());
+        structBuilder.declareString(ContentJobImpl.RSS_IMPORT_URL, Integer.MAX_VALUE, RSS_DEFAULT_FEED);
+        structBuilder.declareBoolean(S3_BUCKET_CLEANUP_DRYRUN, true);
+        structBuilder.declareBoolean(XML_IMPORT_HALT_ON_ERROR, false);
+        structBuilder.declareBoolean(XML_IMPORT_VALIDATE_XML, false);
+        structBuilder.declareBoolean(XML_IMPORT_SKIP_ENTITIES, false);
+        structBuilder.declareBoolean(XML_IMPORT_SKIP_UUIDS, true);
 
         checkedOutContent.set(
             ContentJob.LOCAL_SETTINGS,
@@ -130,14 +145,29 @@ public class ContentJobListener extends ContentRepositoryListenerBase {
 
     @GetMapping(value = EXECUTE_PATTERN)
     public Object handleExecuteRequest(@PathVariable(SEGMENT_ID) ContentJob contentJob) {
-        handleContentJob(contentJob);
-        return "Job started";
+        if (contentJob != null) {
+            handleContentJob(contentJob);
+            return "Job started";
+        }
+        return "Job was null";
+    }
+
+    @GetMapping(value = CONTENT_JOBS_PATTERN)
+    public Object handleExecuteRequest(@RequestParam("enable") boolean enable) {
+        this.enabled = enable;
+        return "Set " + CONTENT_JOBS_FRAMEWORK + " " + (enable ? "active" : "on pause");
     }
 
     private void handleContentJob(ContentJob contentJob) {
-        if ((contentJob != null) && contentJob.isActive()) {
-            startJobThread(contentJob);
+        if (this.enabled) {
+            if (contentJob.isActive()) {
+                startJobThread(contentJob);
+            }
+            return;
         }
+        log.info(
+            CONTENT_JOBS_FRAMEWORK + " is paused on this CAE. Maybe a 2nd instance is active for development reasons?"
+        );
     }
 
     private void startJobThread(ContentJob contentJob) {

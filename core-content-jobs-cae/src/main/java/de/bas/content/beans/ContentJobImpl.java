@@ -36,7 +36,7 @@ public class ContentJobImpl extends ContentJobBase implements ContentJob {
     }
 
     public String getRSS_URL() {
-        return settingsService.settingWithDefault("rss-import-url", String.class, "https://rss.nytimes.com/services/xml/rss/nyt/Technology.xml", this);
+        return settingsService.settingWithDefault(RSS_IMPORT_URL, String.class, RSS_DEFAULT_FEED, this);
     }
 
     /**
@@ -73,7 +73,7 @@ public class ContentJobImpl extends ContentJobBase implements ContentJob {
 
     @Override
     public Boolean getS3BucketCleanupDryRun() {
-        return settingsService.settingWithDefault("s3-bucket-cleanup-dryrun", Boolean.class, true, this);
+        return settingsService.settingWithDefault(S3_BUCKET_CLEANUP_DRYRUN, Boolean.class, true, this);
     }
 
     public void setSettingsService(SettingsService settingsService) {
@@ -82,22 +82,22 @@ public class ContentJobImpl extends ContentJobBase implements ContentJob {
 
     @Override
     public boolean getXmlImportHaltOnError() {
-        return settingsService.settingWithDefault("xmlImport-haltOnError", Boolean.class, false, this);
+        return settingsService.settingWithDefault(XML_IMPORT_HALT_ON_ERROR, Boolean.class, false, this);
     }
 
     @Override
     public boolean getValidateXml() {
-        return settingsService.settingWithDefault("xmlImport-validateXml", Boolean.class, false, this);
+        return settingsService.settingWithDefault(XML_IMPORT_VALIDATE_XML, Boolean.class, false, this);
     }
 
     @Override
     public boolean getSkipEntities() {
-        return settingsService.settingWithDefault("xmlImport-skipEntities", Boolean.class, false, this);
+        return settingsService.settingWithDefault(XML_IMPORT_SKIP_ENTITIES, Boolean.class, false, this);
     }
 
     @Override
     public boolean getSkipUuids() {
-        return settingsService.settingWithDefault("xmlImport-skipUuids", Boolean.class, true, this);
+        return settingsService.settingWithDefault(XML_IMPORT_SKIP_UUIDS, Boolean.class, true, this);
     }
 
     @Override

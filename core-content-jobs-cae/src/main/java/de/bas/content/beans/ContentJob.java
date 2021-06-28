@@ -12,6 +12,13 @@ import java.util.Optional;
  * Generated interface for beans of document type "ContentJob".
  */
 public interface ContentJob extends CMObject {
+    String RSS_DEFAULT_FEED = "https://rss.nytimes.com/services/xml/rss/nyt/Technology.xml";
+    String RSS_IMPORT_URL = "rss-import-url";
+    String S3_BUCKET_CLEANUP_DRYRUN = "s3-bucket-cleanup-dryrun";
+    String XML_IMPORT_HALT_ON_ERROR = "xmlImport-haltOnError";
+    String XML_IMPORT_VALIDATE_XML = "xmlImport-validateXml";
+    String XML_IMPORT_SKIP_ENTITIES = "xmlImport-skipEntities";
+    String XML_IMPORT_SKIP_UUIDS = "xmlImport-skipUuids";
 
     /*
      * DEVELOPER NOTE

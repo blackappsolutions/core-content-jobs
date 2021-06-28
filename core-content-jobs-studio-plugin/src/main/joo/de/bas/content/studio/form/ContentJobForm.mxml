@@ -47,7 +47,7 @@
                            ]}"/>
           </editor:store>
         </editor:ComboBoxStringPropertyField>
-        <editor:LinkListPropertyField propertyName="localSettings.sourceContent"/>
+        <editor:LinkListPropertyField propertyName="localSettings.sourceContent" linkType="Content_"/>
         <editor:RichTextPropertyField propertyName="localSettings.sourceContentPaths"/>
         <editor:BooleanPropertyField propertyName="localSettings.recursive" dontTransformToInteger="true"/>
         <editor:StringPropertyField propertyName="localSettings.export-storage-url">
