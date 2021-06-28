@@ -46,6 +46,15 @@ If you want to use the task overview page to cancel scheduled job, create
 *   Set the Placeholder-Resource in an Article or Page OR
 *   issue `/blueprint/servlet/dynamic/content-jobs/terminate/1234` directly.
 
+------------------------------------------------------------------------
+**ContentJobs can be paused**
+
+To switch the whole engine off, when things go wrong (or you need to develop), use                   
+```
+https://preview.YOUR_HOST/blueprint/servlet/dynamic/content-jobs?enable=false`
+```                                                                        
+------------------------------------------------------------------------
+
 See the [Integration Guide](README-technical.md) for more information how to bring that extension into your CoreMedia Blueprints workspace.
 
 * * *
