@@ -19,6 +19,7 @@ public interface ContentJob extends CMObject {
     String XML_IMPORT_VALIDATE_XML = "xmlImport-validateXml";
     String XML_IMPORT_SKIP_ENTITIES = "xmlImport-skipEntities";
     String XML_IMPORT_SKIP_UUIDS = "xmlImport-skipUuids";
+    String WEB_TRIGGER_ALLOWED = "web-trigger-allowed";
 
     /*
      * DEVELOPER NOTE
@@ -106,4 +107,6 @@ public interface ContentJob extends CMObject {
     boolean getSkipUuids();
 
     Content getTargetFolder();
+
+    boolean isWebTriggerAllowed();
 }

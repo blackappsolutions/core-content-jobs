@@ -54,10 +54,6 @@ public class ContentWriter {
     }
 
     // Start VisibleForTesting
-    public ContentWriter() {
-        contentBeanFactory = null;
-    }
-
     public void setContentRepository(ContentRepository contentRepository) {
         this.contentRepository = contentRepository;
     }

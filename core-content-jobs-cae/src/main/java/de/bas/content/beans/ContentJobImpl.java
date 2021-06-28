@@ -26,6 +26,10 @@ public class ContentJobImpl extends ContentJobBase implements ContentJob {
         return settingsService.setting("job-type", String.class, this);
     }
 
+    public boolean isWebTriggerAllowed() {
+        return settingsService.settingWithDefault(WEB_TRIGGER_ALLOWED, Boolean.class, false, this);
+    }
+
     public boolean recursive() {
         return settingsService.settingWithDefault("recursive", Boolean.class, false, this);
     }
@@ -109,6 +113,6 @@ public class ContentJobImpl extends ContentJobBase implements ContentJob {
                 return content;
             }
         }
-        throw new RuntimeException("Please supply a FolderProperties marker for the folder you want to publish");
+        throw new RuntimeException("Please supply a folder!");
     }
 }

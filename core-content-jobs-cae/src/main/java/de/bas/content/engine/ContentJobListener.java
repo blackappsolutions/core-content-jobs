@@ -34,6 +34,7 @@ import static com.coremedia.blueprint.base.links.UriConstants.Segments.SEGMENT_I
 import static de.bas.content.beans.ContentJob.CONTENTTYPE_CONTENTJOB;
 import static de.bas.content.beans.ContentJob.RSS_DEFAULT_FEED;
 import static de.bas.content.beans.ContentJob.S3_BUCKET_CLEANUP_DRYRUN;
+import static de.bas.content.beans.ContentJob.WEB_TRIGGER_ALLOWED;
 import static de.bas.content.beans.ContentJob.XML_IMPORT_HALT_ON_ERROR;
 import static de.bas.content.beans.ContentJob.XML_IMPORT_SKIP_ENTITIES;
 import static de.bas.content.beans.ContentJob.XML_IMPORT_SKIP_UUIDS;
@@ -108,10 +109,12 @@ public class ContentJobListener extends ContentRepositoryListenerBase {
         StructBuilder structBuilder = structService.createStructBuilder();
         structBuilder.declareString(ContentJobImpl.RSS_IMPORT_URL, Integer.MAX_VALUE, RSS_DEFAULT_FEED);
         structBuilder.declareBoolean(S3_BUCKET_CLEANUP_DRYRUN, true);
+        structBuilder.declareBoolean(WEB_TRIGGER_ALLOWED, false);
         structBuilder.declareBoolean(XML_IMPORT_HALT_ON_ERROR, false);
         structBuilder.declareBoolean(XML_IMPORT_VALIDATE_XML, false);
         structBuilder.declareBoolean(XML_IMPORT_SKIP_ENTITIES, false);
         structBuilder.declareBoolean(XML_IMPORT_SKIP_UUIDS, true);
+        structBuilder.declareBoolean(WEB_TRIGGER_ALLOWED, false);
 
         checkedOutContent.set(
             ContentJob.LOCAL_SETTINGS,
@@ -153,14 +156,14 @@ public class ContentJobListener extends ContentRepositoryListenerBase {
     }
 
     @GetMapping(value = CONTENT_JOBS_PATTERN)
-    public Object handleExecuteRequest(@RequestParam("enable") boolean enable) {
+    public Object handleEnableRequest(@RequestParam("enable") boolean enable) {
         this.enabled = enable;
         return "Set " + CONTENT_JOBS_FRAMEWORK + " " + (enable ? "active" : "on pause");
     }
 
     private void handleContentJob(ContentJob contentJob) {
         if (this.enabled) {
-            if (contentJob.isActive()) {
+            if (contentJob.isActive() || contentJob.isWebTriggerAllowed()) {
                 startJobThread(contentJob);
             }
             return;

@@ -52,7 +52,7 @@ public class ExportXMLJobTest {
             "/Content Test/notSearchable\n" +
             "/Content Test/isSearchable\n" +
             "/Content Test/searchableNotSet";
-        ContentWriter contentWriter = new ContentWriter();
+        ContentWriter contentWriter = new ContentWriter(null);
         contentWriter.setContentRepository(repository);
         new ExportXMLJob(null, contentWriter).addSourceContentPaths(contentIds, paths);
         assertEquals(3, contentIds.size());
