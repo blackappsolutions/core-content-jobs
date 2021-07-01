@@ -169,8 +169,11 @@ public class ContentJobListener extends ContentRepositoryListenerBase {
     @ResponseBody
     @GetMapping(value = CONTENT_JOBS_PATTERN)
     public Object handleEnableRequest(@RequestParam("enable") boolean enable) {
+        if (!enable) {
+            contentJobJanitor.terminateAllJobs();
+        }
         this.enabled = enable;
-        return "Set " + CONTENT_JOBS_FRAMEWORK + " " + (enable ? "active" : "on pause");
+        return "Set " + CONTENT_JOBS_FRAMEWORK + " " + (enable ? "active" : "on pause (all current running or scheduled jobs will be terminated)");
     }
 
     private void handleContentJob(ContentJob contentJob) {

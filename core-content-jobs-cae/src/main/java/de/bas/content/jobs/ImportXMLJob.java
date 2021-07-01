@@ -1,5 +1,6 @@
 package de.bas.content.jobs;
 
+import com.coremedia.cap.undoc.server.importexport.base.exporter.ServerXmlExport;
 import com.coremedia.cap.undoc.server.importexport.base.importer.ServerXmlImport;
 import de.bas.content.engine.ContentWriter;
 import lombok.extern.slf4j.Slf4j;
@@ -19,6 +20,7 @@ public class ImportXMLJob extends AbstractContentJob {
 
     @Override
     protected void doTheJob() throws Exception {
+        listAppender = getLoggingEventListAppender(ImportXMLJob.class);
         ServerXmlImport importer = new ServerXmlImport(
             log,
             contentWriter.getContentRepository().getConnection(),

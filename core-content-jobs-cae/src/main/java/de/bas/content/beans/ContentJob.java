@@ -31,7 +31,7 @@ public interface ContentJob extends CMObject {
     String SOURCE_CONTENT = "sourceContent";
     String SOURCE_CONTENT_PATHS = "sourceContentPaths";
     String START_AT = "start-at";
-    String REPEAT_EVERY = "repeat-every";
+    String REPEAT_EVERY = "run-job-every";
     String ACTIVE = "active";
     String LAST_RUN = "lastRun";
     String LAST_RUN_SUCCESSFUL = "lastRunSuccessful";

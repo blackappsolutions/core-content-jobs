@@ -3,22 +3,22 @@ package de.bas.content.jobs;
 import ch.qos.logback.classic.Logger;
 import ch.qos.logback.classic.spi.ILoggingEvent;
 import ch.qos.logback.core.read.ListAppender;
-import com.coremedia.cap.common.CapConnection;
-import com.coremedia.cap.common.CapSession;
+import com.coremedia.cap.content.Content;
+import com.coremedia.cap.content.Version;
 import de.bas.content.beans.ContentJob;
 import de.bas.content.engine.ContentWriter;
 import lombok.extern.slf4j.Slf4j;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Value;
 
-import java.util.concurrent.Callable;
+import java.util.Comparator;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 /**
  * @author Markus Schwarz
  */
 @Slf4j
-public abstract class AbstractContentJob implements Callable<ContentJob> {
+public abstract class AbstractContentJob implements Runnable {
 
     protected ListAppender<ILoggingEvent> listAppender;
     protected final ContentJob contentJob;
@@ -31,11 +31,9 @@ public abstract class AbstractContentJob implements Callable<ContentJob> {
 
     abstract void doTheJob() throws Exception;
 
-    public ContentJob call() throws Exception {
+    public void run() {
         String thisContentJobsID = contentJob.getContent().getId();
-        // As we have 'NOT isDeleted AND NOT isCheckedOut' in our initial ContentJob-query and
-        // we react on contentCheckedIn() in the ContentJobListener a NullPointerException can not occur here!
-        String lastVersionEditor = contentJob.getContent().getCheckedInVersion().getEditor().getName();
+        String lastVersionEditor = getRealVersionEditor(contentJob.getContent());
         boolean successfulRun;
         String executionProtocol = null;
         try {
@@ -57,7 +55,15 @@ public abstract class AbstractContentJob implements Callable<ContentJob> {
             executionProtocol = getProtocol();
         }
         log.info("Checking in job resource {} as content-jobs-system-user.", thisContentJobsID);
-        return contentWriter.finishJob(thisContentJobsID, successfulRun, executionProtocol);
+        contentWriter.finishJob(thisContentJobsID, successfulRun, executionProtocol);
+    }
+
+    private String getRealVersionEditor(Content content) {
+        Optional<Version> realAuthor = content.getVersions().stream()
+            .sorted(Comparator.reverseOrder())
+            .filter(version -> !version.getEditor().getName().equals(contentWriter.getContentJobsUser()))
+            .findFirst();
+        return realAuthor.isEmpty() ? contentWriter.getContentJobsUser() : realAuthor.get().getEditor().getName();
     }
 
     public void cancel() {

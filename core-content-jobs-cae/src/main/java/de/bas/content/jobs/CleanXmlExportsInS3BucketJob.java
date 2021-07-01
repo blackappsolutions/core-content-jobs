@@ -19,7 +19,7 @@ import org.springframework.stereotype.Component;
 @Slf4j
 @Scope("prototype")
 @Component("cleanXmlExportsInS3Bucket")
-public class CleanXmlExportsInS3BucketJob extends AbstractContentJob implements Runnable {
+public class CleanXmlExportsInS3BucketJob extends AbstractContentJob {
 
     public CleanXmlExportsInS3BucketJob(de.bas.content.beans.ContentJob contentJob, ContentWriter contentWriter) {
         super(contentJob, contentWriter);
@@ -57,14 +57,4 @@ public class CleanXmlExportsInS3BucketJob extends AbstractContentJob implements 
 
         s3client.shutdown();
     }
-
-    @Override
-    public void run() {
-        try {
-            call();
-        } catch (Exception e) {
-            log.error("Error in run()-Method of {}", contentJob.getContentId(), e);
-        }
-    }
-
 }

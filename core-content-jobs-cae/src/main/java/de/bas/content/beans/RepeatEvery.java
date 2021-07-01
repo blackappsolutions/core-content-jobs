@@ -6,6 +6,7 @@ import java.util.Arrays;
  * @author mschwarz
  */
 public enum RepeatEvery {
+    MINUTE, // for testing
     HOUR,
     DAY,
     WEEK;

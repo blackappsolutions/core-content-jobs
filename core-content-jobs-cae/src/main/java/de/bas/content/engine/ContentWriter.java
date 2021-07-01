@@ -6,8 +6,6 @@ import com.coremedia.cap.common.BlobService;
 import com.coremedia.cap.common.CapConnection;
 import com.coremedia.cap.content.Content;
 import com.coremedia.cap.content.ContentRepository;
-import com.coremedia.objectserver.beans.ContentBeanFactory;
-import de.bas.content.beans.ContentJob;
 import hox.corem.login.Service;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
@@ -47,18 +45,6 @@ public class ContentWriter {
      */
     private ContentRepository contentRepository;
 
-    private final ContentBeanFactory contentBeanFactory;
-
-    public ContentWriter(ContentBeanFactory contentBeanFactory) {
-        this.contentBeanFactory = contentBeanFactory;
-    }
-
-    // Start VisibleForTesting
-    public void setContentRepository(ContentRepository contentRepository) {
-        this.contentRepository = contentRepository;
-    }
-    // End VisibleForTesting
-
     public void startJob(String contentId) {
         switchToUser(contentJobsUser, domain);
         Content content = getCheckedOutContent(contentId);
@@ -71,7 +57,7 @@ public class ContentWriter {
         connection.setSession(connection.login(contentJobsUser, domain));
     }
 
-    public ContentJob finishJob(String contentId, boolean successful, String executionProtocol) {
+    public void finishJob(String contentId, boolean successful, String executionProtocol) {
         switchToUser(contentJobsUser, domain);
         Content content = getCheckedOutContent(contentId);
         content.set(LAST_RUN, Calendar.getInstance());
@@ -86,7 +72,6 @@ public class ContentWriter {
             }
         }
         content.checkIn();
-        return contentBeanFactory.createBeanFor(content, ContentJob.class);
     }
 
     public Content getCheckedOutContent(String contentId) {
@@ -122,11 +107,21 @@ public class ContentWriter {
         contentRepository = capConnection.getContentRepository();
     }
 
+    // Start VisibleForTesting
+    public void setContentRepository(ContentRepository contentRepository) {
+        this.contentRepository = contentRepository;
+    }
+    // End VisibleForTesting
+
     public ContentRepository getContentRepository() {
         return contentRepository;
     }
 
     public String getDomain() {
         return domain;
+    }
+
+    public String getContentJobsUser() {
+        return contentJobsUser;
     }
 }

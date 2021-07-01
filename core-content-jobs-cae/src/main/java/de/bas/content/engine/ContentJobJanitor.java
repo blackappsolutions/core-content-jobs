@@ -28,6 +28,7 @@ import static com.coremedia.blueprint.base.links.UriConstants.Segments.SEGMENT_I
 import static java.util.concurrent.TimeUnit.DAYS;
 import static java.util.concurrent.TimeUnit.HOURS;
 import static java.util.concurrent.TimeUnit.MILLISECONDS;
+import static java.util.concurrent.TimeUnit.MINUTES;
 
 @Slf4j
 @RequestMapping
@@ -46,7 +47,7 @@ public class ContentJobJanitor {
     private ScheduledExecutorService executor = Executors.newScheduledThreadPool(PARALLEL_THREADS);
     private final List<ScheduledFutureHolder> taskList = new ArrayList<>();
 
-    private final Runnable removeAndLogFinishedJobs = () -> {
+    private final Runnable removeFinishedJobs = () -> {
         synchronized (taskList) {
             taskList.removeIf(entry -> entry.future.isDone());
         }
@@ -59,7 +60,7 @@ public class ContentJobJanitor {
 
     @PostConstruct
     public void afterPropertiesSet() {
-        taskScheduler.scheduleAtFixedRate(removeAndLogFinishedJobs, cleanupPeriod);
+        taskScheduler.scheduleAtFixedRate(removeFinishedJobs, cleanupPeriod);
     }
 
     public void add(ScheduledFuture<?> futureTask, AbstractContentJob contentJob) {
@@ -72,7 +73,7 @@ public class ContentJobJanitor {
     @GetMapping(value = DYNAMIC_URI_PATTERN)
     public Object terminateContentJob(@PathVariable(SEGMENT_ID) String contentId,
                                       @RequestParam(value = "origUrl", required = false) String origUrl) {
-        removeAlreadyScheduledJob(Integer.parseInt(contentId));
+        terminateJob(Integer.parseInt(contentId));
 
         if (StringUtil.isEmpty(origUrl)) {
             return "Job cancelled";
@@ -109,7 +110,7 @@ public class ContentJobJanitor {
         Long millisUntilLaunch = getMillisUntilLaunch(startAt, contentId);
         if (millisUntilLaunch == null) return null;
 
-        removeAlreadyScheduledJob(job.getContentJobBean().getContentId());
+        terminateJob(job.getContentJobBean().getContentId()); // maybe the same job was already scheduled in the past
 
         log.info("Starting Content-Job {} in {}ms ", contentId, millisUntilLaunch);
 
@@ -119,16 +120,8 @@ public class ContentJobJanitor {
             return executor.schedule(job, millisUntilLaunch, MILLISECONDS);
         }
 
-        if (job instanceof Runnable) {
-            Runnable rJob = (Runnable) job;
-            long repetitionRateMillis = getRepetitionRateMillis(repetition);
-            return executor.scheduleAtFixedRate(rJob, millisUntilLaunch, repetitionRateMillis, MILLISECONDS);
-        }
-
-        log.error("Recurring job {} does not implement Runnable! " +
-            "Please configure another type of job or fix that in the code.", job.getContentJobBean().getType());
-
-        return null;
+        long repetitionRateMillis = getRepetitionRateMillis(repetition);
+        return executor.scheduleAtFixedRate(job, millisUntilLaunch, repetitionRateMillis, MILLISECONDS);
     }
 
     private Long getMillisUntilLaunch(Calendar startAt, int contentId) {
@@ -148,6 +141,9 @@ public class ContentJobJanitor {
     long getRepetitionRateMillis(RepeatEvery repetition) {
         long repetitionRateMillis = 0;
         switch (repetition) {
+            case MINUTE:
+                repetitionRateMillis = MINUTES.toMillis(1);
+                break;
             case HOUR:
                 repetitionRateMillis = HOURS.toMillis(1);
                 break;
@@ -161,18 +157,32 @@ public class ContentJobJanitor {
         return repetitionRateMillis;
     }
 
-    private void removeAlreadyScheduledJob(int contentId) {
+    public void terminateAllJobs() {
+        terminateJob(-1);
+    }
+
+    public void terminateJob(int contentId) {
         synchronized (taskList) {
-            taskList.removeIf(entry -> {
-                if (entry.abstractContentJob.getContentJobBean().getContentId() == contentId) {
-                    if (!entry.future.isDone()) { // waits for its start
-                        entry.future.cancel(true);
-                        entry.getAbstractContentJob().cancel();
-                    }
-                    return true;
+            for (ScheduledFutureHolder entry : taskList) {
+                if (entryMatchesContentId(contentId, entry)) {
+                    cancelScheduledJob(entry);
                 }
-                return false;
-            });
+            }
+        }
+        removeFinishedJobs.run();
+    }
+
+    /**
+     * contentId == -1 matches all the time
+     */
+    private boolean entryMatchesContentId(int contentId, ScheduledFutureHolder entry) {
+        return (contentId == -1) || (entry.abstractContentJob.getContentJobBean().getContentId() == contentId);
+    }
+
+    private void cancelScheduledJob(ScheduledFutureHolder entry) {
+        if (!entry.future.isDone()) { // waits for its start
+            entry.future.cancel(true);
+            entry.getAbstractContentJob().cancel();
         }
     }
 
