@@ -54,6 +54,11 @@ To switch the whole engine off, when things go wrong (or you need to develop), u
 https://preview.YOUR_HOST/blueprint/servlet/dynamic/content-jobs?enable=false`
 ```                                                                        
 ------------------------------------------------------------------------
+**ContentJobs can be activated only by Users which are members of an administrative group**
+
+When you are logged in as such a user you are able to check the "active" checkbox and arm the job.
+
+------------------------------------------------------------------------
 
 See the [Integration Guide](README-technical.md) for more information how to bring that extension into your CoreMedia Blueprints workspace.
 
