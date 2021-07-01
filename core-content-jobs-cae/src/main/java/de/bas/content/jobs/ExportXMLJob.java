@@ -1,12 +1,14 @@
 package de.bas.content.jobs;
 
 import com.coremedia.cap.content.Content;
+import com.coremedia.cap.multisite.SitesService;
 import com.coremedia.cap.undoc.server.importexport.base.exporter.ServerXmlExport;
 import com.coremedia.cap.util.CapStructUtil;
 import com.coremedia.xml.Markup;
 import com.coremedia.xml.MarkupUtil;
 import de.bas.content.engine.ContentWriter;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
@@ -41,6 +43,9 @@ import static de.bas.content.beans.ContentJob.SOURCE_CONTENT_PATHS;
 @Component("xmlExport")
 public class ExportXMLJob extends AbstractContentJob {
 
+    @Autowired
+    private SitesService sitesService;
+
     public ExportXMLJob(de.bas.content.beans.ContentJob contentJob, ContentWriter contentWriter) {
         super(contentJob, contentWriter);
     }
@@ -48,7 +53,7 @@ public class ExportXMLJob extends AbstractContentJob {
     @Override
     protected void doTheJob() {
         listAppender = getLoggingEventListAppender(ServerXmlExport.class);
-        ServerXmlExport serverExporter = new ServerXmlExport(contentJob.getContent().getRepository().getConnection(), null);
+        ServerXmlExport serverExporter = new ServerXmlExport(contentJob.getContent().getRepository().getConnection(), sitesService);
         String[] ids = getContentIds();
         serverExporter.setContentIds(ids);
         serverExporter.setRecursive(contentJob.recursive());
