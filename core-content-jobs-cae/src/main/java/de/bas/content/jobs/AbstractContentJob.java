@@ -37,8 +37,12 @@ public abstract class AbstractContentJob implements Runnable {
         boolean successfulRun;
         String executionProtocol = null;
         try {
-            log.info("Checking out content job {} as content-jobs-system-user.", thisContentJobsID);
-            contentWriter.startJob(thisContentJobsID);
+            boolean isRepetitiveJob = contentJob.getRepetition() != null;
+            log.info(
+                "Checking out {} content job {} as content-jobs-system-user.",
+                isRepetitiveJob ? "repetitive" : "", thisContentJobsID
+            );
+            contentWriter.startJob(thisContentJobsID, isRepetitiveJob);
             log.info("About to start content job {} on behalf of user {}", thisContentJobsID, lastVersionEditor);
             contentWriter.switchToUser(lastVersionEditor, contentWriter.getDomain());
             doTheJob();
@@ -67,7 +71,7 @@ public abstract class AbstractContentJob implements Runnable {
     }
 
     public void cancel() {
-        contentWriter.startJob(contentJob.getContent().getId());
+        contentWriter.startJob(contentJob.getContent().getId(), contentJob.getRepetition() != null);
         contentWriter.finishJob(contentJob.getContent().getId(), false, "CANCELED");
     }
 

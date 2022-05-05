@@ -40,6 +40,8 @@
                              {value: 'xmlExport'},
                              {value: 'xmlImport'},
                              {value: 'cleanXmlExportsInS3Bucket'},
+                             {value: 'cleanRecycleBin'},
+                             {value: 'cleanVersions'},
                              {value: 'bulkPublish'},
                              {value: 'bulkUnpublish'},
                              {value: 'rssImport'},

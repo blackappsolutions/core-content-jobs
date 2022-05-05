@@ -45,11 +45,13 @@ public class ContentWriter {
      */
     private ContentRepository contentRepository;
 
-    public void startJob(String contentId) {
+    public void startJob(String contentId, boolean repetitive) {
         switchToUser(contentJobsUser, domain);
         Content content = getCheckedOutContent(contentId);
-        content.set(ACTIVE, 0);
-        contentRepository.getConnection().flush(); // saves our change above
+        if (!repetitive) {
+            content.set(ACTIVE, 0);
+            contentRepository.getConnection().flush(); // saves our change above
+        }
     }
 
     public void switchToUser(String contentJobsUser, String domain) {

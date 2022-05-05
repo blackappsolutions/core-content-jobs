@@ -14,6 +14,24 @@ import java.util.Optional;
 public interface ContentJob extends CMObject {
     String RSS_DEFAULT_FEED = "https://rss.nytimes.com/services/xml/rss/nyt/Technology.xml";
     String RSS_IMPORT_URL = "rss-import-url";
+
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    // https://documentation.coremedia.com/cmcc-10/artifacts/2010/webhelp/contentserver-en/content/VersionCollector.html
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    String CLEAN_VERSIONS_ARGS = "clean-versions-arguments";
+    String CLEAN_VERSIONS_DEFAULT_ARGS = "--noexport";
+
+
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    // https://documentation.coremedia.com/cmcc-10/artifacts/2010/webhelp/contentserver-en/content/ArchiveCleaner.html
+    // --noexport 	No XML files will be generated if this option is set. By default, XML files will be generated.
+    // --before     Only remove content items with modification date before or equal to the given date.
+    //              Format: yyyyMMddHHmmss.
+    //              Default is 30 days from the actual date.
+    // --simulate 	Enables simulation mode
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    String CLEAN_RECYCLE_BIN_ARGS = "clean-recycle-bin-arguments";
+    String CLEAN_RECYCLE_BIN_DEFAULT_ARGS = "--noexport";
     String S3_BUCKET_CLEANUP_DRYRUN = "s3-bucket-cleanup-dryrun";
     String XML_IMPORT_HALT_ON_ERROR = "xmlImport-haltOnError";
     String XML_IMPORT_VALIDATE_XML = "xmlImport-validateXml";
@@ -97,6 +115,10 @@ public interface ContentJob extends CMObject {
     Optional<String> getZipDirectory();
 
     Boolean getS3BucketCleanupDryRun();
+
+    String getCleanRecycleBinArguments();
+
+    String getCleanVersionsArguments();
 
     boolean getXmlImportHaltOnError();
 

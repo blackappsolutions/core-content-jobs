@@ -76,6 +76,11 @@ public class ContentJobImpl extends ContentJobBase implements ContentJob {
     }
 
     @Override
+    public String getCleanRecycleBinArguments() {
+        return settingsService.settingWithDefault(CLEAN_RECYCLE_BIN_ARGS, String.class, CLEAN_RECYCLE_BIN_DEFAULT_ARGS, this);
+    }
+
+    @Override
     public Boolean getS3BucketCleanupDryRun() {
         return settingsService.settingWithDefault(S3_BUCKET_CLEANUP_DRYRUN, Boolean.class, true, this);
     }
