@@ -120,4 +120,9 @@ public class ContentJobImpl extends ContentJobBase implements ContentJob {
         }
         throw new RuntimeException("Please supply a folder!");
     }
+
+    public String getCleanVersionsArguments() {
+        //ToDo
+        return null;
+    }
 }
