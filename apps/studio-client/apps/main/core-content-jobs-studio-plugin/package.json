@@ -37,7 +37,7 @@
     }
   },
   "coremedia": {
-    "projectExtensionFor": "studio-client.main-static"
+    "projectExtensionFor": "studio-client.main"
   },
   "publishConfig": {
     "directory": "dist",

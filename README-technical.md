@@ -15,36 +15,69 @@ You can set these variables in the docker ecosystem
 
 ## Integration into the CoreMedia Blueprints
 
-### Background
+### Background: Integration as git submodule
 
-Integration of this extension is recommended as **Git SubModule**.
-                                                  
-Before doing so, make a fork to be able to apply your customizations.
+Integration of this extension is recommended as **Git SubModule**. Before doing so, make a fork if it (on GitHub just press the "Fork" Button) to be able to persist your customizations later (if any).
 
-This way, you will be able to merge new commits made in this repo back to your fork.
- 
-### Integrate with Git Submodule Approach
+This way you can merge back new stuff from this repo very easy like this:
+```shell
+git add remote vendor_repo_github https://github.com/blackappsolutions/core-content-jobs.git 
+git fetch vendor_repo_github
+git merge vendor_repo_github/cmcc-11
+```
+### Plug it in
 
-- From the project's root folder, clone this repository as submodule into the extensions folder. Make sure to use the branch name that matches your workspace version. 
-    ```
+1. Add the submodule
+    ```shell
+    cd $BLUEPRINTS_ROOT/modules/extensions
+    git clone https://github.com/blackappsolutions/core-content-jobs.git
+    cd core-content-jobs
+    git checkout cmcc-11
+    cd $BLUEPRINTS_ROOT 
     git submodule add https://github.com/blackappsolutions/core-content-jobs.git modules/extensions/core-content-jobs
     ```
-
-- Use the extension tool in the root folder of the project to link the modules into your workspace.
-    ```                                                          
-    # Should display => #content-sync
+2. Add the Java part of the extension to the maven reactor
+    ```shell
+    # Should display => #core-content-jobs
     mvn -f workspace-configuration/extensions extensions:list -q
-  
-    # Shows possible plugin-points. Nice to know.
-    # mvn -f workspace-configuration/extensions extensions:list-extension-points -q
     
     # Enables the extension. Check e.g. apps/cae/modules/extension-config/cae-extension-dependencies/pom.xml afterwards. 
     mvn -f workspace-configuration/extensions extensions:sync -Denable=core-content-jobs
-  
+    
     # First build, the fastest way ... 
-    mvn clean install -DskipTests -DskipThemes=true -DskipContent=true -Dskip-joo-unit-tests=true \ 
-                      -Dmdep.analyze.skip=true -Denforcer.skip=true
+    mvn clean install -DskipTests -DskipContent=true -Dmdep.analyze.skip=true -Denforcer.skip=true
     ```
+3. Add the Typescript part of the extension to the studio-client
+   1. Add a new line under `packages` in `apps/studio-client/pnpm-workspace.yaml` 
+       ```yaml
+       - "../../modules/extensions/core-content-jobs/apps/studio-client/apps/main/core-content-jobs-studio-plugin"
+       ```
+   2. Add a new dependency in `apps/studio-client/apps/main/extension-config/extension-dependencies/package.json`
+       ```json
+       "dependencies": {
+         ...
+         "@coremedia-blueprint/studio-client.main.core-content-jobs-studio-plugin": "1.0.0-SNAPSHOT",
+         ...
+       }       
+       ```
+   3. Set up your environment with
+      1. NodeJS 16
+      2. [pnpm](https://pnpm.io/installation) 
+      3. Sencha-Cmd v7.2.0.84
+      4. Access to the [NPM-Registry `npm.coremedia.io`](https://documentation.coremedia.com/cmcc-11/artifacts/2201/webhelp/coremedia-en/content/Prerequisites.html#d0e2306)
+   4. Build the studio-client with
+      ```shell
+      cd apps/studio-client             
+      nvm use 16 # if you have multiple node versions on your machine and nvm in place
+      pnpm install
+      pnpm -r run build            
+      ```               
+   5. Optional: Run the studio client (you need a running local docker environment for the command below)
+      ```shell                 
+      cd global/studio # you are in apps/studio-client 
+      pnpm run start                                                                                 
+      ```                                                                                      
+      For further information see https://documentation.coremedia.com/cmcc-11/artifacts/2201/webhelp/studio-developer-en/content/clientDevelopment.html#d0e5550
 ### Configure to you needs
 - Change the groupId and versionID of all pom.xml to your project values, if necessary.
 
