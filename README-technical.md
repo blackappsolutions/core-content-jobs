@@ -48,11 +48,17 @@ git merge vendor_repo_github/cmcc-11
     mvn clean install -DskipTests -DskipContent=true -Dmdep.analyze.skip=true -Denforcer.skip=true
     ```
 3. Add the Typescript part of the extension to the studio-client
-   1. Add a new line under `packages` in `apps/studio-client/pnpm-workspace.yaml` 
+   1. In the workspace root directory: 
+       ```shell
+       ln -s \ 
+       modules/extensions/core-content-jobs/apps/studio-client/apps/main/core-content-jobs-studio-plugin \
+       $(pwd)/apps/studio-client/apps/main/extensions/
+       ```
+   2. Add a new line under `packages` in `apps/studio-client/pnpm-workspace.yaml` 
        ```yaml
        - "../../modules/extensions/core-content-jobs/apps/studio-client/apps/main/core-content-jobs-studio-plugin"
        ```
-   2. Add a new dependency in `apps/studio-client/apps/main/extension-config/extension-dependencies/package.json`
+   3. Add a new dependency in `apps/studio-client/apps/main/extension-config/extension-dependencies/package.json`
        ```json
        "dependencies": {
          ...
@@ -60,24 +66,27 @@ git merge vendor_repo_github/cmcc-11
          ...
        }       
        ```
-   3. Set up your environment with
-      1. NodeJS 16
+   4. Set up your environment with
+      1. NodeJS 18
       2. [pnpm](https://pnpm.io/installation) 
       3. Sencha-Cmd v7.2.0.84
-      4. Access to the [NPM-Registry `npm.coremedia.io`](https://documentation.coremedia.com/cmcc-11/artifacts/2201/webhelp/coremedia-en/content/Prerequisites.html#d0e2306)
-   4. Build the studio-client with
+      4. Access to the [NPM-Registry `npm.coremedia.io`](https://documentation.coremedia.com/cmcc-11/artifacts/2310/webhelp/coremedia-en/content/Prerequisites.html#d0e2306)
+      
+   5. Build the studio-client with
       ```shell
       cd apps/studio-client             
-      nvm use 16 # if you have multiple node versions on your machine and nvm in place
+      nvm use 18 # if you have multiple node versions on your machine and nvm in place
+      export PUPPETEER_SKIP_DOWNLOAD=true # only on M1/M2-Macs      
       pnpm install
       pnpm -r run build            
       ```               
-   5. Optional: Run the studio client (you need a running local docker environment for the command below)
+   6. Optional: Run the studio client (you need a running local docker environment for the command below)
       ```shell                 
       cd global/studio # you are in apps/studio-client 
       pnpm run start                                                                                 
       ```                                                                                      
-      For further information see https://documentation.coremedia.com/cmcc-11/artifacts/2201/webhelp/studio-developer-en/content/clientDevelopment.html#d0e5550
+      For further information see https://documentation.coremedia.com/cmcc-11/artifacts/2310/webhelp/studio-developer-en/content/clientDevelopment.html#d0e5550
+   7. Background information on how studio-client extensions are set up: https://documentation.coremedia.com/cmcc-11/artifacts/2310/webhelp/coremedia-en/content/plugins_starter_kit.html  
 ### Configure to you needs
 - Change the groupId and versionID of all pom.xml to your project values, if necessary.
 
@@ -101,7 +110,7 @@ git merge vendor_repo_github/cmcc-11
   ```
   Vendor-Documentation: [Generate ContentBeans](https://documentation.coremedia.com/cmcc-10/artifacts/2101/webhelp/cae-developer-en/content/GeneratingContentBeans.html)  
 
-### Templates-Devlopment
+### Templates-Development
 apps/cae/spring-boot/cae-preview-app/src/main/resources/application-local.properties
 ```
 ########################################################################################################################
