@@ -5,12 +5,11 @@
        http://www.springframework.org/schema/beans/spring-beans.xsd">
 
   <description>
-    https://documentation.coremedia.com/cmcc-10/artifacts/2101/webhelp/studio-developer-en/content/CustomizeValidation.html
+    https://documentation.coremedia.com/cmcc-11/artifacts/2310/webhelp/studio-developer-en/content/CustomizeValidation.html
   </description>
 
   <bean id="contentJobValidator" class="de.bas.content.ContentJobValidator">
-    <property name="contentType" value="ContentJob"/>
-    <property name="validatingSubtypes" value="false"/>
+    <constructor-arg name="contentRepository" ref="contentRepository" />
     <!--property name="validators">
       <list>
         <bean class="com.coremedia.rest.validators.NotEmptyValidator">
