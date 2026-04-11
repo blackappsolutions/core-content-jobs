@@ -5,9 +5,7 @@
   "compilerOptions": {
     "rootDir": ".",
     "outDir": "../dist/src",
-    "moduleResolution": "nodenext",
     "types": [
-      "@coremedia/studio-client.main.ckeditor4-components",
       "@coremedia/studio-client.main.editor-components",
       "@jangaroo/ext-ts"
     ]

@@ -15,7 +15,7 @@ import java.util.Map;
 /**
  * Sets the preconfigured xmlExportStorageUrl (XMLEXPORT_STORAGEURL) in the struct field export-storage-url
  *
- * See {@link com.coremedia.blueprint.studio.rest.intercept.InterceptorsStudioConfiguration} for inspiration.
+ * See {@link com.coremedia.blueprint.studio.rest.intercept.InterceptorsStudioAutoConfiguration} for inspiration.
  * <p>
  * This is how you can detect changes. E.g.
  * <p>

@@ -70,7 +70,7 @@ git merge vendor_repo_github/cmcc-11
       1. NodeJS 18
       2. [pnpm](https://pnpm.io/installation) 
       3. Sencha-Cmd v7.2.0.84
-      4. Access to the [NPM-Registry `npm.coremedia.io`](https://documentation.coremedia.com/cmcc-11/artifacts/2310/webhelp/coremedia-en/content/Prerequisites.html#d0e2306)
+      4. Access to the [NPM-Registry `npm.coremedia.io`](https://documentation.coremedia.com/cmcc-12/artifacts/2401/webhelp/coremedia-en/content/Prerequisites.html#d0e2306)
       
    5. Build the studio-client with
       ```shell
