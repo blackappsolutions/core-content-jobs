@@ -67,15 +67,14 @@ git merge vendor_repo_github/cmcc-11
        }       
        ```
    4. Set up your environment with
-      1. NodeJS 18
+      1. NodeJS 22
       2. [pnpm](https://pnpm.io/installation) 
-      3. Sencha-Cmd v7.2.0.84
-      4. Access to the [NPM-Registry `npm.coremedia.io`](https://documentation.coremedia.com/cmcc-12/artifacts/2401/webhelp/coremedia-en/content/Prerequisites.html#d0e2306)
+      3. Access to the [NPM-Registry `npm.coremedia.io`](https://documentation.coremedia.com/cmcc-12/artifacts/2401/webhelp/coremedia-en/content/Prerequisites.html#d0e2306)
       
    5. Build the studio-client with
       ```shell
       cd apps/studio-client             
-      nvm use 18 # if you have multiple node versions on your machine and nvm in place
+      nvm use 22 # if you have multiple node versions on your machine and nvm in place
       export PUPPETEER_SKIP_DOWNLOAD=true # only on M1/M2-Macs      
       pnpm install
       pnpm -r run build            

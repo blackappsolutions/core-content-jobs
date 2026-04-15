@@ -97,7 +97,6 @@
     <dependency>
       <groupId>jakarta.activation</groupId>
       <artifactId>jakarta.activation-api</artifactId>
-      <version>2.1.3</version>
     </dependency>
     <dependency>
       <groupId>com.coremedia.cms</groupId>
@@ -152,7 +151,6 @@
     <dependency>
       <groupId>jakarta.annotation</groupId>
       <artifactId>jakarta.annotation-api</artifactId>
-      <version>2.1.1</version>
     </dependency>
     <dependency>
       <groupId>org.slf4j</groupId>
@@ -186,7 +184,14 @@
       <groupId>jakarta.inject</groupId>
       <artifactId>jakarta.inject-api</artifactId>
       <scope>test</scope>
-      <version>2.0.1</version>
+    </dependency>
+    <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-autoconfigure</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>com.coremedia.cms</groupId>
+      <artifactId>coremedia-common</artifactId>
     </dependency>
   </dependencies>
 

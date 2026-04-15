@@ -2,7 +2,7 @@ package de.bas.content;
 
 import com.coremedia.cap.content.ContentRepository;
 import com.coremedia.cap.content.ContentType;
-import com.coremedia.cap.undoc.common.spring.CapRepositoriesConfiguration;
+import com.coremedia.cms.uapi.config.CapRepositoriesConfiguration;
 import org.springframework.boot.autoconfigure.AutoConfiguration;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Import;

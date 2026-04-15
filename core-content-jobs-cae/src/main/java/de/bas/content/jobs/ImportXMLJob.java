@@ -2,11 +2,13 @@ package de.bas.content.jobs;
 
 import com.coremedia.cap.multisite.SitesService;
 import com.coremedia.cap.undoc.server.importexport.base.importer.ServerXmlImport;
+import com.coremedia.mimetype.MimeTypeService;
 import de.bas.content.engine.ContentWriter;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
+import de.bas.content.beans.ContentJob;
 
 /**
  * @author Markus Schwarz
@@ -19,7 +21,10 @@ public class ImportXMLJob extends AbstractContentJob {
     @Autowired
     private SitesService sitesService;
 
-    public ImportXMLJob(de.bas.content.beans.ContentJob contentJob, ContentWriter contentWriter) {
+    @Autowired
+    private MimeTypeService mimeTypeService;
+
+    public ImportXMLJob(ContentJob contentJob, ContentWriter contentWriter) {
         super(contentJob, contentWriter);
     }
 
@@ -29,6 +34,7 @@ public class ImportXMLJob extends AbstractContentJob {
         ServerXmlImport importer = new ServerXmlImport(
             log,
             contentWriter.getContentRepository().getConnection(),
+            mimeTypeService, // ToDo: Check, if injection works
             sitesService,
             contentJob.recursive(),
             contentJob.getXmlImportHaltOnError(),
